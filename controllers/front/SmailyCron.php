@@ -166,11 +166,11 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
             return $result = array('error' => $this->l('Check credentials, unauthorized!'));
         }
         if (curl_errno($ch)) {
-            return $result = array("error"=>curl_error($ch));
+            return $result = array("error" => curl_error($ch));
         }
         // Close connection and send response.
         curl_close($ch);
-        return array('success' =>true, 'result' => $result);
+        return array('success' => true, 'result' => $result);
     }
     /**
      * Log API response to text-file.

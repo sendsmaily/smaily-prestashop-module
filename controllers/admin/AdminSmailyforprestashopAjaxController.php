@@ -77,7 +77,7 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
             $password = pSQL(Tools::getValue('password'));
             $password = str_replace(' ', '', Tools::stripslashes($password));
             // Autoresponder array for smaily Api call.
-            $data = array('page'=>1, 'limit'=>100, 'status'=>array('ACTIVE'));
+            $data = array('page' => 1, 'limit' => 100, 'status' => array('ACTIVE'));
             // Make API call to Smaily to get autoresponders list.
             $response = $this->callApi('autoresponder', $subdomain, $username, $password, $data);
             if (!$response) {
@@ -127,9 +127,9 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
         }
 
         if (curl_errno($ch)) {
-            return $result = array("error"=>true, "message"=>curl_error($ch));
+            return $result = array("error" => true, "message" => curl_error($ch));
         }
         curl_close($ch);
-        return array('success' =>true, 'autoresponders' => $result);
+        return array('success' => true, 'autoresponders' => $result);
     }
 }
