@@ -1,27 +1,25 @@
 <?php
 /**
- * 2007-2018 PrestaShop
+ * 2018 Smaily
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Academic Free License (AFL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/afl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
+ * Smaily for PrestaShop is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
  *
- * DISCLAIMER
+ * Smaily for PrestaShop is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to http://www.prestashop.com for more information.
+ * You should have received a copy of the GNU General Public License
+ * along with Smaily for PrestaShop. If not, see <http://www.gnu.org/licenses/>.
  *
- * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2018 PrestaShop SA
- * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
- * International Registered Trademark & Property of PrestaShop SA
+ * @author    Smaily <info@smaily.com>
+ * @copyright 2018 Smaily
+ * @license   GPL3
  */
 
 class AdminSmailyforprestashopAjaxController extends ModuleAdminController
@@ -79,7 +77,7 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
             $password = pSQL(Tools::getValue('password'));
             $password = str_replace(' ', '', Tools::stripslashes($password));
             // Autoresponder array for smaily Api call.
-            $data = array('page'=>1,'limit'=>100,'status'=>array('ACTIVE'));
+            $data = array('page'=>1, 'limit'=>100, 'status'=>array('ACTIVE'));
             // Make API call to Smaily to get autoresponders list.
             $response = $this->callApi('autoresponder', $subdomain, $username, $password, $data);
             if (!$response) {
@@ -107,7 +105,7 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
         $apiUrl = "https://" . $subdomain . ".sendsmaily.net/api/" . trim($endpoint, '/') . ".php";
         $data = http_build_query($data);
         if ($method == 'GET') {
-            $apiUrl = $apiUrl.'?'.$data;
+            $apiUrl = $apiUrl . '?' . $data;
         }
 
         $ch = curl_init();
@@ -129,7 +127,7 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
         }
 
         if (curl_errno($ch)) {
-            return $result = array("error"=>true,"message"=>curl_error($ch));
+            return $result = array("error"=>true, "message"=>curl_error($ch));
         }
         curl_close($ch);
         return array('success' =>true, 'autoresponders' => $result);

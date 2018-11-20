@@ -17,11 +17,11 @@ Automatically subscribe newsletter subscribers to a Smaily subscribers list, gen
 - Add new Subscribe Newsletter form to send subscribers directly to Smaily subscribers list
 - Subscribe Newsletter form with CAPTCHA support
 
-### WooCommerce Products RSS-feed
+### PrestaShop Products RSS-feed
 
 - Generate RSS-feed with 50 latest updated active products for easy import to Smaily template
 
-### Two-way synchronization between Smaily and WooCommerce
+### Two-way synchronization between Smaily and PrestaShop
 
 - Get unsubscribers from Smaily unsubscribed list
 - Update unsubscribed status in PrestaShop users database
