@@ -69,13 +69,13 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
             }
             // Clean user entered subdomain.
             $subdomain = pSQL(Tools::getValue('subdomain'));
-            $subdomain = str_replace(' ', '', Tools::stripslashes($subdomain));
+            $subdomain = trim(Tools::stripslashes($subdomain));
             // Clean user entered username
             $username = pSQL(Tools::getValue('username'));
-            $username = str_replace(' ', '', Tools::stripslashes($username));
+            $username = trim(Tools::stripslashes($username));
             // Clean user entered password.
             $password = pSQL(Tools::getValue('password'));
-            $password = str_replace(' ', '', Tools::stripslashes($password));
+            $password = trim(Tools::stripslashes($password));
             // Autoresponder array for smaily Api call.
             $data = array('page' => 1, 'limit' => 100, 'status' => array('ACTIVE'));
             // Make API call to Smaily to get autoresponders list.
