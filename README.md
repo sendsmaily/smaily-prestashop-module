@@ -1,8 +1,5 @@
 # Smaily for Prestashop
 
-> **DISCLAIMER**
-> Plugin is still in development and currently being reviewed by PrestaShop. Use at your own discretion before fully finished. All bug reports are welcome under issues tab.
-
 ## Description
 
 Smaily email marketing and automation extension module for PrestaShop.

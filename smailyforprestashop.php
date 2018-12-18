@@ -36,8 +36,8 @@ class SmailyForPrestashop extends Module
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(
-            'min' => '1.7',
-            'max' => '1.7.4.2'
+            'min' => '1.7.0',
+            'max' => _PS_VERSION_
         );
         $this->bootstrap = true;
 
@@ -230,15 +230,13 @@ class SmailyForPrestashop extends Module
             ));
           return $this->display(__FILE__, 'smaily_blocknewsletter.tpl');
     }
-    // Add Css, JQuerry and module javascript.
+    // Add JQuerry and module javascript.
     public function hookDisplayBackOfficeHeader()
     {
-        // Add Css.
-        $this->context->controller->addCSS(array($this->_path.'views/css/smaily_module.css'));
-        // Add JQuerry before module javascript.
-        $this->context->controller->addJquery();
         // Add module javascript.
         if (Tools::getValue('configure') === $this->name) {
+            // Add JQuerry before module javascript.
+            $this->context->controller->addJquery();
             $this->context->controller->addJS(array($this->_path.'views/js/smaily_module.js'));
         }
     }
