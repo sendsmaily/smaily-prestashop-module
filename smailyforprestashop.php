@@ -26,6 +26,8 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use Symfony\Component\VarDumper\VarDumper;
+
 class SmailyForPrestashop extends Module
 {
     public function __construct()
@@ -61,12 +63,15 @@ class SmailyForPrestashop extends Module
             !$this->registerHook('backOfficeHeader') ||
             // Check that you can add Smaily settings field values.
             !Configuration::updateValue('SMAILY_ENABLE_CRON', 0) ||
+            !Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', 0) ||
             !Configuration::updateValue('SMAILY_CRON_TOKEN', '') ||
             !Configuration::updateValue('SMAILY_SUBDOMAIN', '') ||
             !Configuration::updateValue('SMAILY_USERNAME', '') ||
             !Configuration::updateValue('SMAILY_PASSWORD', '') ||
             !Configuration::updateValue('SMAILY_API_KEY', '') ||
             !Configuration::updateValue('SMAILY_AUTORESPONDER', '') ||
+            !Configuration::updateValue('SMAILY_CART_AUTORESPONDER', '') ||
+            !Configuration::updateValue('SMAILY_ABANDONED_CART_TIME', '') ||
             !Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize(array())) ||
             // Add tab to sidebar
             !$this->installTab('AdminAdmin', 'AdminSmailyforprestashopAjax', 'Smaily for PrestaShop') ||
@@ -97,12 +102,15 @@ class SmailyForPrestashop extends Module
         if (!parent::uninstall() ||
         // Delete settings created by module.
         !Configuration::deleteByName('SMAILY_ENABLE_CRON') ||
+        !Configuration::deleteByName('SMAILY_ENABLE_ABANDONED_CART') ||
         !Configuration::deleteByName('SMAILY_CRON_TOKEN') ||
         !Configuration::deleteByName('SMAILY_SUBDOMAIN') ||
         !Configuration::deleteByName('SMAILY_USERNAME') ||
         !Configuration::deleteByName('SMAILY_PASSWORD') ||
         !Configuration::deleteByName('SMAILY_API_KEY') ||
         !Configuration::deleteByName('SMAILY_AUTORESPONDER') ||
+        !Configuration::deleteByName('SMAILY_CART_AUTORESPONDER') ||
+        !Configuration::deleteByName('SMAILY_ABANDONED_CART_TIME') ||
         !Configuration::deleteByName('SMAILY_SYNCRONIZE_ADDITIONAL') ||
         // Remove sideTab of smaily module.
         !$this->uninstallTab('AdminSmailyforprestashopAjax')
@@ -145,7 +153,7 @@ class SmailyForPrestashop extends Module
             // Api key.
             $api_key = pSQL(Tools::getValue('SMAILY_API_KEY'));
             $api_key = trim(Tools::stripslashes($api_key));
-            // Autoresponder
+            // Autoresponder.
             $autoresponder = pSQL((Tools::getValue('SMAILY_AUTORESPONDER')));
             $autoresponder = str_replace('\"', '"', $autoresponder);
             // Get autoresponder array from json string.
@@ -192,21 +200,62 @@ class SmailyForPrestashop extends Module
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
         }
-        // Get syncronize additional values.
+
+        if (Tools::isSubmit('smaily_submit_abandoned_cart')) {
+            // Enable Abandoned Cart.
+            $enable_abandoned_cart = pSQL(Tools::getValue('SMAILY_ENABLE_ABANDONED_CART'));
+            // Abandoned cart delay time
+            $abandoned_cart_time = pSQL(Tools::getValue('SMAILY_ABANDONED_CART_TIME'));
+            $abandoned_cart_time = trim(Tools::stripslashes($abandoned_cart_time));
+            // Abandoned cart Autoresponder
+            $cart_autoresponder = pSQL((Tools::getValue('SMAILY_CART_AUTORESPONDER')));
+            $cart_autoresponder = str_replace('\"', '"', $cart_autoresponder);
+            // Get autoresponder array from json string.
+            $cart_autoresponder = Tools::jsonDecode($cart_autoresponder);
+            // Clean autoresponder for inserting to database.
+            $escaped_cart_autoresponder = array();
+            if (!empty($cart_autoresponder)) {
+                foreach ($cart_autoresponder as $key => $value) {
+                    $escaped_cart_autoresponder[ pSQL($key)] = pSQL($value);
+                }
+            }
+            if (!Validate::isInt($abandoned_cart_time) ||
+                intval($abandoned_cart_time) < 1) {
+                // Display error message.
+                $output .= $this->displayError($this->l('Abandoned cart delay has to be number value over 0.'));
+            } else {
+                Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', $enable_abandoned_cart);
+                Configuration::updateValue('SMAILY_CART_AUTORESPONDER', serialize($escaped_cart_autoresponder));
+                Configuration::updateValue('SMAILY_ABANDONED_CART_TIME', $abandoned_cart_time);
+                // Display success message.
+                $output .= $this->displayConfirmation($this->l('Abandoned cart settings updated'));
+            }
+        }
+
+        // Get syncronize additional values for template.
         if (false !== unserialize(Configuration::get('SMAILY_SYNCRONIZE_ADDITIONAL'))) {
             $sync_array = unserialize(Configuration::get('SMAILY_SYNCRONIZE_ADDITIONAL'));
         } else {
             $sync_array = array();
         }
+        // Get autoresponder values for template.
+        $autoresponder_for_template = stripslashes(pSQL((Configuration::get('SMAILY_AUTORESPONDER'))));
+        $autoresponder_for_template = unserialize($autoresponder_for_template);
+        // Get abandoned cart autoresponder values for template.
+        $cart_autoresponder_for_template = stripslashes(pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER'))));
+        $cart_autoresponder_for_template = unserialize($cart_autoresponder_for_template);
         // Assign variables to template if available.
         $this->context->smarty->assign(array(
             'smaily_enable_cron' =>  pSQL(Configuration::get('SMAILY_ENABLE_CRON')),
+            'smaily_enable_abandoned_cart' => pSQL(Configuration::get('SMAILY_ENABLE_ABANDONED_CART')),
             'smaily_cron_token' =>  pSQL(Configuration::get('SMAILY_CRON_TOKEN')),
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
             'smaily_username' => pSQL(Configuration::get('SMAILY_USERNAME')),
             'smaily_password' => pSQL(Configuration::get('SMAILY_PASSWORD')),
             'smaily_api_key' => pSQL(Configuration::get('SMAILY_API_KEY')),
-            'smaily_autoresponder' => (pSQL(Configuration::get('SMAILY_AUTORESPONDER'))),
+            'smaily_autoresponder' => $autoresponder_for_template,
+            'smaily_cart_autoresponder' => $cart_autoresponder_for_template,
+            'smaily_abandoned_cart_time' => pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME')),
             'smaily_syncronize_additional' => $sync_array,
             'token' => Tools::getAdminTokenLite('AdminSmailyforprestashopAjax'),
             'smaily_rssfeed_url' => Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),

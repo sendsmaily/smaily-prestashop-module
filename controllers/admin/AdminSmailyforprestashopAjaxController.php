@@ -76,10 +76,8 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
             // Clean user entered password.
             $password = pSQL(Tools::getValue('password'));
             $password = trim(Tools::stripslashes($password));
-            // Autoresponder array for smaily Api call.
-            $data = array('page' => 1, 'limit' => 100, 'status' => array('ACTIVE'));
             // Make API call to Smaily to get autoresponders list.
-            $response = $this->callApi('autoresponder', $subdomain, $username, $password, $data);
+            $response = $this->callApi('autoresponder', $subdomain, $username, $password);
             if (!$response) {
                 $response = array('error' => $this->l('Invalid login details!'));
                 die(Tools::jsonEncode($response));
@@ -99,7 +97,7 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
      * @param string $method    GET or POST method
      * @return array $result    Response from Smaily
      */
-    public function callApi($endpoint, $subdomain, $username, $password, $data, $method = 'GET')
+    public function callApi($endpoint, $subdomain, $username, $password, $data = [], $method = 'GET')
     {
 
         $apiUrl = "https://" . $subdomain . ".sendsmaily.net/api/" . trim($endpoint, '/') . ".php";
@@ -127,7 +125,7 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
         }
 
         if (curl_errno($ch)) {
-            return $result = array("error" => true, "message" => curl_error($ch));
+            return $result = array("error" => $this->l(curl_error($ch)));
         }
         curl_close($ch);
         return array('success' => true, 'autoresponders' => $result);

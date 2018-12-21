@@ -81,4 +81,66 @@ $(document).ready(function() {
       }
     });
   });
+  // If autoresponders allready validated call smaily api to populate autoresponders list
+  (() => {
+    let subdomain = $("#SMAILY_SUBDOMAIN").val();
+    let username = $("#SMAILY_USERNAME").val();
+    let password = $("#SMAILY_PASSWORD").val();
+    if (subdomain !== "" && password !== "" && username !== "") {
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "admin-ajax.php",
+        data: {
+          ajax: true,
+          controller: "AdminSmailyforPrestashopAjax",
+          action: "SmailyValidate",
+          token: $("#mymodule_wrapper").attr("data-token"),
+          subdomain: subdomain,
+          username: username,
+          password: password
+        },
+        success: function(result) {
+          //Display error messages above form.
+          if (result["error"]) {
+            $errorMessage =
+              '<button  type="button" class="close" data-dismiss="alert">×</button>' +
+              result["error"];
+            $("#smaily_errormessages").html($errorMessage);
+            $("#smaily_errormessages").show();
+          }
+          if (result["success"] === true) {
+            // Hide error messages.
+            $("#smaily_errormessages").hide();
+            // Append received autoresponders to Select Autoresponder options.
+            $.each(result["autoresponders"], (index, item) => {
+              $("#SMAILY_AUTORESPONDER").append(
+                $("<option>", {
+                  value: JSON.stringify({ name: item["name"], id: item["id"] }),
+                  text: item["name"]
+                })
+              );
+            });
+            // Append autoresponder to cart autoresponders list.
+            $.each(result["autoresponders"], (index, item) => {
+              $("#SMAILY_CART_AUTORESPONDER").append(
+                $("<option>", {
+                  value: JSON.stringify({ name: item["name"], id: item["id"] }),
+                  text: item["name"]
+                })
+              );
+            });
+          }
+        },
+        error: function(error) {
+          $errorMessage =
+            '<button  type="button" class="close" data-dismiss="alert">×</button>' +
+            "There seems to be some problem with connecting to Smaily!";
+          $("#smaily_errormessages").html($errorMessage);
+          $("#smaily_errormessages").show();
+          console.log(error);
+        }
+      });
+    }
+  })();
 });
