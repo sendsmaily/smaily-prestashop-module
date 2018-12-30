@@ -80,6 +80,15 @@ class SmailyForPrestashop extends Module
         ) {
             return false;
         }
+
+        $sql = 'CREATE TABLE IF NOT EXISTS '._DB_PREFIX_.'smaily_cart (
+                `id_smaily_cart` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+                `id_customer` INT UNSIGNED NULL ,
+                `id_cart` INT UNSIGNED NULL ,
+                `date_sent` DATETIME NOT NULL) ENGINE='._MYSQL_ENGINE_;
+        if (!$result = Db::getInstance()->execute($sql)) {
+            return false;
+        }
         return true;
     }
 
@@ -117,7 +126,8 @@ class SmailyForPrestashop extends Module
         ) {
             return false;
         }
-            return true;
+        Db::getInstance()->execute('DROP TABLE '._DB_PREFIX_.'smaily_cart');
+        return true;
     }
 
     public function uninstallTab($class_name)

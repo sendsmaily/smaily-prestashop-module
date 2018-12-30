@@ -27,6 +27,16 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
     public function init()
     {
         parent::init();
+        $this->syncContacts();
+        $this->abandonedCart();
+    }
+
+    /**
+     * Synchronize prestashop contacts with smaily database.
+     * @return void
+     */
+    private function syncContacts()
+    {
         if (Tools::getValue('token') == Configuration::get('SMAILY_CRON_TOKEN') &&
             Configuration::get('SMAILY_ENABLE_CRON') === "1") {
             /**
@@ -50,7 +60,7 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
                 foreach ($customers as $customer) {
                     $customers_subscribed[] = $customer['email'];
                 }
-                 // Remove subscribed status for unsubscribers.
+                // Remove subscribed status for unsubscribers.
                 foreach ($customers_subscribed as $customer) {
                     if (in_array($customer, $unsubscribers_email)) {
                         $query = 'UPDATE ' . _DB_PREFIX_ . 'customer SET newsletter=0 WHERE email="' .
@@ -85,6 +95,133 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
             die($this->l('Access denied or cron disabled!'));
         }
     }
+
+    /**
+     * Send abandoned cart emails to customers.
+     *
+     * @return void
+     */
+    private function abandonedCart()
+    {
+        if (Tools::getValue('token') == Configuration::get('SMAILY_CRON_TOKEN') &&
+            Configuration::get('SMAILY_ENABLE_ABANDONED_CART') === "1") {
+            // Settings
+            $autoresponder = stripslashes(pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER'))));
+            $autoresponder = unserialize($autoresponder);
+            $delay = pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME'));
+            // Values to sync array
+            $sync_fields = ['name', 'description_short', 'price', 'category', 'quantity'];
+
+            $sql = 'SELECT c.id_cart,
+                        c.id_customer,
+                        c.date_upd,
+                        cu.firstname,
+                        cu.lastname,
+                        cu.email
+                    FROM '._DB_PREFIX_.'cart c
+                    LEFT JOIN '._DB_PREFIX_.'orders o
+                    ON (o.id_cart = c.id_cart)
+                    RIGHT JOIN '._DB_PREFIX_.'customer cu
+                    ON (cu.id_customer = c.id_customer)
+                    WHERE DATE_SUB(CURDATE(),INTERVAL 10 DAY) <= c.date_add
+                    AND o.id_order IS NULL';
+
+            $sql .= Shop::addSqlRestriction(Shop::SHARE_CUSTOMER, 'c');
+            $sql .= ' GROUP BY cu.id_customer';
+
+            $abandoned_carts = Db::getInstance()->executeS($sql);
+
+            foreach ($abandoned_carts as $abandoned_cart) {
+                // If time has passed form last cart update
+                $cart_updated_time = strtotime($abandoned_cart['date_upd']);
+                $reminder_time = strtotime('+' . $delay . ' hours', $cart_updated_time);
+                $current_time = strtotime(date('Y-m-d H:i') . ':00');
+
+                // Check if mail has allready been sent about this cart
+                $id_customer = (int) $abandoned_cart['id_customer'];
+                $id_cart = (int) $abandoned_cart['id_cart'];
+                $email_sent = $this->checkEmailSent($id_cart);
+
+                if ($current_time >= $reminder_time && !$email_sent) {
+                    $cart = new Cart($abandoned_cart['id_cart']);
+                    $products = $cart->getProducts();
+
+                    $adresses = [
+                        'email' => $abandoned_cart['email'],
+                        'firstname' => $abandoned_cart['firstname'],
+                        'lastname' => $abandoned_cart['lastname'],
+                    ];
+
+                    // Collect products of abandoned cart.
+                    if (!empty($products)) {
+                        $i = 1;
+                        foreach ($products as $product) {
+                            if ($i <= 10) {
+                                foreach ($sync_fields as $sync_field) {
+                                    $adresses['product_' . $sync_field .'_' . $i] = $product[$sync_field];
+                                }
+                            }
+                            $i++;
+                        }
+                        // Add shop url.
+                        $adresses['store_url'] = _PS_BASE_URL_.__PS_BASE_URI__;
+                        // Smaily api query.
+                        $query = [
+                            'autoresponder' => $autoresponder['id'],
+                            'addresses' => [$adresses]
+                        ];
+                        // Send cart data to smaily api.
+                        $response = $this->callApi('autoresponder', $query, 'POST');
+                        // If email sent successfully update sent status in database.
+                        if (array_key_exists('success', $response) &&
+                            isset($response['result']['code']) &&
+                            $response['result']['code'] === 101) {
+                                $this->updateSentStatus($id_customer, $id_cart);
+                        } else {
+                            $this->logTofile('smaily-cart.txt', Tools::jsonEncode($response));
+                        }
+                    }
+                }
+            }
+        } else {
+            die($this->l('Access denied or cron disabled!'));
+        }
+    }
+
+    /**
+     * Updates Sent email status in smaily cart table.
+     *
+     * @param integer $id_customer  Customer ID
+     * @param integer $id_cart      Cart ID
+     * @return void
+     */
+    private function updateSentStatus(int $id_customer, int $id_cart)
+    {
+        $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'smaily_cart (id_customer, id_cart, date_sent)
+                VALUES (' . $id_customer . ', ' . $id_cart . ', CURRENT_TIMESTAMP)';
+        Db::getInstance()->execute($sql);
+    }
+
+    /**
+     * Check if abandoned cart reminder email has been sent to customer
+     *
+     * @param int $cart_id                      Customer cart ID
+     * @return boolean $abandoned_cart_email    If mail has been sent
+     */
+    private function checkEmailSent(int $id_cart)
+    {
+        $sql = 'SELECT *
+                FROM '._DB_PREFIX_.'smaily_cart 
+                WHERE id_cart = '. $id_cart;
+
+        $email_sent = Db::getInstance()->executeS($sql);
+        if (!$email_sent) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     /**
      * Get user data for costumer based on settings for Syncronize Additional.

@@ -208,7 +208,7 @@
     </div>
     <div class="form-group">
         <label class="control-label col-lg-3">
-            {l s="Abandoned Cart Frequency" mod='smailyforprestashop'}
+            {l s="Abandoned Cart Delay" mod='smailyforprestashop'}
         </label>
         <div class="col-lg-9">
             <div class="input-group">
