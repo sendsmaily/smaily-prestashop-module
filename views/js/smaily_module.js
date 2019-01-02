@@ -82,7 +82,7 @@ $(document).ready(function() {
     });
   });
   // If autoresponders allready validated call smaily api to populate autoresponders list
-  (() => {
+  (function() {
     let subdomain = $("#SMAILY_SUBDOMAIN").val();
     let username = $("#SMAILY_USERNAME").val();
     let password = $("#SMAILY_PASSWORD").val();
