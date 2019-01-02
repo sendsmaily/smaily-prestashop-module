@@ -162,7 +162,7 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
                         foreach ($products as $product) {
                             if ($i <= 10) {
                                 foreach ($sync_fields as $sync_field) {
-                                    $adresses['product_' . $sync_field .'_' . $i] = $product[$sync_field];
+                                    $adresses['product_' . $sync_field .'_' . $i] = strip_tags($product[$sync_field]);
                                 }
                             }
                             $i++;
