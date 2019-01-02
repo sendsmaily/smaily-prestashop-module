@@ -27,8 +27,13 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
     public function init()
     {
         parent::init();
-        $this->syncContacts();
-        $this->abandonedCart();
+        if (Tools::getValue('token') == Configuration::get('SMAILY_CRON_TOKEN')) {
+            $this->syncContacts();
+            $this->abandonedCart();
+        } else {
+            die($this->l('Access denied! '));
+        }
+
     }
 
     /**
@@ -37,8 +42,7 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
      */
     private function syncContacts()
     {
-        if (Tools::getValue('token') == Configuration::get('SMAILY_CRON_TOKEN') &&
-            Configuration::get('SMAILY_ENABLE_CRON') === "1") {
+        if (Configuration::get('SMAILY_ENABLE_CRON') === "1") {
             /**
              * Get unsubscribers from smaily database and unsubscribe these users in Prestashop.
              */
@@ -91,8 +95,9 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
                 $response = 'No customers to update!';
             }
             $this->logTofile('smaily-cron.txt', $response);
+            echo($this->l('User synchronization done! '));
         } else {
-            die($this->l('Access denied or cron disabled!'));
+            echo($this->l('User synchronization disabled! '));
         }
     }
 
@@ -103,14 +108,13 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
      */
     private function abandonedCart()
     {
-        if (Tools::getValue('token') == Configuration::get('SMAILY_CRON_TOKEN') &&
-            Configuration::get('SMAILY_ENABLE_ABANDONED_CART') === "1") {
+        if (Configuration::get('SMAILY_ENABLE_ABANDONED_CART') === "1") {
             // Settings
             $autoresponder = stripslashes(pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER'))));
             $autoresponder = unserialize($autoresponder);
             $delay = pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME'));
             // Values to sync array
-            $sync_fields = ['name', 'description_short', 'price', 'category', 'quantity'];
+            $sync_fields = unserialize(Configuration::get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
 
             $sql = 'SELECT c.id_cart,
                         c.id_customer,
@@ -183,8 +187,9 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
                     }
                 }
             }
+            echo($this->l('Abandoned carts emails sent! '));
         } else {
-            die($this->l('Access denied or cron disabled!'));
+            echo($this->l('Abandoned cart disabled! '));
         }
     }
 

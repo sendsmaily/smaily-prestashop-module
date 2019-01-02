@@ -187,6 +187,7 @@
     </button>
     </div>
 </div>
+<!-- Second panel for abandoned cart -->
 <div class="panel">
     <div class="panel-heading">
     {l s="Smaily Abandoned Cart Settings" mod='smailyforprestashop'}
@@ -220,23 +221,63 @@
         </div>
     </div>
     <div class="form-group">
-                <label class="control-label col-lg-3">
-                    {l s="Autoresponder" mod='smailyforprestashop'}
+        <label class="control-label col-lg-3">
+            {l s="Autoresponder" mod='smailyforprestashop'}
+        </label>
+        <div class="col-lg-9">
+            <select name="SMAILY_CART_AUTORESPONDER" id="SMAILY_CART_AUTORESPONDER">
+                {if empty($smaily_cart_autoresponder)}
+                <option value="">
+                    {l s="Select Autoresponder" mod='smailyforprestashop'}
+                </option>
+                {else}
+                <option value='{$smaily_cart_autoresponder|json_encode}'>
+                    {$smaily_cart_autoresponder['name']} {l s="(selected)" m='smailyforprestashop'}
+                </option>
+                {/if}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-3">
+            {l s="Syncronize Additional" mod='smailyforprestashop'}
+        </label>
+        <div class="col-lg-9">
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="name" {if 'name'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Product Name" mod='smailyforprestashop'}
                 </label>
-                <div class="col-lg-9">
-                    <select name="SMAILY_CART_AUTORESPONDER" class=" fixed-width-xl" id="SMAILY_CART_AUTORESPONDER">
-                        {if empty($smaily_cart_autoresponder)}
-                        <option value="">
-                            {l s="Select Autoresponder" mod='smailyforprestashop'}
-                        </option>
-                        {else}
-                        <option value='{$smaily_cart_autoresponder|json_encode}'>
-                            {$smaily_cart_autoresponder['name']} {l s="(selected)" m='smailyforprestashop'}
-                        </option>
-                        {/if}
-                    </select>
-                </div>
             </div>
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="description_short" {if 'description_short'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Description" mod='smailyforprestashop'}
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="price" {if 'price'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Price" mod='smailyforprestashop'}
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="category" {if 'category'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Category" mod='smailyforprestashop'}
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="quantity" {if 'quantity'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Quantity" mod='smailyforprestashop'}
+                </label>
+            </div>
+            <p class="help-block">
+                {l s="Select additional fields to send to abandoned cart template. Firstname, lastname and store-url are always added." mod='smailyforprestashop'}
+            </p>
+        </div>
+    </div>
     </div><!-- /.form-wrapper -->
     <div class="panel-footer">
     <button type="submit" name="smaily_submit_abandoned_cart" class="btn btn-default pull-right" >
