@@ -36,12 +36,13 @@
             {l s="Enable Cron" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-9">
-                <div class="radio t">
-                <label><input type="radio" name="SMAILY_ENABLE_CRON" id="Disabled" value="0" {($smaily_enable_cron == 0) ? 'checked' :'' }>Disabled</label>
-                </div>
-                <div class="radio t">
-                <label><input type="radio" name="SMAILY_ENABLE_CRON" id="Enabled" value="1" {($smaily_enable_cron == 1) ? 'checked' :'' }>Enabled</label>
-                </div>
+                <span class="switch prestashop-switch fixed-width-lg">
+                    <input type="radio" name="SMAILY_ENABLE_CRON" id="Enabled" value="1" {($smaily_enable_cron == 1) ? 'checked' :'' }>
+                    <label for="Enabled">{l s="Yes" mod='smailyforprestashop'}</label>
+                    <input type="radio" name="SMAILY_ENABLE_CRON" id="Disabled" value="0" {($smaily_enable_cron == 0) ? 'checked' :'' }>
+                    <label for="Disabled">{l s="No" mod='smailyforprestashop'}</label>
+                    <a class="slide-button btn"></a>
+                </span>
             </div>
         </div>
         <div class="form-group">
@@ -85,7 +86,7 @@
                 </p>
             </div>
         </div>
-        <div class="form-group" id="smaily-validate-form-group">
+        <div class="form-group" id="smaily-validate-form-group" {if !empty($smaily_password)} hidden {/if}>
             <label class="control-label col-lg-3">
             {l s="Validate credentials" mod='smailyforprestashop'}
             </label>
@@ -95,16 +96,22 @@
                 </button>
             </div>
         </div>
-        <div id="smaily_autoresponders" hidden>
+        <div id="smaily_autoresponders" {if empty($smaily_password)} hidden {/if}>
             <div class="form-group">
                 <label class="control-label col-lg-3 required">
                     {l s="Autoresponder" mod='smailyforprestashop'}
                 </label>
                 <div class="col-lg-9">
-                    <select name="SMAILY_AUTORESPONDER" class=" fixed-width-xl" id="SMAILY_AUTORESPONDER">
+                    <select name="SMAILY_AUTORESPONDER" id="SMAILY_AUTORESPONDER">
+                        {if empty($smaily_autoresponder)}
                         <option value="">
                             {l s="Select Autoresponder" mod='smailyforprestashop'}
                         </option>
+                        {else}
+                        <option value='{$smaily_autoresponder|json_encode}'>
+                        {$smaily_autoresponder['name']} {l s="(selected)" m='smailyforprestashop'}
+                        </option>
+                        {/if}
                     </select>
                 </div>
             </div>
@@ -171,14 +178,112 @@
                     <p class="help-block"> {l s="To schedule automatic sync, set up CRON in your hosting and use this URL, replace token with settings value for security." mod='smailyforprestashop'}</p>
                 </div>
             </div>
-        </div id="smaily_autoresponders">
+        </div>
     </div><!-- /.form-wrapper -->
-    <div class="panel-footer" hidden>
+    <div class="panel-footer" {if empty($smaily_password)} hidden {/if}>
     <button type="submit" name="smaily_submit_configuration" class="btn btn-default pull-right" >
         <i class="process-icon-save"></i> 
         {l s="Save" mod='smailyforprestashop' }
     </button>
     </div>
-
+</div>
+<!-- Second panel for abandoned cart -->
+<div class="panel">
+    <div class="panel-heading">
+    {l s="Smaily Abandoned Cart Settings" mod='smailyforprestashop'}
+    </div>
+    <div class="form-wrapper">
+    <div class="form-group">
+        <label class="control-label col-lg-3">
+            {l s="Enable Abandoned Cart" mod='smailyforprestashop'}
+        </label>
+        <div class="col-lg-9">
+            <span class="switch prestashop-switch fixed-width-lg">
+                <input type="radio" name="SMAILY_ENABLE_ABANDONED_CART" id="smaily_abandoned_cart_enable_on" value="1" {($smaily_enable_abandoned_cart == 1) ? 'checked' :'' }>
+                <label for="smaily_abandoned_cart_enable_on">{l s="Yes" mod='smailyforprestashop'}</label>
+                <input type="radio" name="SMAILY_ENABLE_ABANDONED_CART" id="smaily_abandoned_cart_enable_off" value="0" {($smaily_enable_abandoned_cart == 0) ? 'checked' :'' }>
+                <label for="smaily_abandoned_cart_enable_off">{l s="No" mod='smailyforprestashop'}</label>
+                <a class="slide-button btn"></a>
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-3">
+            {l s="Abandoned Cart Delay" mod='smailyforprestashop'}
+        </label>
+        <div class="col-lg-9">
+            <div class="input-group">
+                <input type="text" name="SMAILY_ABANDONED_CART_TIME" id="SMAILY_ABANDONED_CART_TIME" value="{$smaily_abandoned_cart_time}">
+                <span class="input-group-addon">
+                    {l s="Hour(s)" mod='smailyforprestashop'}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-3">
+            {l s="Autoresponder" mod='smailyforprestashop'}
+        </label>
+        <div class="col-lg-9">
+            <select name="SMAILY_CART_AUTORESPONDER" id="SMAILY_CART_AUTORESPONDER">
+                {if empty($smaily_cart_autoresponder)}
+                <option value="">
+                    {l s="Select Autoresponder" mod='smailyforprestashop'}
+                </option>
+                {else}
+                <option value='{$smaily_cart_autoresponder|json_encode}'>
+                    {$smaily_cart_autoresponder['name']} {l s="(selected)" m='smailyforprestashop'}
+                </option>
+                {/if}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-lg-3">
+            {l s="Syncronize Additional" mod='smailyforprestashop'}
+        </label>
+        <div class="col-lg-9">
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="name" {if 'name'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Product Name" mod='smailyforprestashop'}
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="description_short" {if 'description_short'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Description" mod='smailyforprestashop'}
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="price" {if 'price'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Price" mod='smailyforprestashop'}
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="category" {if 'category'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Category" mod='smailyforprestashop'}
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="quantity" {if 'quantity'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                        {l s="Quantity" mod='smailyforprestashop'}
+                </label>
+            </div>
+            <p class="help-block">
+                {l s="Select additional fields to send to abandoned cart template. Firstname, lastname and store-url are always added." mod='smailyforprestashop'}
+            </p>
+        </div>
+    </div>
+    </div><!-- /.form-wrapper -->
+    <div class="panel-footer">
+    <button type="submit" name="smaily_submit_abandoned_cart" class="btn btn-default pull-right" >
+        <i class="process-icon-save"></i> 
+        {l s="Save" mod='smailyforprestashop' }
+    </button>
+    </div>
 </div>
 </form>
