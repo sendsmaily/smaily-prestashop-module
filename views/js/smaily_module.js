@@ -1,3 +1,4 @@
+"use strict";
 /**
  * 2018 Smaily
  *
@@ -30,9 +31,9 @@ $(document).ready(function() {
   // Handles validation of autoresponder details and
   // displays second part of settings form based of response from smaily autoresponder API
   $("#smaily-validate-autoresponder").on("click", function() {
-    let subdomain = $("#SMAILY_SUBDOMAIN").val();
-    let username = $("#SMAILY_USERNAME").val();
-    let password = $("#SMAILY_PASSWORD").val();
+    var subdomain = $("#SMAILY_SUBDOMAIN").val();
+    var username = $("#SMAILY_USERNAME").val();
+    var password = $("#SMAILY_PASSWORD").val();
     $.ajax({
       type: "POST",
       dataType: "json",
@@ -46,13 +47,13 @@ $(document).ready(function() {
         username: username,
         password: password
       },
-      success: function(result) {
+      success: function success(result) {
         //Display error messages above form.
         if (result["error"]) {
-          $errorMessage =
+          var errorMessage =
             '<button  type="button" class="close" data-dismiss="alert">×</button>' +
             result["error"];
-          $("#smaily_errormessages").html($errorMessage);
+          $("#smaily_errormessages").html(errorMessage);
           $("#smaily_errormessages").show();
         }
         //Sucess message.
@@ -62,7 +63,7 @@ $(document).ready(function() {
           // Hide validate section
           $("#smaily-validate-form-group").hide();
           // Append received autoresponders to Select Autoresponder options.
-          $.each(result["autoresponders"], (index, item) => {
+          $.each(result["autoresponders"], function(index, item) {
             $("#SMAILY_AUTORESPONDER").append(
               $("<option>", {
                 value: JSON.stringify({ name: item["name"], id: item["id"] }),
@@ -76,16 +77,16 @@ $(document).ready(function() {
           $(".panel-footer").show();
         }
       },
-      error: function(error) {
-        console.log(error);
+      error: function error(_error) {
+        console.log(_error);
       }
     });
   });
   // If autoresponders allready validated call smaily api to populate autoresponders list
   (function() {
-    let subdomain = $("#SMAILY_SUBDOMAIN").val();
-    let username = $("#SMAILY_USERNAME").val();
-    let password = $("#SMAILY_PASSWORD").val();
+    var subdomain = $("#SMAILY_SUBDOMAIN").val();
+    var username = $("#SMAILY_USERNAME").val();
+    var password = $("#SMAILY_PASSWORD").val();
     if (subdomain !== "" && password !== "" && username !== "") {
       $.ajax({
         type: "POST",
@@ -100,20 +101,20 @@ $(document).ready(function() {
           username: username,
           password: password
         },
-        success: function(result) {
+        success: function success(result) {
           //Display error messages above form.
           if (result["error"]) {
-            $errorMessage =
+            var errorMessage =
               '<button  type="button" class="close" data-dismiss="alert">×</button>' +
               result["error"];
-            $("#smaily_errormessages").html($errorMessage);
+            $("#smaily_errormessages").html(errorMessage);
             $("#smaily_errormessages").show();
           }
           if (result["success"] === true) {
             // Hide error messages.
             $("#smaily_errormessages").hide();
             // Append received autoresponders to Select Autoresponder options.
-            $.each(result["autoresponders"], (index, item) => {
+            $.each(result["autoresponders"], function(index, item) {
               $("#SMAILY_AUTORESPONDER").append(
                 $("<option>", {
                   value: JSON.stringify({ name: item["name"], id: item["id"] }),
@@ -122,7 +123,7 @@ $(document).ready(function() {
               );
             });
             // Append autoresponder to cart autoresponders list.
-            $.each(result["autoresponders"], (index, item) => {
+            $.each(result["autoresponders"], function(index, item) {
               $("#SMAILY_CART_AUTORESPONDER").append(
                 $("<option>", {
                   value: JSON.stringify({ name: item["name"], id: item["id"] }),
@@ -132,13 +133,13 @@ $(document).ready(function() {
             });
           }
         },
-        error: function(error) {
-          $errorMessage =
+        error: function error(_error2) {
+          var errorMessage =
             '<button  type="button" class="close" data-dismiss="alert">×</button>' +
             "There seems to be some problem with connecting to Smaily!";
-          $("#smaily_errormessages").html($errorMessage);
+          $("#smaily_errormessages").html(errorMessage);
           $("#smaily_errormessages").show();
-          console.log(error);
+          console.log(_error2);
         }
       });
     }
