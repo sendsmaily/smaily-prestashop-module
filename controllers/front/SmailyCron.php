@@ -33,7 +33,6 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
         } else {
             die($this->l('Access denied! '));
         }
-
     }
 
     /**
@@ -110,8 +109,8 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
     {
         if (Configuration::get('SMAILY_ENABLE_ABANDONED_CART') === "1") {
             // Settings
-            $autoresponder = stripslashes(pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER'))));
-            $autoresponder = unserialize($autoresponder);
+            $autoresponder = unserialize(Configuration::get('SMAILY_CART_AUTORESPONDER'));
+            $autoresponder_id = pSQL($autoresponder['id']);
             $delay = pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME'));
             // Values to sync array
             $sync_fields = unserialize(Configuration::get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
@@ -150,11 +149,11 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
                     $cart = new Cart($abandoned_cart['id_cart']);
                     $products = $cart->getProducts();
 
-                    $adresses = [
+                    $adresses = array(
                         'email' => $abandoned_cart['email'],
                         'firstname' => $abandoned_cart['firstname'],
                         'lastname' => $abandoned_cart['lastname'],
-                    ];
+                    );
 
                     // Collect products of abandoned cart.
                     if (!empty($products)) {
@@ -170,10 +169,10 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
                         // Add shop url.
                         $adresses['store_url'] = _PS_BASE_URL_.__PS_BASE_URI__;
                         // Smaily api query.
-                        $query = [
-                            'autoresponder' => $autoresponder['id'],
-                            'addresses' => [$adresses]
-                        ];
+                        $query = array(
+                            'autoresponder' => $autoresponder_id,
+                            'addresses' => array($adresses)
+                        );
                         // Send cart data to smaily api.
                         $response = $this->callApi('autoresponder', $query, 'POST');
                         // If email sent successfully update sent status in database.
