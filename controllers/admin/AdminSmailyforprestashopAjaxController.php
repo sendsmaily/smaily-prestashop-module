@@ -97,7 +97,7 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
      * @param string $method    GET or POST method
      * @return array $result    Response from Smaily
      */
-    public function callApi($endpoint, $subdomain, $username, $password, $data = [], $method = 'GET')
+    public function callApi($endpoint, $subdomain, $username, $password, $data = array(), $method = 'GET')
     {
 
         $apiUrl = "https://" . $subdomain . ".sendsmaily.net/api/" . trim($endpoint, '/') . ".php";

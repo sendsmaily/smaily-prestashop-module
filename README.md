@@ -25,6 +25,11 @@ Automatically subscribe newsletter subscribers to a Smaily subscribers list, gen
 - Collect new user data for subscribed users
 - Generate data log for each update
 
+### Abandoned cart
+
+- Get customer abandoned cart info and send recovery e-mails with Smaily templates.
+- Set prefered delay time when cart is considered abandoned.
+
 ## Requirements
 
 Smaily for Prestashop requires PHP 5.6+ (PHP 7.0+ recommended). You'll also need to be running Prestashop 1.7+.
@@ -63,8 +68,35 @@ All development for Smaily for Prestashop is [handled via GitHub](https://github
 
 Cron update data-log is stored in the root folder of Smaily plugin, inside "smaily-cron.txt" file.
 
+### How can I access additional Abandoned cart parameters in Smaily template editor?
+
+Here is a list of all the parameters available in Smaily email templating engine:
+
+Customer first name: {{ firstname }}.
+
+Customer last name: {{ lastname }}
+
+Store url: {{ store_url }}.
+
+Up to 10 products can be received in Smaily templating engine. You can refrence each product with number 1-10 behind parameter name.
+
+Product name: {{ product_name_[1-10] }}.
+
+Product description: {{ product_description_short_[1-10] }}.
+
+Product quantity: {{ product_quantity_[1-10] }}.
+
+Product price: {{ product_price_[1-10] }}.
+
+Product category: {{ product_category_[1-10] }}.
+
 ## Changelog
 
-### 1.0 - 2018
+### 1.1.0 - 2019
+
+- New Feature. Added Abandoned cart support.
+- Changed admin page behaviour when API credentials allready validated.
+
+### 1.0.0 - 2018
 
 - This is the first public release.

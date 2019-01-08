@@ -85,7 +85,7 @@ class SmailyForPrestashop extends Module
                 `id_customer` INT UNSIGNED NULL ,
                 `id_cart` INT UNSIGNED NULL ,
                 `date_sent` DATETIME NOT NULL) ENGINE='._MYSQL_ENGINE_;
-        if (!$result = Db::getInstance()->execute($sql)) {
+        if (!Db::getInstance()->execute($sql)) {
             return false;
         }
         return true;
@@ -216,7 +216,7 @@ class SmailyForPrestashop extends Module
             $enable_abandoned_cart = pSQL(Tools::getValue('SMAILY_ENABLE_ABANDONED_CART'));
             // Abandoned cart delay time
             $abandoned_cart_time = pSQL(Tools::getValue('SMAILY_ABANDONED_CART_TIME'));
-            $abandoned_cart_time = trim(Tools::stripslashes($abandoned_cart_time));
+            $abandoned_cart_time = (int) trim(Tools::stripslashes($abandoned_cart_time));
             // Abandoned cart Autoresponder
             $cart_autoresponder = pSQL((Tools::getValue('SMAILY_CART_AUTORESPONDER')));
             $cart_autoresponder = str_replace('\"', '"', $cart_autoresponder);
@@ -237,15 +237,17 @@ class SmailyForPrestashop extends Module
                     $cart_escaped_sync_additional[] = pSQL($value);
                 }
             }
-            if (!Validate::isInt($abandoned_cart_time) ||
-                intval($abandoned_cart_time) < 1) {
+            if ($abandoned_cart_time < 1) {
                 // Display error message.
                 $output .= $this->displayError($this->l('Abandoned cart delay has to be number value over 0.'));
             } else {
                 Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', $enable_abandoned_cart);
                 Configuration::updateValue('SMAILY_CART_AUTORESPONDER', serialize($escaped_cart_autoresponder));
                 Configuration::updateValue('SMAILY_ABANDONED_CART_TIME', $abandoned_cart_time);
-                Configuration::updateValue('SMAILY_CART_SYNCRONIZE_ADDITIONAL', serialize($cart_escaped_sync_additional));
+                Configuration::updateValue(
+                    'SMAILY_CART_SYNCRONIZE_ADDITIONAL',
+                    serialize($cart_escaped_sync_additional)
+                );
                 // Display success message.
                 $output .= $this->displayConfirmation($this->l('Abandoned cart settings updated'));
             }
@@ -264,10 +266,12 @@ class SmailyForPrestashop extends Module
             $cart_sync_array = array();
         }
         // Get autoresponder values for template.
-        $autoresponder_for_template = stripslashes(pSQL((Configuration::get('SMAILY_AUTORESPONDER'))));
+        $autoresponder_for_template = pSQL((Configuration::get('SMAILY_AUTORESPONDER')));
+        $autoresponder_for_template = str_replace('\"', '"', $autoresponder_for_template);
         $autoresponder_for_template = unserialize($autoresponder_for_template);
         // Get abandoned cart autoresponder values for template.
-        $cart_autoresponder_for_template = stripslashes(pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER'))));
+        $cart_autoresponder_for_template = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
+        $cart_autoresponder_for_template = str_replace('\"', '"', $cart_autoresponder_for_template);
         $cart_autoresponder_for_template = unserialize($cart_autoresponder_for_template);
         // Assign variables to template if available.
         $this->context->smarty->assign(array(

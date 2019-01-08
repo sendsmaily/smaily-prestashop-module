@@ -35,6 +35,7 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_02fc733815720ddfef75
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_ad3d06d03d94223fa652babc913de686'] = 'Kontrolli';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_872bc575218e7dd2c749633da28c24ab'] = 'Automaatvastaja';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_3c6afc2203f77fb15d7b584e12960540'] = 'Vali Automaatvastaja';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_99770d280600b3c7ecc14faec49165ed'] = '(valitud)';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_c453535704cee5f76534f9feee2ad0d0'] = 'Lisa väljad sünkroniseerimiseks';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_04176f095283bc729f1e3926967e7034'] = 'Eesnimi';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_dff4bf10409100d989495c6d5486035e'] = 'Perekonnanimi';

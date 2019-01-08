@@ -109,7 +109,7 @@
                         </option>
                         {else}
                         <option value='{$smaily_autoresponder|json_encode}'>
-                        {$smaily_autoresponder['name']} {l s="(selected)" m='smailyforprestashop'}
+                        {$smaily_autoresponder['name']} {l s="(selected)" mod='smailyforprestashop'}
                         </option>
                         {/if}
                     </select>
@@ -232,7 +232,7 @@
                 </option>
                 {else}
                 <option value='{$smaily_cart_autoresponder|json_encode}'>
-                    {$smaily_cart_autoresponder['name']} {l s="(selected)" m='smailyforprestashop'}
+                    {$smaily_cart_autoresponder['name']} {l s="(selected)" mod='smailyforprestashop'}
                 </option>
                 {/if}
             </select>
