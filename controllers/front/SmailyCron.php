@@ -140,6 +140,10 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
                 $reminder_time = strtotime('+' . $delay . ' hours', $cart_updated_time);
                 $current_time = strtotime(date('Y-m-d H:i') . ':00');
 
+                // Continue with data gathering only if there is an email value to send data to.
+                if (empty($abandoned_cart['email'])) {
+                    continue;
+                }
                 // Check if mail has allready been sent about this cart
                 $id_customer = (int) $abandoned_cart['id_customer'];
                 $id_cart = (int) $abandoned_cart['id_cart'];
@@ -151,10 +155,22 @@ class SmailyforprestashopSmailyCronModuleFrontController extends ModuleFrontCont
 
                     $adresses = array(
                         'email' => $abandoned_cart['email'],
-                        'firstname' => $abandoned_cart['firstname'],
-                        'lastname' => $abandoned_cart['lastname'],
+                        'firstname' => isset($abandoned_cart['firstname']) ? $abandoned_cart['firstname'] : '',
+                        'lastname' => isset($abandoned_cart['lastname']) ? $abandoned_cart['lastname'] :'',
                     );
-
+                    // Empty products array for legacy API. All fields are set to empty string.
+                    $fields_available = array(
+                        'product_name',
+                        'product_description_short',
+                        'product_price',
+                        'product_category',
+                        'procuct_quantity',
+                    );
+                    for ($i=1; $i < 11; $i++) {
+                        foreach ($fields_available as $field) {
+                            $adresses[ $field . '_' . $i ] = '';
+                        }
+                    }
                     // Collect products of abandoned cart.
                     if (!empty($products)) {
                         $i = 1;

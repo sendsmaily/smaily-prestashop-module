@@ -21,7 +21,7 @@ $_MODULE['<{smailyforprestashop}prestashop>smailycron_4ed11cf2a180d172836eac97c2
 $_MODULE['<{smailyforprestashop}prestashop>smailycron_ff0f6b0cf4d70ad36a09f7079be3f546'] = 'Unustatud ostukorvi meeldetuletus deaktiveeritud!';
 $_MODULE['<{smailyforprestashop}prestashop>smailycron_b55a2b2d84680417f12898a11647a1cb'] = 'Vale kasutajatunnus või parool!';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_05118375527d94e35408da46efdce0e5'] = 'Smaily Mooduli Sätted';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_b689be7d5235c3ec45ec989d993c5355'] = 'Aktiveeri kasutajate sünkroniseerimine';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_a69d72ba4abe9915e183bcd00d8fcc42'] = 'Käivita Kasutajate Sünkroniseerimine';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_93cba07454f06a4a960172bbd6e2a435'] = 'Jah';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_bafd7322c6e97d25b6299b5d6fe8920b'] = 'Ei';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_beed05bccb8b6f21466910eb4a4f142b'] = 'Alamdomeen';

@@ -33,7 +33,7 @@
     <div class="form-wrapper">
         <div class="form-group">
             <label class="control-label col-lg-3">
-            {l s="Enable Cron" mod='smailyforprestashop'}
+            {l s="Enable Customer Synchronization" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-9">
                 <span class="switch prestashop-switch fixed-width-lg">
