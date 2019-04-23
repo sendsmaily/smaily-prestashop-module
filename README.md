@@ -92,6 +92,10 @@ Product category: {{ product_category_[1-10] }}.
 
 ## Changelog
 
+### 1.2.0
+
+Changes due to Smaily workflows automation
+
 ### 1.1.0 - 2019
 
 - New Feature. Added Abandoned cart support.

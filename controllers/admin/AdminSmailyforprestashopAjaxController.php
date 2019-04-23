@@ -67,9 +67,23 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
                     $response = array('error' => $this->l('Please enter password!'));
                     die(Tools::jsonEncode($response));
             }
+
+            $subdomain = Tools::getValue('subdomain');
+            // Normalize subdomain.
+            // First, try to parse as full URL. If that fails, try to parse as subdomain.sendsmaily.net, and
+            // if all else fails, then clean up subdomain and pass as is.
+            if (filter_var($subdomain, FILTER_VALIDATE_URL)) {
+                $url = parse_url($subdomain);
+                $parts = explode('.', $url['host']);
+                $subdomain = count($parts) >= 3 ? $parts[0] : '';
+            } elseif (preg_match('/^[^\.]+\.sendsmaily\.net$/', $subdomain)) {
+                $parts = explode('.', $subdomain);
+                $subdomain = $parts[0];
+            }
+            $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
+            
             // Clean user entered subdomain.
-            $subdomain = pSQL(Tools::getValue('subdomain'));
-            $subdomain = trim(Tools::stripslashes($subdomain));
+            $subdomain = pSQL($subdomain);
             // Clean user entered username
             $username = pSQL(Tools::getValue('username'));
             $username = trim(Tools::stripslashes($username));
@@ -77,11 +91,47 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
             $password = pSQL(Tools::getValue('password'));
             $password = trim(Tools::stripslashes($password));
             // Make API call to Smaily to get autoresponders list.
-            $response = $this->callApi('autoresponder', $subdomain, $username, $password);
+            $response = $this->callApi(
+                'workflows',
+                $subdomain,
+                $username,
+                $password,
+                ['trigger_type' => 'form_submitted']
+            );
+            // Failsafe for empty response.
             if (!$response) {
                 $response = array('error' => $this->l('Invalid login details!'));
                 die(Tools::jsonEncode($response));
             }
+            // Add credentials to DB if successfully validated.
+            if (array_key_exists('success', $response)) {
+                Configuration::updateValue('SMAILY_SUBDOMAIN', $subdomain);
+                Configuration::updateValue('SMAILY_USERNAME', $username);
+                Configuration::updateValue('SMAILY_PASSWORD', $password);
+            }
+            die(Tools::jsonEncode($response));
+        }
+    }
+
+    public function ajaxProcessGetAutoresponders()
+    {
+        $response = [];
+        // Validate token and if request is ajax call.
+        if (Tools::getValue('ajax') &&
+            Tools::getValue('token') === Tools::getAdminTokenLite('AdminSmailyforprestashopAjax')
+            ) {
+            // Get credentials from db.
+            $subdomain = pSQL(Configuration::get('SMAILY_SUBDOMAIN'));
+            $username = pSQL(Configuration::get('SMAILY_USERNAME'));
+            $password = pSQL(Configuration::get('SMAILY_PASSWORD'));
+            // Make API call to Smaily to get autoresponders list.
+            $response = $this->callApi(
+                'workflows',
+                $subdomain,
+                $username,
+                $password,
+                ['trigger_type' => 'form_submitted']
+            );
             die(Tools::jsonEncode($response));
         }
     }
@@ -120,14 +170,23 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
         $result = json_decode(curl_exec($ch), true);
 
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ((int) $http_status === 401) {
-            return $result = array('error' => $this->l('Check credentials, unauthorized!'));
-        }
-
-        if (curl_errno($ch)) {
+        if (!curl_errno($ch)) {
+            switch ((int) $http_status) {
+                case 200:
+                    return array('success' => true, 'autoresponders' => $result);
+                    break;
+                case 401:
+                    return $result = array('error' => $this->l('Check credentials, unauthorized!'));
+                    break;
+                case 404:
+                    return $result = array('error' => $this->l('Check subdomain, unauthorized!'));
+                    break;
+                default:
+                    return $result = array('error' => $this->l('Something went wrong with request to Smaily!'));
+            }
+        } else {
             return $result = array("error" => $this->l(curl_error($ch)));
         }
         curl_close($ch);
-        return array('success' => true, 'autoresponders' => $result);
     }
 }

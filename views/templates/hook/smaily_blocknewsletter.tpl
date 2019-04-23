@@ -20,7 +20,7 @@
  * @copyright 2018 Smaily
  * @license   GPL3
  *}
- {if isset($smaily_subdomain)}
+ {if !empty($smaily_subdomain)}
     <div class="block_newsletter col-lg-8 col-md-12 col-sm-12">
         <div class="row">
             <p id="smaily-newsletter-label" class="col-md-5 col-xs-12">{l s="Get our latest news and special sales" mod='smailyforprestashop'}</p>
@@ -28,8 +28,6 @@
                 <form action={"https://{$smaily_subdomain}.sendsmaily.net/api/opt-in/"} method="post" autocomplete="off" id="smaily-newsletter-form">
                     <div class="row">
                         <div class="col-xs-12">
-                            <input type="hidden" name="key" value="{$smaily_api_key}" />
-                            <input type="hidden" name="autoresponder" value="{$smaily_autoresponder}" />
                             <input type="hidden" name="success_url" value="http://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" />
                             <input type="hidden" name="failure_url" value="http://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" />
                             <input class="btn btn-primary float-xs-right hidden-xs-down" name="submitSmailyNewsletter" type="submit">
@@ -41,6 +39,7 @@
                         <div class="col-xs-12">
                             <p>{l s="You may unsubscribe at any moment. For that purpose, please find our contact info in the legal notice." mod='smailyforprestashop'}</p>
                             {if isset($smarty.get.message)}
+                            {* TODO: Translate messages *}
                             <p class="alert {if $smarty.get.code == 101} alert-success {else} alert-danger {/if}">{$smarty.get.message}</p>
                             {/if}
                         </div>
