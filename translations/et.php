@@ -42,6 +42,7 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_d40b78b04f3f55d88096
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_fe760630d69004060a872c86c116d120'] = 'RSS-voog';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_e046e1a272245a642b1a3ee0b7b45e1d'] = 'Kopeeri see URL oma kirjapõhja väljale';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_ad3d06d03d94223fa652babc913de686'] = 'Kontrolli';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_2786289770be4b468adfc0bdb2f67b91'] = 'Klõpsa, et eemaldada sisselogimisanded';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_1063e38cb53d94d386f21227fcd84717'] = 'Eemalda';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_a69d72ba4abe9915e183bcd00d8fcc42'] = 'Aktiveeri Kasutajate Sünkroniseerimine';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_93cba07454f06a4a960172bbd6e2a435'] = 'Jah';
@@ -51,11 +52,11 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_04176f095283bc729f1e
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_dff4bf10409100d989495c6d5486035e'] = 'Perekonnanimi';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_aac772216aecbeca0e86d06671fe985a'] = 'Sünnipäev';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_15bbb9d0bbf25e8d2978de1168c749dc'] = 'Veebileht';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_700712b0f6c113d523b2194a96a2b278'] = 'Vali lisa väljad, mida sünkroniseerida';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_700712b0f6c113d523b2194a96a2b278'] = 'Vali lisa väljad, mida soovid sünkroniseerida';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_d0970ede0a15189ccf60baf5761f665f'] = 'Cron identifikaator';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_bb7b3c6261b41de1bd1fefa377a75f43'] = 'Identifikaator on vajalik turvalisuse tagamiseks. Kasuta automaatselt loodud identifikaatorit või asenda enda valitud väärtusega. ';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_5588ea18ef47155105d7d11abcb7e4e1'] = 'Croni URL';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_58cd8c6380451ce17a7f2ee70294957f'] = 'Et aktiveerida automaatne kontaktide sünkroniseerimine seadistage Cron oma teenusepakkuja juures ning asendage antud URL-s vastav sümbol.';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_9cc2022eb76bc383c713c406b6ae96f2'] = 'Et aktiveerida automaatne kontaktide sünkroniseerimine seadistage Cron oma teenusepakkuja juures.';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_c9cc8cce247e49bae79f15173ce97354'] = 'Salvesta';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_a27d20b558af715c91592bcee1019dee'] = 'Aktiveeri Unustaud Ostukorvi Meeldetuletus';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_872bc575218e7dd2c749633da28c24ab'] = 'Automaatvastaja';
@@ -70,6 +71,9 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_4b3a8183e47ffda5b44e
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_361a2e0648660de5428f5dc6c8ea4e51'] = 'Unustatud Ostukorvi Viivitus';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_f670ea66cfb0e90bd6090472ad692694'] = 'Minutit';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_e553d7a992213a4c4421d425404d5b61'] = 'Aeg pärast mida loetakse ostukorv hüljatuks kui klient on lisanud viimase toote. Miinimum väärtus 15 minutit.';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_3805f49499fa5010c394e219aa1fe7a0'] = 'Liitu meie uudiskirjaga ja saa infot sooduspakkumistest';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_198584454b0ce1101ff5b50323325aa8'] = 'Teie emaili aadress';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_c3d67cba349c7ecb5465ae92bdb38970'] = 'Te võite igal ajal oma uudiskirja tellimuse tühistada.';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_3805f49499fa5010c394e219aa1fe7a0'] = 'Saage meie värskeimaid uudiseid ja eripakkumisi';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_a4d3b161ce1309df1c4e25df28694b7b'] = 'Telli';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_198584454b0ce1101ff5b50323325aa8'] = 'Teie e-posti aadress';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_e3bf47a46c6efd3bb53fedb5136bdf1c'] = 'Te võite igal ajal oma uudiskirja tellimuse tühistada.';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_cbef6aeeb39bd1078e8869492fd83f1c'] = 'Täname uudiskirjaga liitumise eest!';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_e3678541149247bb751545e796269b8f'] = 'Midagi läks valesti uudiskirjaga liitumisel, palun proovi uuesti!';

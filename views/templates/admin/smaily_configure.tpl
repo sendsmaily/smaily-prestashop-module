@@ -102,7 +102,7 @@
             </p>
           </button>
         {else}
-          <p>{l s="Credentials are validated, click to remove"}</p>
+          <p>{l s="Credentials are validated, click to remove" mod='smailyforprestashop'}</p>
           <button type="submit" name="smaily_remove_credentials" class="btn btn-default pull-right" id="smaily-remove-credentials">
             <i class="material-icons">delete</i>
             <p>
@@ -183,7 +183,7 @@
             <div class="col-lg-10">
               <p><strong>{$smaily_customer_cron_url}?token={$smaily_customer_cron_token}</strong></p>
               <p class="help-block">
-                {l s="To schedule automatic sync, set up CRON in your hosting and use this URL, replace token with settings value for security." mod='smailyforprestashop'}
+                {l s="To schedule automatic sync, set up CRON in your hosting and use this URL." mod='smailyforprestashop'}
               </p>
             </div>
           </div>
@@ -306,7 +306,7 @@
             <div class="col-lg-10">
               <p><strong>{$smaily_cart_cron_url}?token={$smaily_cart_cron_token}</strong></p>
               <p class="help-block">
-                {l s="To schedule automatic sync, set up CRON in your hosting and use this URL, replace token with settings value for security." mod='smailyforprestashop'}
+                {l s="To schedule automatic sync, set up CRON in your hosting and use this URL." mod='smailyforprestashop'}
               </p>
             </div>
           </div>

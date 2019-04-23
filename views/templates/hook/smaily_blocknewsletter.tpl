@@ -30,17 +30,23 @@
                         <div class="col-xs-12">
                             <input type="hidden" name="success_url" value="http://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" />
                             <input type="hidden" name="failure_url" value="http://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}" />
-                            <input class="btn btn-primary float-xs-right hidden-xs-down" name="submitSmailyNewsletter" type="submit">
+                            <input type="hidden" name="language" value="{(isset($language.iso_code)) ? $language.iso_code : ''}" />
+                            <input class="btn btn-primary float-xs-right hidden-xs-down" type="submit" value="{l s="Submit" mod='smailyforprestashop'}"></button>
                             <div class="input-wrapper">
                             <input name="email" type="email" value="" placeholder="{l s="Your email address" mod='smailyforprestashop'}" aria-labelledby="block-newsletter-label">
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="col-xs-12">
-                            <p>{l s="You may unsubscribe at any moment. For that purpose, please find our contact info in the legal notice." mod='smailyforprestashop'}</p>
+                            <p>{l s="You may unsubscribe at any moment." mod='smailyforprestashop'}</p>
                             {if isset($smarty.get.message)}
-                            {* TODO: Translate messages *}
-                            <p class="alert {if $smarty.get.code == 101} alert-success {else} alert-danger {/if}">{$smarty.get.message}</p>
+                            <p class="alert {if $smarty.get.code == 101} alert-success {else} alert-danger {/if}">
+                                {if $smarty.get.code == 101}
+                                {l s="Thank you for your subscription!" mod='smailyforprestashop'}
+                                {else}
+                                {l s="Something went wrong with subscription, please try again!" mod='smailyforprestashop'}
+                                {/if}
+                            </p>
                             {/if}
                         </div>
                     </div>
