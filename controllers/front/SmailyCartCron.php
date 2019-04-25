@@ -52,37 +52,40 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
             // Values to sync array
             $sync_fields = unserialize(Configuration::get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
 
+            // Select all carts where cart_id is not on orders table and exclude if excists in smaily_cart table.
+            // Gather customer data also.
             $sql = 'SELECT c.id_cart,
                         c.id_customer,
                         c.date_upd,
                         cu.firstname,
                         cu.lastname,
                         cu.email
-                    FROM '._DB_PREFIX_.'cart c
-                    LEFT JOIN '._DB_PREFIX_.'orders o
+                    FROM ' . _DB_PREFIX_ . 'cart c
+                    LEFT JOIN ' . _DB_PREFIX_ . 'orders o
                     ON (o.id_cart = c.id_cart)
-                    RIGHT JOIN '._DB_PREFIX_.'customer cu
+                    RIGHT JOIN ' . _DB_PREFIX_ . 'customer cu
                     ON (cu.id_customer = c.id_customer)
-                    WHERE DATE_SUB(CURDATE(),INTERVAL 10 DAY) <= c.date_add
+                    LEFT OUTER JOIN ' . _DB_PREFIX_ . 'smaily_cart sc
+                    ON (c.id_cart = sc.id_cart)
+                    WHERE sc.id_cart IS NULL
+                    AND DATE_SUB(CURDATE(),INTERVAL 10 DAY) <= c.date_add
                     AND o.id_order IS NULL';
 
             $sql .= Shop::addSqlRestriction(Shop::SHARE_CUSTOMER, 'c');
             $sql .= ' GROUP BY cu.id_customer';
 
             $abandoned_carts = Db::getInstance()->executeS($sql);
-
             foreach ($abandoned_carts as $abandoned_cart) {
                 // If time has passed form last cart update
                 $cart_updated_time = strtotime($abandoned_cart['date_upd']);
                 $reminder_time = strtotime('+' . $delay . ' minutes', $cart_updated_time);
                 $current_time = strtotime(date('Y-m-d H:i') . ':00');
 
-                // Check if mail has allready been sent about this cart
+                // Check if delay passed to send cart.
                 $id_customer = (int) $abandoned_cart['id_customer'];
                 $id_cart = (int) $abandoned_cart['id_cart'];
-                $email_sent = $this->checkEmailSent($id_cart);
 
-                if ($current_time >= $reminder_time && !$email_sent) {
+                if ($current_time >= $reminder_time) {
                     $cart = new Cart($abandoned_cart['id_cart']);
                     $products = $cart->getProducts();
 
@@ -156,25 +159,5 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
         $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'smaily_cart (id_customer, id_cart, date_sent)
                 VALUES (' . $id_customer . ', ' . $id_cart . ', CURRENT_TIMESTAMP)';
         Db::getInstance()->execute($sql);
-    }
-
-    /**
-     * Check if abandoned cart reminder email has been sent to customer
-     *
-     * @param int $cart_id                      Customer cart ID
-     * @return boolean $abandoned_cart_email    If mail has been sent
-     */
-    private function checkEmailSent(int $id_cart)
-    {
-        $sql = 'SELECT *
-                FROM '._DB_PREFIX_.'smaily_cart 
-                WHERE id_cart = '. $id_cart;
-
-        $email_sent = Db::getInstance()->executeS($sql);
-        if (!$email_sent) {
-            return false;
-        } else {
-            return true;
-        }
     }
 }
