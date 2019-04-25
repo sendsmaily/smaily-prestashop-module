@@ -24,6 +24,7 @@
 
 class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFrontController
 {
+
     public function init()
     {
         parent::init();
@@ -73,7 +74,7 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
             foreach ($abandoned_carts as $abandoned_cart) {
                 // If time has passed form last cart update
                 $cart_updated_time = strtotime($abandoned_cart['date_upd']);
-                $reminder_time = strtotime('+' . $delay . ' hours', $cart_updated_time);
+                $reminder_time = strtotime('+' . $delay . ' minutes', $cart_updated_time);
                 $current_time = strtotime(date('Y-m-d H:i') . ':00');
 
                 // Check if mail has allready been sent about this cart
@@ -85,41 +86,56 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                     $cart = new Cart($abandoned_cart['id_cart']);
                     $products = $cart->getProducts();
 
+                    // Dont continue if no products in cart.
+                    if (empty($products)) {
+                        continue;
+                    }
+
                     $adresses = array(
                         'email' => $abandoned_cart['email'],
                         'firstname' => $abandoned_cart['firstname'],
                         'lastname' => $abandoned_cart['lastname'],
+                        'store_url' => _PS_BASE_URL_.__PS_BASE_URI__,
                     );
-
-                    // Collect products of abandoned cart.
-                    if (!empty($products)) {
-                        $i = 1;
-                        foreach ($products as $product) {
-                            if ($i <= 10) {
-                                foreach ($sync_fields as $sync_field) {
-                                    $adresses['product_' . $sync_field .'_' . $i] = strip_tags($product[$sync_field]);
-                                }
-                            }
-                            $i++;
-                        }
-                        // Add shop url.
-                        $adresses['store_url'] = _PS_BASE_URL_.__PS_BASE_URI__;
-                        // Smaily api query.
-                        $query = array(
-                            'autoresponder' => $autoresponder_id,
-                            'addresses' => array($adresses)
-                        );
-                        // Send cart data to smaily api.
-                        $response = $this->callApi('autoresponder', $query, 'POST');
-                        // If email sent successfully update sent status in database.
-                        if (array_key_exists('success', $response) &&
-                            isset($response['result']['code']) &&
-                            $response['result']['code'] === 101) {
-                                $this->updateSentStatus($id_customer, $id_cart);
-                        } else {
-                            $this->logTofile('smaily-cart.txt', Tools::jsonEncode($response));
+                    // Populate abandoned cart with empty values for legacy api.
+                    $fields_available = array(
+                        'name',
+                        'description_short',
+                        'price',
+                        'category',
+                        'quantity'
+                    );
+                    foreach ($fields_available as $field) {
+                        for ($i=1; $i<=10; $i++) {
+                            $adresses['product_' . $field . '_' . $i] = '';
                         }
                     }
+                    // Collect products of abandoned cart.
+                    $count = 1;
+                    foreach ($products as $product) {
+                        if ($count <= 10) {
+                            foreach ($sync_fields as $sync_field) {
+                                $adresses['product_' . $sync_field .'_' . $count] = strip_tags($product[$sync_field]);
+                            }
+                        }
+                        $count++;
+                    }
+                    // Smaily api query.
+                    $query = array(
+                        'autoresponder' => $autoresponder_id,
+                        'addresses' => array($adresses)
+                    );
+                    // Send cart data to smaily api.
+                    $response = $this->module->callApi('autoresponder', $query, 'POST');
+                    // If email sent successfully update sent status in database.
+                    if (array_key_exists('success', $response) &&
+                        isset($response['result']['code']) &&
+                        $response['result']['code'] === 101) {
+                            $this->updateSentStatus($id_customer, $id_cart);
+                    } else {
+                        $this->module->logTofile('smaily-cart.txt', Tools::jsonEncode($response));
+                    }
+
                 }
             }
             echo($this->l('Abandoned carts emails sent!'));
@@ -160,64 +176,5 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
         } else {
             return true;
         }
-    }
-
-    /**
-     * Makes API call to Smaily.
-     *
-     * @param string $endpoint  Endpoint of smaily API without .php
-     * @param array $data       Data to be sent to API.
-     * @param string $method    'GET' or 'POST' method.
-     * @return array $response  Response from smaily api.
-     */
-    private function callApi(string $endpoint, array $data, string $method = 'GET')
-    {
-        // Smaily api credentials.
-        $subdomain = pSQL(Configuration::get('SMAILY_SUBDOMAIN'));
-        $username = pSQL(Configuration::get('SMAILY_USERNAME'));
-        $password = pSQL(Configuration::get('SMAILY_PASSWORD'));
-
-        // API call.
-        $apiUrl = "https://" . $subdomain . ".sendsmaily.net/api/" . trim($endpoint, '/') . ".php";
-        $data = http_build_query($data);
-        if ($method == 'GET') {
-            $apiUrl = $apiUrl.'?'.$data;
-        }
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        if ($method == 'POST') {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        }
-        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        $result = json_decode(curl_exec($ch), true);
-        // Error handling
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ((int) $http_status === 401) {
-            return $result = array('error' => $this->l('Check credentials, unauthorized!'));
-        }
-        if (curl_errno($ch)) {
-            return $result = array("error" => curl_error($ch));
-        }
-        // Close connection and send response.
-        curl_close($ch);
-        return array('success' => true, 'result' => $result);
-    }
-    /**
-     * Log API response to text-file.
-     *
-     * @param string $filename  Name of the file created.
-     * @param string $msg       Text response from api.
-     * @return void
-     */
-    private function logToFile($filename, $response)
-    {
-        $logger = new FileLogger(1);
-        $logger->setFilename(_PS_MODULE_DIR_. $this->module->name ."/" . $filename);
-        $logger->logInfo('Response from API - ' . $response);
     }
 }

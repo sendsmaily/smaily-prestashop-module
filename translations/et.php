@@ -15,6 +15,7 @@ $_MODULE['<{smailyforprestashop}prestashop>smailyforprestashop_daa6895e7a9ba2ad7
 $_MODULE['<{smailyforprestashop}prestashop>smailyforprestashop_d4fd3bc1732761a4497d35898051f6b3'] = 'Puuduvad Smaily automaatvastajad!';
 $_MODULE['<{smailyforprestashop}prestashop>smailyforprestashop_3bd9a770a0cdadf35e95645048e5fd23'] = 'Ilmnes tõrge Smaily teenusega ühildumisel!';
 $_MODULE['<{smailyforprestashop}prestashop>smailyforprestashop_95e979b91ee119662cd5ee6b85ee07e6'] = 'Sisselogimisandmed kinnitatud!';
+$_MODULE['<{smailyforprestashop}prestashop>smailyforprestashop_b55a2b2d84680417f12898a11647a1cb'] = 'Vale kasutajatunnus või parool!';
 $_MODULE['<{smailyforprestashop}prestashop>adminsmailyforprestashopajaxcontroller_04ce02c2ca2327bc6651fd8359e29959'] = 'Palun sisesta alamdomeen!';
 $_MODULE['<{smailyforprestashop}prestashop>adminsmailyforprestashopajaxcontroller_544373e5036db114055a7273925d383d'] = 'Palun sisesta kasutajatunnus!';
 $_MODULE['<{smailyforprestashop}prestashop>adminsmailyforprestashopajaxcontroller_afa29ddf9281626cc3c38c6916fc85f8'] = 'Palun sisesta parool!';
@@ -25,11 +26,9 @@ $_MODULE['<{smailyforprestashop}prestashop>adminsmailyforprestashopajaxcontrolle
 $_MODULE['<{smailyforprestashop}prestashop>smailycartcron_b6961ca850d0a1eeee4221dd8c395e94'] = 'Ligipääs puudub!';
 $_MODULE['<{smailyforprestashop}prestashop>smailycartcron_6b60fc1bb60fe0c4b72238ad755fb54c'] = 'Unustatud ostukovi kirjad saadetud!';
 $_MODULE['<{smailyforprestashop}prestashop>smailycartcron_5044b716f8e0cc4babdc5390d8d97144'] = 'Unustatud ostukorvi meeldetuletus ei ole aktiivne!';
-$_MODULE['<{smailyforprestashop}prestashop>smailycartcron_b55a2b2d84680417f12898a11647a1cb'] = 'Vale kasutajatunnus või parool!';
 $_MODULE['<{smailyforprestashop}prestashop>smailycustomercron_b6961ca850d0a1eeee4221dd8c395e94'] = 'Ligipääs puudub!';
 $_MODULE['<{smailyforprestashop}prestashop>smailycustomercron_0b95ad8777cb2e8bec39166257036f4a'] = 'Kasutajate sünkroniseerimine lõpetatud!';
 $_MODULE['<{smailyforprestashop}prestashop>smailycustomercron_6fc744259b2bb6c969c9ce02ff2bbbed'] = 'Kasutajate sünkroniseerimine ei ole aktiivne!';
-$_MODULE['<{smailyforprestashop}prestashop>smailycustomercron_b55a2b2d84680417f12898a11647a1cb'] = 'Vale kasutajatunnus või parool!';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_05118375527d94e35408da46efdce0e5'] = 'Smaily Mooduli Sätted';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_0db377921f4ce762c62526131097968f'] = 'Üldsätted';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_835f4314be00eb6e8637b68248251826'] = 'Kasutajate Sünkroniseerimine';
@@ -77,3 +76,9 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_198584454b0ce1
 $_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_e3bf47a46c6efd3bb53fedb5136bdf1c'] = 'Te võite igal ajal oma uudiskirja tellimuse tühistada.';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_cbef6aeeb39bd1078e8869492fd83f1c'] = 'Täname uudiskirjaga liitumise eest!';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_e3678541149247bb751545e796269b8f'] = 'Midagi läks valesti uudiskirjaga liitumisel, palun proovi uuesti!';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_3805f49499fa5010c394e219aa1fe7a0'] = 'Saage meie värskeimaid uudiseid ja eripakkumisi';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_a4d3b161ce1309df1c4e25df28694b7b'] = 'Telli';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_198584454b0ce1101ff5b50323325aa8'] = 'Teie e-posti aadress';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_e3bf47a46c6efd3bb53fedb5136bdf1c'] = 'Te võite igal ajal oma uudiskirja tellimuse tühistada.';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_cbef6aeeb39bd1078e8869492fd83f1c'] = 'Täname uudiskirjaga liitumise eest!';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_e3678541149247bb751545e796269b8f'] = 'Midagi läks valesti uudiskirjaga liitumisel, palun proovi uuesti!';

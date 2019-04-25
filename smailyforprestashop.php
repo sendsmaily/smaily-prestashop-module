@@ -74,7 +74,9 @@ class SmailyForPrestashop extends Module
             // Add tab to sidebar
             !$this->installTab('AdminAdmin', 'AdminSmailyforprestashopAjax', 'Smaily for PrestaShop') ||
             // Add Newsletter subscription form.
-            !$this->registerHook('footerBefore')
+            !$this->registerHook('footerBefore') ||
+            !$this->registerHook('leftColumn') ||
+            !$this->registerHook('rightColumn')
         ) {
             return false;
         }
@@ -124,7 +126,7 @@ class SmailyForPrestashop extends Module
         ) {
             return false;
         }
-        Db::getInstance()->execute('DROP TABLE '._DB_PREFIX_.'smaily_cart');
+        Db::getInstance()->execute('DROP TABLE IF EXISTS '._DB_PREFIX_.'smaily_cart');
         return true;
     }
 
@@ -315,6 +317,22 @@ class SmailyForPrestashop extends Module
           return $this->display(__FILE__, 'smaily_blocknewsletter.tpl');
     }
 
+    // Display Block Newsletter in left column.
+    public function hookDisplayLeftColumn($params)
+    {
+        // Add subdomain to template.
+        $this->context->smarty->assign(array(
+            'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
+            ));
+          return $this->display(__FILE__, 'smaily_blocknewsletter_column.tpl');
+    }
+
+    // Display Block Newsletter in right column.
+    public function hookDisplayRightColumn($params)
+    {
+        return $this->hookDisplayLeftColumn($params);
+    }
+
     // Add JQuerry and module javascript.
     public function hookDisplayBackOfficeHeader()
     {
@@ -334,5 +352,65 @@ class SmailyForPrestashop extends Module
                 )
             );
         }
+    }
+
+    /**
+     * Log API response to text-file.
+     *
+     * @param string $filename  Name of the file created.
+     * @param string $msg       Text response from api.
+     * @return void
+     */
+    public function logToFile($filename, $response)
+    {
+        $logger = new FileLogger(1);
+        $logger->setFilename(_PS_MODULE_DIR_. $this->name ."/" . $filename);
+        $logger->logInfo('Response from API - ' . $response);
+    }
+
+    /**
+     * Makes API call to Smaily.
+     *
+     * @param string $endpoint  Endpoint of smaily API without .php
+     * @param array $data       Data to be sent to API.
+     * @param string $method    'GET' or 'POST' method.
+     * @return array $response  Response from smaily api.
+     */
+    public function callApi(string $endpoint, array $data, string $method = 'GET')
+    {
+        // Smaily api credentials.
+        $subdomain = pSQL(Configuration::get('SMAILY_SUBDOMAIN'));
+        $username = pSQL(Configuration::get('SMAILY_USERNAME'));
+        $password = pSQL(Configuration::get('SMAILY_PASSWORD'));
+
+        // API call.
+        $apiUrl = "https://" . $subdomain . ".sendsmaily.net/api/" . trim($endpoint, '/') . ".php";
+        $data = http_build_query($data);
+        if ($method == 'GET') {
+            $apiUrl = $apiUrl.'?'.$data;
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        if ($method == 'POST') {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        $result = json_decode(curl_exec($ch), true);
+        // Error handling
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ((int) $http_status === 401) {
+            return $result = array('error' => $this->l('Check credentials, unauthorized!'));
+        }
+        if (curl_errno($ch)) {
+            return $result = array("error" => curl_error($ch));
+        }
+        // Close connection and send response.
+        curl_close($ch);
+        return array('success' => true, 'result' => $result);
     }
 }

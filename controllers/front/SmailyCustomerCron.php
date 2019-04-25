@@ -29,7 +29,6 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
         parent::init();
         header('Content-Type: text/plain');
         if (Tools::getValue('token') == Configuration::get('SMAILY_CUSTOMER_CRON_TOKEN')) {
-            $module = Module::getInstanceByName('smailyforprestashop');
             $this->syncContacts();
             die();
         } else {
@@ -44,9 +43,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     private function syncContacts()
     {
         if (Configuration::get('SMAILY_ENABLE_CRON') === "1") {
-            /**
-             * Get unsubscribers from smaily database and unsubscribe these users in Prestashop.
-             */
+
             // Get unsubscribers from smaily.
             $unsubscribers = $this->getUnsubscribers();
             // Unsubscribed emails array
@@ -74,10 +71,11 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
                     }
                 }
             }
-            /**
-             * Sends subscribed customer data to smaily based on settings from
-             * configuration page
-             */
+
+            // TODO: Benchmark if its faster to query again or remove unsubscribers from previous array.
+            // Get subscribed customers from db after removal of unsubscribers.
+            $customers = Db::getInstance()->executeS("Select * from "._DB_PREFIX_."customer WHERE newsletter=1");
+            // Send subscribed customer data to smaily based on settings from.
             $update_data = array();
             if (!empty($customers)) {
                 foreach ($customers as $customer) {
@@ -85,7 +83,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
                     array_push($update_data, $userdata);
                 }
                 // Send subscribers to Smaily.
-                $response = $this->callApi('contact', $update_data, 'POST');
+                $response = $this->module->callApi('contact', $update_data, 'POST');
                 // Response logging.
                 if (isset($response['success'])) {
                     $response = $response['result']['message'];
@@ -95,7 +93,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             } else {
                 $response = 'No customers to update!';
             }
-            $this->logTofile('smaily-cron.txt', $response);
+            $this->module->logTofile('smaily-cron.txt', $response);
             echo($this->l('User synchronization done! '));
         } else {
             echo($this->l('User synchronization disabled! '));
@@ -132,73 +130,14 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             'list' => 2,
         );
         // Api call to Smaily
-        $response = $this->callApi('contact', $data);
+        $response = $this->module->callApi('contact', $data);
         // If successful return unsubscribers.
         if (isset($response['success'])) {
             return $response['result'];
         // If has errors save errors to log.
         } else {
-            $this->logTofile('smaily-cron.txt', $response['error']);
+            $this->module->logTofile('smaily-cron.txt', $response['error']);
             return array();
         }
-    }
-
-    /**
-     * Makes API call to Smaily.
-     *
-     * @param string $endpoint  Endpoint of smaily API without .php
-     * @param array $data       Data to be sent to API.
-     * @param string $method    'GET' or 'POST' method.
-     * @return array $response  Response from smaily api.
-     */
-    private function callApi(string $endpoint, array $data, string $method = 'GET')
-    {
-        // Smaily api credentials.
-        $subdomain = pSQL(Configuration::get('SMAILY_SUBDOMAIN'));
-        $username = pSQL(Configuration::get('SMAILY_USERNAME'));
-        $password = pSQL(Configuration::get('SMAILY_PASSWORD'));
-
-        // API call.
-        $apiUrl = "https://" . $subdomain . ".sendsmaily.net/api/" . trim($endpoint, '/') . ".php";
-        $data = http_build_query($data);
-        if ($method == 'GET') {
-            $apiUrl = $apiUrl.'?'.$data;
-        }
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        if ($method == 'POST') {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        }
-        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        $result = json_decode(curl_exec($ch), true);
-        // Error handling
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ((int) $http_status === 401) {
-            return $result = array('error' => $this->l('Check credentials, unauthorized!'));
-        }
-        if (curl_errno($ch)) {
-            return $result = array("error" => curl_error($ch));
-        }
-        // Close connection and send response.
-        curl_close($ch);
-        return array('success' => true, 'result' => $result);
-    }
-    /**
-     * Log API response to text-file.
-     *
-     * @param string $filename  Name of the file created.
-     * @param string $msg       Text response from api.
-     * @return void
-     */
-    private function logToFile($filename, $response)
-    {
-        $logger = new FileLogger(1);
-        $logger->setFilename(_PS_MODULE_DIR_. $this->module->name ."/" . $filename);
-        $logger->logInfo('Response from API - ' . $response);
     }
 }
