@@ -145,6 +145,7 @@ class SmailyForPrestashop extends Module
         $output = null;
         $this->context->controller->addJquery();
 
+        // Remove credentials button.
         if (Tools::isSubmit('smaily_remove_credentials')) {
             if (Configuration::updateValue('SMAILY_SUBDOMAIN', '') &&
                 Configuration::updateValue('SMAILY_USERNAME', '') &&

@@ -40,7 +40,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#customer" role="tab">{l s="Customer Syncronization" mod='smailyforprestashop'}</a>
+      <a class="nav-link" data-toggle="tab" href="#customer" role="tab">{l s="Customer Synchronization" mod='smailyforprestashop'}</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="abandoned-cart-tab" data-toggle="tab" href="#cart" role="tab">{l s="Abandoned Cart" mod='smailyforprestashop'}</a>

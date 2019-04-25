@@ -154,7 +154,7 @@ $(document).ready(function() {
     });
   })();
 
-  // Function to display
+  // Function to display messages in smaily-messages block.
   function displayMessage(message) {
     var error =
       arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;

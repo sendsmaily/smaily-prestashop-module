@@ -49,18 +49,25 @@ All development for Smaily for Prestashop is [handled via GitHub](https://github
 
 ## Usage
 
-1. Go to Modules -> Modules & Services -> Installed Modules -> Smaily for Prestashop and click configure
-2. Insert your Smaily API authentication information to get started.
-3. Select if you want to use Cron for contact synchronization between PrestaShop and Smaily
-4. Next, click **validate** to check credentials and reveive Autoresponder information.
-5. Select your autoresponder and additional fields you want to synchronize (email is automatic)
-6. Enter Cron token to make running Cron more secure
-7. Click Save Changes
-8. Cron is set up to synchronize contacts when CRON-url is visited. To make running cron more secure you can enter
-   unique token that is added to url. Use host Cpanel, PrestaShop Cron tasks manager or external cron service to automate process.
-9. To use Newsletter Subscription form for direct subscription handling transplant Smaily module in Design ->
-   Positions -> Transplant module section. Select Smaily for Prestashop module and displayFooterBefore hook.
-10. That's it, your PrestaShop store is now integrated with Smaily Plugin!
+1. Go to Modules -> Module Manager -> Smaily for Prestashop and click Configure
+2. Insert your Smaily API authentication information and click **Validate** to get started.
+3. Under **Customer Synchronization** tab select if you want to enable customer synchronization.
+4. Select additional fields you want to synchronize (email is automatic), change cron token if you like your own.
+5. Click **Save** to save customer synchronization settings.
+6. Under **Abandoned Cart** tab select if you want to enable abandoned cart synchronization.
+7. Select autoresponder for abandoned cart.
+8. Select additional fields to send to abandoned cart template. Firstname, lastname and store-url are always added.
+9. Add delay time when cart is considered abandoned. Minimum time 15 minutes. Change cron token if you like your own.
+10. Click **Save** to save abandoned cart settings.
+11. Cron is set up to synchronize contacts when CRON-url is visited. Use host Cpanel, PrestaShop Cron tasks manager or external cron service to automate process.
+12. That's it, your PrestaShop store is now integrated with Smaily Plugin!
+
+## Using Newsletter Subscription form
+
+1. Navigate to Design -> Positions -> Transplant a Module section.
+2. Select **Smaily for Prestashop** module in Module field.
+3. Select hook where you would like to transplant newsletter form. You can chose FooterBefore / LeftColumn / RightColumn.
+4. New form is displayed when you have validated your credentials in Smaily for Opencart module settings.
 
 ## Frequently Asked Questions
 
@@ -94,7 +101,23 @@ Product category: {{ product_category_[1-10] }}.
 
 ### 1.2.0
 
-Changes due to Smaily workflows automation
+New feature:
+
+- Changes due to Smaily workflows automation
+- Subdomain field parsed when full url entered
+- Separate url-s to run customer and cart cron.
+- Settings page updated for better user-friendliness
+- Cron tokens auto generated and url-example now dynamic
+- Optimized newsletter subscribe form to use in left/right column of your webpage
+- Estonian language translations
+- You can now remove validated credentials from admin page
+- Subscribe newsletter form sends user language
+
+Bugfix:
+
+- Abandoned cart didn't erase email fields that were previously sent
+- Customer cron did't get new state of unsubscribed customers before synchronizing with Smaily
+- Rss-feed did't show discount and price correctly with taxes.
 
 ### 1.1.0 - 2019
 
