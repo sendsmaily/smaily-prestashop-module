@@ -21,10 +21,10 @@
  * @license   GPL3
  *}
  {if !empty($smaily_subdomain)}
-    <div class="block_newsletter col-lg-8 col-md-12 col-sm-12">
+    <div class="block_newsletter">
         <div class="row">
-            <p id="smaily-newsletter-label" class="col-md-5 col-xs-12">{l s="Get our latest news and special sales" mod='smailyforprestashop'}</p>
-            <div class="col-md-7 col-xs-12">
+            <p id="smaily-newsletter-label">{l s="Get our latest news and special sales" mod='smailyforprestashop'}</p>
+            <div>
                 <form action={"https://{$smaily_subdomain}.sendsmaily.net/api/opt-in/"} method="post" autocomplete="off" id="smaily-newsletter-form">
                     <div class="row">
                         <div class="col-xs-12">

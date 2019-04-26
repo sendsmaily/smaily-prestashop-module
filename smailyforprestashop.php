@@ -32,7 +32,7 @@ class SmailyForPrestashop extends Module
     {
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
-        $this->version = '1.1.0';
+        $this->version = '1.2.0';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(
@@ -62,12 +62,11 @@ class SmailyForPrestashop extends Module
             // Check that you can add Smaily settings field values.
             !Configuration::updateValue('SMAILY_ENABLE_CRON', 0) ||
             !Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', 0) ||
-            !Configuration::updateValue('SMAILY_CRON_TOKEN', '') ||
+            !Configuration::updateValue('SMAILY_CUSTOMER_CRON_TOKEN', '') ||
+            !Configuration::updateValue('SMAILY_CART_CRON_TOKEN', '') ||
             !Configuration::updateValue('SMAILY_SUBDOMAIN', '') ||
             !Configuration::updateValue('SMAILY_USERNAME', '') ||
             !Configuration::updateValue('SMAILY_PASSWORD', '') ||
-            !Configuration::updateValue('SMAILY_API_KEY', '') ||
-            !Configuration::updateValue('SMAILY_AUTORESPONDER', '') ||
             !Configuration::updateValue('SMAILY_CART_AUTORESPONDER', '') ||
             !Configuration::updateValue('SMAILY_ABANDONED_CART_TIME', '') ||
             !Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize(array())) ||
@@ -75,7 +74,9 @@ class SmailyForPrestashop extends Module
             // Add tab to sidebar
             !$this->installTab('AdminAdmin', 'AdminSmailyforprestashopAjax', 'Smaily for PrestaShop') ||
             // Add Newsletter subscription form.
-            !$this->registerHook('footerBefore')
+            !$this->registerHook('footerBefore') ||
+            !$this->registerHook('leftColumn') ||
+            !$this->registerHook('rightColumn')
         ) {
             return false;
         }
@@ -111,12 +112,11 @@ class SmailyForPrestashop extends Module
         // Delete settings created by module.
         !Configuration::deleteByName('SMAILY_ENABLE_CRON') ||
         !Configuration::deleteByName('SMAILY_ENABLE_ABANDONED_CART') ||
-        !Configuration::deleteByName('SMAILY_CRON_TOKEN') ||
+        !Configuration::deleteByName('SMAILY_CUSTOMER_CRON_TOKEN') ||
+        !Configuration::deleteByName('SMAILY_CART_CRON_TOKEN') ||
         !Configuration::deleteByName('SMAILY_SUBDOMAIN') ||
         !Configuration::deleteByName('SMAILY_USERNAME') ||
         !Configuration::deleteByName('SMAILY_PASSWORD') ||
-        !Configuration::deleteByName('SMAILY_API_KEY') ||
-        !Configuration::deleteByName('SMAILY_AUTORESPONDER') ||
         !Configuration::deleteByName('SMAILY_CART_AUTORESPONDER') ||
         !Configuration::deleteByName('SMAILY_ABANDONED_CART_TIME') ||
         !Configuration::deleteByName('SMAILY_SYNCRONIZE_ADDITIONAL') ||
@@ -126,7 +126,7 @@ class SmailyForPrestashop extends Module
         ) {
             return false;
         }
-        Db::getInstance()->execute('DROP TABLE '._DB_PREFIX_.'smaily_cart');
+        Db::getInstance()->execute('DROP TABLE IF EXISTS '._DB_PREFIX_.'smaily_cart');
         return true;
     }
 
@@ -145,36 +145,36 @@ class SmailyForPrestashop extends Module
         $output = null;
         $this->context->controller->addJquery();
 
+        // Remove credentials button.
+        if (Tools::isSubmit('smaily_remove_credentials')) {
+            if (Configuration::updateValue('SMAILY_SUBDOMAIN', '') &&
+                Configuration::updateValue('SMAILY_USERNAME', '') &&
+                Configuration::updateValue('SMAILY_PASSWORD', '')
+            ) {
+                // Disable customer sync.
+                Configuration::updateValue('SMAILY_ENABLE_CRON', 0);
+                // Disable abandoned cart cron and remove autoresponder.
+                Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', 0);
+                Configuration::updateValue('SMAILY_CART_AUTORESPONDER', '');
+                // Return success message.
+                $output .= $this->displayConfirmation($this->l('Credentials removed!'));
+            } else {
+                // Return error message
+                $output .= $this->displayError($this->l('Something went wrong removing credentials'));
+            }
+        }
+
+        // Customer sync form.
         if (Tools::isSubmit('smaily_submit_configuration')) {
             // Enable Cron.
             $enable_cron = pSQL(Tools::getValue('SMAILY_ENABLE_CRON'));
-            // Cron token.
-            $cron_token = pSQL(Tools::getValue('SMAILY_CRON_TOKEN'));
-            $cron_token = trim(Tools::stripslashes($cron_token));
-            // Subdomain.
-            $subdomain = pSQL(Tools::getValue('SMAILY_SUBDOMAIN'));
-            $subdomain = trim(Tools::stripslashes($subdomain));
-            // Username
-            $username = pSQL(Tools::getValue('SMAILY_USERNAME'));
-            $username = trim(Tools::stripslashes($username));
-            // Password.
-            $password = pSQL(Tools::getValue('SMAILY_PASSWORD'));
-            $password = trim(Tools::stripslashes($password));
-            // Api key.
-            $api_key = pSQL(Tools::getValue('SMAILY_API_KEY'));
-            $api_key = trim(Tools::stripslashes($api_key));
-            // Autoresponder.
-            $autoresponder = pSQL((Tools::getValue('SMAILY_AUTORESPONDER')));
-            $autoresponder = str_replace('\"', '"', $autoresponder);
-            // Get autoresponder array from json string.
-            $autoresponder = Tools::jsonDecode($autoresponder);
-            // Clean autoresponder for inserting to database.
-            $escaped_autoresponder = array();
-            if (!empty($autoresponder)) {
-                foreach ($autoresponder as $key => $value) {
-                    $escaped_autoresponder[ pSQL($key)] = pSQL($value);
-                }
+            // Customer cron token.
+            $customer_cron_token = pSQL(Tools::getValue('SMAILY_CUSTOMER_CRON_TOKEN'));
+            $customer_cron_token = trim(Tools::stripslashes($customer_cron_token));
+            if (empty($customer_cron_token)) {
+                $customer_cron_token = bin2hex(random_bytes(6));
             }
+
             // Syncronize additional.
             $syncronize_additional = Tools::getValue('SMAILY_SYNCRONIZE_ADDITIONAL');
             $escaped_sync_additional = array();
@@ -183,40 +183,32 @@ class SmailyForPrestashop extends Module
                     $escaped_sync_additional[] = pSQL($value);
                 }
             }
-            if (!$subdomain ||
-                empty($subdomain) ||
-                !$username ||
-                empty($username) ||
-                !$password ||
-                empty($password) ||
-                !$api_key ||
-                empty($api_key) ||
-                !$autoresponder ||
-                empty($autoresponder)
-            ) {
+            // Check if subdomain is saved to db to verify that credentials are validated.
+            if (empty(Configuration::get('SMAILY_SUBDOMAIN'))) {
                 // Display error message.
-                $output .= $this->displayError($this->l('Please fill out required fields.'));
+                $output .= $this->displayError($this->l('Please validate credentials before saving.'));
             } else {
                 // Update settings.
                 Configuration::updateValue('SMAILY_ENABLE_CRON', $enable_cron);
-                Configuration::updateValue('SMAILY_CRON_TOKEN', $cron_token);
-                Configuration::updateValue('SMAILY_SUBDOMAIN', $subdomain);
-                Configuration::updateValue('SMAILY_USERNAME', $username);
-                Configuration::updateValue('SMAILY_PASSWORD', $password);
-                Configuration::updateValue('SMAILY_API_KEY', $api_key);
-                Configuration::updateValue('SMAILY_AUTORESPONDER', serialize($escaped_autoresponder));
+                Configuration::updateValue('SMAILY_CUSTOMER_CRON_TOKEN', $customer_cron_token);
                 Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize($escaped_sync_additional));
                 // Display success message.
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
         }
-
+        // Abandoned cart form.
         if (Tools::isSubmit('smaily_submit_abandoned_cart')) {
             // Enable Abandoned Cart.
             $enable_abandoned_cart = pSQL(Tools::getValue('SMAILY_ENABLE_ABANDONED_CART'));
             // Abandoned cart delay time
             $abandoned_cart_time = pSQL(Tools::getValue('SMAILY_ABANDONED_CART_TIME'));
             $abandoned_cart_time = (int) trim(Tools::stripslashes($abandoned_cart_time));
+            // Cart cron token.
+            $cart_cron_token = pSQL(Tools::getValue('SMAILY_CART_CRON_TOKEN'));
+            $cart_cron_token = trim(Tools::stripslashes($cart_cron_token));
+            if (empty($cart_cron_token)) {
+                $cart_cron_token = bin2hex(random_bytes(6));
+            }
             // Abandoned cart Autoresponder
             $cart_autoresponder = pSQL((Tools::getValue('SMAILY_CART_AUTORESPONDER')));
             $cart_autoresponder = str_replace('\"', '"', $cart_autoresponder);
@@ -237,13 +229,18 @@ class SmailyForPrestashop extends Module
                     $cart_escaped_sync_additional[] = pSQL($value);
                 }
             }
-            if ($abandoned_cart_time < 1) {
+            // Validate autoresponder time and autoresponder for cart.
+            if ($abandoned_cart_time < 15) {
                 // Display error message.
-                $output .= $this->displayError($this->l('Abandoned cart delay has to be number value over 0.'));
+                $output .= $this->displayError($this->l('Abandoned cart delay has to be atleast 15 minutes.'));
+            } elseif ((int)$enable_abandoned_cart === 1 && empty($cart_autoresponder)) {
+                // Display error message.
+                $output .= $this->displayError($this->l('Select autoresponder for abandoned cart.'));
             } else {
                 Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', $enable_abandoned_cart);
                 Configuration::updateValue('SMAILY_CART_AUTORESPONDER', serialize($escaped_cart_autoresponder));
                 Configuration::updateValue('SMAILY_ABANDONED_CART_TIME', $abandoned_cart_time);
+                Configuration::updateValue('SMAILY_CART_CRON_TOKEN', $cart_cron_token);
                 Configuration::updateValue(
                     'SMAILY_CART_SYNCRONIZE_ADDITIONAL',
                     serialize($cart_escaped_sync_additional)
@@ -265,50 +262,78 @@ class SmailyForPrestashop extends Module
         } else {
             $cart_sync_array = array();
         }
-        // Get autoresponder values for template.
-        $autoresponder_for_template = pSQL((Configuration::get('SMAILY_AUTORESPONDER')));
-        $autoresponder_for_template = str_replace('\"', '"', $autoresponder_for_template);
-        $autoresponder_for_template = unserialize($autoresponder_for_template);
+        // Get customer cron token or generate random string when not set.
+        if (false != Configuration::get('SMAILY_CUSTOMER_CRON_TOKEN')) {
+            $customer_cron_token = pSQL(Configuration::get('SMAILY_CUSTOMER_CRON_TOKEN'));
+        } else {
+            $customer_cron_token =  bin2hex(random_bytes(6));
+        }
+        // Get cart cron token or generate random string when not set.
+        if (false != Configuration::get('SMAILY_CART_CRON_TOKEN')) {
+            $cart_cron_token = pSQL(Configuration::get('SMAILY_CART_CRON_TOKEN'));
+        } else {
+            $cart_cron_token = bin2hex(random_bytes(6));
+        }
         // Get abandoned cart autoresponder values for template.
         $cart_autoresponder_for_template = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
         $cart_autoresponder_for_template = str_replace('\"', '"', $cart_autoresponder_for_template);
         $cart_autoresponder_for_template = unserialize($cart_autoresponder_for_template);
         // Assign variables to template if available.
-        $this->context->smarty->assign(array(
+        $this->context->smarty->assign(
+            array(
             'smaily_enable_cron' =>  pSQL(Configuration::get('SMAILY_ENABLE_CRON')),
             'smaily_enable_abandoned_cart' => pSQL(Configuration::get('SMAILY_ENABLE_ABANDONED_CART')),
-            'smaily_cron_token' =>  pSQL(Configuration::get('SMAILY_CRON_TOKEN')),
+            'smaily_customer_cron_token' => $customer_cron_token,
+            'smaily_cart_cron_token' => $cart_cron_token,
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
             'smaily_username' => pSQL(Configuration::get('SMAILY_USERNAME')),
             'smaily_password' => pSQL(Configuration::get('SMAILY_PASSWORD')),
-            'smaily_api_key' => pSQL(Configuration::get('SMAILY_API_KEY')),
-            'smaily_autoresponder' => $autoresponder_for_template,
             'smaily_cart_autoresponder' => $cart_autoresponder_for_template,
             'smaily_abandoned_cart_time' => pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME')),
             'smaily_syncronize_additional' => $sync_array,
             'smaily_cart_syncronize_additional' => $cart_sync_array,
             'token' => Tools::getAdminTokenLite('AdminSmailyforprestashopAjax'),
             'smaily_rssfeed_url' => Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
-            'smaily_cron_url' => Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyCron'),
-          ));
+            'smaily_customer_cron_url' => Context::getContext()->link->getModuleLink(
+                'smailyforprestashop',
+                'SmailyCustomerCron'
+            ),
+            'smaily_cart_cron_url' => Context::getContext()->link->getModuleLink(
+                'smailyforprestashop',
+                'SmailyCartCron'
+            ),
+            )
+        );
         // Display settings form.
         return $output .= $this->display(__FILE__, 'views/templates/admin/smaily_configure.tpl');
     }
 
-    // Display Block Newsletter
+    // Display Block Newsletter in footer.
     public function hookDisplayFooterBefore($params)
     {
-        // Get autoresponder ID from settings.
-        $autoresponder = unserialize(Configuration::get('SMAILY_AUTORESPONDER'));
-        $autoresponder_id = pSQL($autoresponder['id']);
-        // Add values to template.
+        // Add subdomain to template.
         $this->context->smarty->assign(array(
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
-            'smaily_api_key' => pSQL(Configuration::get('SMAILY_API_KEY')),
-            'smaily_autoresponder' => $autoresponder_id
             ));
           return $this->display(__FILE__, 'smaily_blocknewsletter.tpl');
     }
+
+    // Display Block Newsletter in left column.
+    public function hookDisplayLeftColumn($params)
+    {
+        // Add subdomain to template.
+        $this->context->smarty->assign(array(
+            'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
+            ));
+          return $this->display(__FILE__, 'smaily_blocknewsletter_column.tpl');
+    }
+
+    // Display Block Newsletter in right column.
+    public function hookDisplayRightColumn($params)
+    {
+        return $this->hookDisplayLeftColumn($params);
+    }
+
     // Add JQuerry and module javascript.
     public function hookDisplayBackOfficeHeader()
     {
@@ -317,6 +342,76 @@ class SmailyForPrestashop extends Module
             // Add JQuerry before module javascript.
             $this->context->controller->addJquery();
             $this->context->controller->addJS(array($this->_path.'views/js/smaily_module.js'));
+            // Add translated text for js variables.
+            Media::addJsDef(
+                array(
+                    'smailymessages' => array(
+                        'no_autoresponders' => $this->l('No autoresponders created in Smaily!'),
+                        'no_connection' => $this->l('There seems to be some problem with connecting to Smaily!'),
+                        'credentials_validated' => $this->l('Smaily credentials validated!')
+                    )
+                )
+            );
         }
+    }
+
+    /**
+     * Log API response to text-file.
+     *
+     * @param string $filename  Name of the file created.
+     * @param string $msg       Text response from api.
+     * @return void
+     */
+    public function logToFile($filename, $response)
+    {
+        $logger = new FileLogger(1);
+        $logger->setFilename(_PS_MODULE_DIR_. $this->name ."/" . $filename);
+        $logger->logInfo('Response from API - ' . $response);
+    }
+
+    /**
+     * Makes API call to Smaily.
+     *
+     * @param string $endpoint  Endpoint of smaily API without .php
+     * @param array $data       Data to be sent to API.
+     * @param string $method    'GET' or 'POST' method.
+     * @return array $response  Response from smaily api.
+     */
+    public function callApi(string $endpoint, array $data, string $method = 'GET')
+    {
+        // Smaily api credentials.
+        $subdomain = pSQL(Configuration::get('SMAILY_SUBDOMAIN'));
+        $username = pSQL(Configuration::get('SMAILY_USERNAME'));
+        $password = pSQL(Configuration::get('SMAILY_PASSWORD'));
+
+        // API call.
+        $apiUrl = "https://" . $subdomain . ".sendsmaily.net/api/" . trim($endpoint, '/') . ".php";
+        $data = http_build_query($data);
+        if ($method == 'GET') {
+            $apiUrl = $apiUrl.'?'.$data;
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        if ($method == 'POST') {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        $result = json_decode(curl_exec($ch), true);
+        // Error handling
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ((int) $http_status === 401) {
+            return $result = array('error' => $this->l('Check credentials, unauthorized!'));
+        }
+        if (curl_errno($ch)) {
+            return $result = array("error" => curl_error($ch));
+        }
+        // Close connection and send response.
+        curl_close($ch);
+        return array('success' => true, 'result' => $result);
     }
 }

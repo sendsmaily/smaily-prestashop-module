@@ -22,18 +22,20 @@
  * @license   GPL3
  */
 $(document).ready(function() {
-  // Stop user from submitting form with enter key to make api validation mandatory
-  $("#smaily_configuration_form").bind("keypress", function(e) {
-    if (e.keyCode == 13) {
-      return false;
-    }
+  // Hide spinner.
+  $("#smaily-spinner").hide();
+  // Active tab handler
+  $("#myTab a").click(function(e) {
+    e.preventDefault();
+    $(this).tab("show");
   });
-  // Handles validation of autoresponder details and
-  // displays second part of settings form based of response from smaily autoresponder API
-  $("#smaily-validate-autoresponder").on("click", function() {
+  // Handles validation of credentials.
+  $("#smaily-validate-credentials").on("click", function() {
     var subdomain = $("#SMAILY_SUBDOMAIN").val();
     var username = $("#SMAILY_USERNAME").val();
     var password = $("#SMAILY_PASSWORD").val();
+    // Show spinner.
+    $("#smaily-spinner").show();
     $.ajax({
       type: "POST",
       dataType: "json",
@@ -48,100 +50,140 @@ $(document).ready(function() {
         password: password
       },
       success: function success(result) {
+        // Hide spinner.
+        $("#smaily-spinner").hide();
         //Display error messages above form.
         if (result["error"]) {
-          var errorMessage =
-            '<button  type="button" class="close" data-dismiss="alert">×</button>' +
-            result["error"];
-          $("#smaily_errormessages").html(errorMessage);
-          $("#smaily_errormessages").show();
+          displayMessage(result["error"], true);
         }
         //Sucess message.
         if (result["success"] === true) {
-          // Hide error messages.
-          $("#smaily_errormessages").hide();
+          // Display success message.
+          displayMessage(smailymessages.credentials_validated);
           // Hide validate section
           $("#smaily-validate-form-group").hide();
-          // Append received autoresponders to Select Autoresponder options.
-          $.each(result["autoresponders"], function(index, item) {
-            $("#SMAILY_AUTORESPONDER").append(
-              $("<option>", {
-                value: JSON.stringify({ name: item["name"], id: item["id"] }),
-                text: item["name"]
-              })
-            );
-          });
-          // Show second part of the form.
-          $("#smaily_autoresponders").show();
-          // Show save button.
-          $(".panel-footer").show();
-        }
-      },
-      error: function error(_error) {
-        console.log(_error);
-      }
-    });
-  });
-  // If autoresponders allready validated call smaily api to populate autoresponders list
-  (function() {
-    var subdomain = $("#SMAILY_SUBDOMAIN").val();
-    var username = $("#SMAILY_USERNAME").val();
-    var password = $("#SMAILY_PASSWORD").val();
-    if (subdomain !== "" && password !== "" && username !== "") {
-      $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "admin-ajax.php",
-        data: {
-          ajax: true,
-          controller: "AdminSmailyforPrestashopAjax",
-          action: "SmailyValidate",
-          token: $("#mymodule_wrapper").attr("data-token"),
-          subdomain: subdomain,
-          username: username,
-          password: password
-        },
-        success: function success(result) {
-          //Display error messages above form.
-          if (result["error"]) {
-            var errorMessage =
-              '<button  type="button" class="close" data-dismiss="alert">×</button>' +
-              result["error"];
-            $("#smaily_errormessages").html(errorMessage);
-            $("#smaily_errormessages").show();
-          }
-          if (result["success"] === true) {
-            // Hide error messages.
-            $("#smaily_errormessages").hide();
+          // Check if there are any autoresponders.
+          if (result["autoresponders"].length > 0) {
             // Append received autoresponders to Select Autoresponder options.
             $.each(result["autoresponders"], function(index, item) {
-              $("#SMAILY_AUTORESPONDER").append(
+              $("#SMAILY_CART_AUTORESPONDER").append(
                 $("<option>", {
-                  value: JSON.stringify({ name: item["name"], id: item["id"] }),
-                  text: item["name"]
+                  value: JSON.stringify({
+                    name: item["title"],
+                    id: item["id"]
+                  }),
+                  text: item["title"]
                 })
               );
             });
+          } else {
+            // When no autoresponders created display message.
+            $("#SMAILY_CART_AUTORESPONDER").append(
+              $("<option>")
+                .val("")
+                .text(smailymessages.no_autoresponders)
+            );
+          }
+        }
+      },
+      error: function error() {
+        $("#smaily-spinner").hide();
+        displayMessage(smailymessages.no_connection, true);
+      }
+    });
+  });
+
+  // Load autoresponders when visiting settings page.
+  (function() {
+    // Check if credentials are set.
+    var subdomain = $("#SMAILY_SUBDOMAIN").val();
+    var username = $("#SMAILY_USERNAME").val();
+    var password = $("#SMAILY_PASSWORD").val();
+    // Continue if credentials are set.
+    if (subdomain == "" || username == "" || password == "") {
+      return;
+    }
+    // Show spinner
+    $("#smaily-spinner").show();
+    // Make ajax call to controller.
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: "admin-ajax.php",
+      data: {
+        ajax: true,
+        controller: "AdminSmailyforPrestashopAjax",
+        action: "GetAutoresponders",
+        token: $("#mymodule_wrapper").attr("data-token")
+      },
+      success: function success(result) {
+        $("#smaily-spinner").hide();
+        //Display error messages above form.
+        if (result["error"]) {
+          displayMessage(result["error"], true);
+        }
+        if (result["success"] === true) {
+          // Check if there are any autoresponders.
+          if (result["autoresponders"].length > 0) {
             // Append autoresponder to cart autoresponders list.
             $.each(result["autoresponders"], function(index, item) {
               $("#SMAILY_CART_AUTORESPONDER").append(
                 $("<option>", {
-                  value: JSON.stringify({ name: item["name"], id: item["id"] }),
-                  text: item["name"]
+                  value: JSON.stringify({
+                    name: item["title"],
+                    id: item["id"]
+                  }),
+                  text: item["title"]
                 })
               );
             });
+          } else {
+            // When no autoresponders created display message.
+            $("#SMAILY_CART_AUTORESPONDER").append(
+              $("<option>")
+                .val("")
+                .text(smailymessages.no_autoresponders)
+            );
           }
-        },
-        error: function error(_error2) {
-          var errorMessage =
-            '<button  type="button" class="close" data-dismiss="alert">×</button>' +
-            "There seems to be some problem with connecting to Smaily!";
-          $("#smaily_errormessages").html(errorMessage);
-          $("#smaily_errormessages").show();
-          console.log(_error2);
         }
-      });
-    }
+      },
+      error: function error() {
+        $("#smaily-spinner").hide();
+        displayMessage(smailymessages.no_connection, true);
+      }
+    });
   })();
+
+  // Function to display messages in smaily-messages block.
+  function displayMessage(message) {
+    var error =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    var messageBlock = document.createElement("div");
+
+    if (error) {
+      messageBlock.classList.add("module_error");
+      messageBlock.classList.add("alert");
+      messageBlock.classList.add("alert-danger");
+    } else {
+      messageBlock.classList.add("module_success");
+      messageBlock.classList.add("alert");
+      messageBlock.classList.add("alert-success");
+    }
+    // Message text.
+    messageBlock.innerHTML = message;
+    // Close button.
+    var button = document.createElement("button");
+    button.classList.add("close");
+    button.innerHTML = "x";
+    button.onclick = function() {
+      $(this)
+        .closest("div")
+        .hide();
+    };
+
+    messageBlock.appendChild(button);
+    // Append message to display
+    document.querySelector("#smaily-messages").appendChild(messageBlock);
+  }
 });
