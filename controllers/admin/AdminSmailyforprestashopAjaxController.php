@@ -96,7 +96,9 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
                 $subdomain,
                 $username,
                 $password,
-                ['trigger_type' => 'form_submitted']
+                array(
+                    'trigger_type' => 'form_submitted'
+                )
             );
             // Failsafe for empty response.
             if (!$response) {
@@ -115,7 +117,7 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
 
     public function ajaxProcessGetAutoresponders()
     {
-        $response = [];
+        $response = array();
         // Validate token and if request is ajax call.
         if (Tools::getValue('ajax') &&
             Tools::getValue('token') === Tools::getAdminTokenLite('AdminSmailyforprestashopAjax')
@@ -130,7 +132,9 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
                 $subdomain,
                 $username,
                 $password,
-                ['trigger_type' => 'form_submitted']
+                array(
+                    'trigger_type' => 'form_submitted'
+                )
             );
             die(Tools::jsonEncode($response));
         }
@@ -174,13 +178,10 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
             switch ((int) $http_status) {
                 case 200:
                     return array('success' => true, 'autoresponders' => $result);
-                    break;
                 case 401:
                     return $result = array('error' => $this->l('Check credentials, unauthorized!'));
-                    break;
                 case 404:
                     return $result = array('error' => $this->l('Check subdomain, unauthorized!'));
-                    break;
                 default:
                     return $result = array('error' => $this->l('Something went wrong with request to Smaily!'));
             }

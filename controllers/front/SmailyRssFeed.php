@@ -53,7 +53,8 @@ class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontC
             // Product image.
             $image = $prod->getCover($product['id_product']);
             $image = new Image($image['id_image']);
-            $product_photo = _PS_BASE_URL_ . _THEME_PROD_DIR_ . $image->getExistingImgPath() . '.' . $image->image_format;
+            $product_photo = _PS_BASE_URL_ . _THEME_PROD_DIR_ . $image->getExistingImgPath() . '.' .
+                $image->image_format;
             // Product price with tax.
             $price = $prod->getPrice();
             // Get product price without discount.
