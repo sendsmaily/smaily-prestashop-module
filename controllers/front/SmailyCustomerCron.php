@@ -43,7 +43,6 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     private function syncContacts()
     {
         if (Configuration::get('SMAILY_ENABLE_CRON') === "1") {
-
             // Get unsubscribers from smaily.
             $unsubscribers = $this->getUnsubscribers();
             // Unsubscribed emails array

@@ -138,7 +138,6 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                     } else {
                         $this->module->logTofile('smaily-cart.txt', Tools::jsonEncode($response));
                     }
-
                 }
             }
             echo($this->l('Abandoned carts emails sent!'));
