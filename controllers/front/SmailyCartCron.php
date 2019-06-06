@@ -153,7 +153,7 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
      * @param integer $id_cart      Cart ID
      * @return void
      */
-    private function updateSentStatus(int $id_customer, int $id_cart)
+    private function updateSentStatus($id_customer, $id_cart)
     {
         $sql = 'INSERT INTO ' . _DB_PREFIX_ . 'smaily_cart (id_customer, id_cart, date_sent)
                 VALUES (' . $id_customer . ', ' . $id_cart . ', CURRENT_TIMESTAMP)';

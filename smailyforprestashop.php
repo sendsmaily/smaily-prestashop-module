@@ -32,7 +32,7 @@ class SmailyForPrestashop extends Module
     {
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
-        $this->version = '1.2.0';
+        $this->version = '1.2.1';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(
@@ -172,7 +172,7 @@ class SmailyForPrestashop extends Module
             $customer_cron_token = pSQL(Tools::getValue('SMAILY_CUSTOMER_CRON_TOKEN'));
             $customer_cron_token = trim(Tools::stripslashes($customer_cron_token));
             if (empty($customer_cron_token)) {
-                $customer_cron_token = bin2hex(random_bytes(6));
+                $customer_cron_token = uniqid();
             }
 
             // Syncronize additional.
@@ -207,7 +207,7 @@ class SmailyForPrestashop extends Module
             $cart_cron_token = pSQL(Tools::getValue('SMAILY_CART_CRON_TOKEN'));
             $cart_cron_token = trim(Tools::stripslashes($cart_cron_token));
             if (empty($cart_cron_token)) {
-                $cart_cron_token = bin2hex(random_bytes(6));
+                $cart_cron_token = uniqid();
             }
             // Abandoned cart Autoresponder
             $cart_autoresponder = pSQL((Tools::getValue('SMAILY_CART_AUTORESPONDER')));
@@ -266,13 +266,13 @@ class SmailyForPrestashop extends Module
         if (false != Configuration::get('SMAILY_CUSTOMER_CRON_TOKEN')) {
             $customer_cron_token = pSQL(Configuration::get('SMAILY_CUSTOMER_CRON_TOKEN'));
         } else {
-            $customer_cron_token =  bin2hex(random_bytes(6));
+            $customer_cron_token =  uniqid();
         }
         // Get cart cron token or generate random string when not set.
         if (false != Configuration::get('SMAILY_CART_CRON_TOKEN')) {
             $cart_cron_token = pSQL(Configuration::get('SMAILY_CART_CRON_TOKEN'));
         } else {
-            $cart_cron_token = bin2hex(random_bytes(6));
+            $cart_cron_token = uniqid();
         }
         // Get abandoned cart autoresponder values for template.
         $cart_autoresponder_for_template = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
@@ -377,7 +377,7 @@ class SmailyForPrestashop extends Module
      * @param string $method    'GET' or 'POST' method.
      * @return array $response  Response from smaily api.
      */
-    public function callApi(string $endpoint, array $data, string $method = 'GET')
+    public function callApi($endpoint, array $data, $method = 'GET')
     {
         // Smaily api credentials.
         $subdomain = pSQL(Configuration::get('SMAILY_SUBDOMAIN'));
