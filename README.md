@@ -99,13 +99,17 @@ Product category: {{ product_category_[1-10] }}.
 
 ## Changelog
 
+### 1.2.1
+
+- Support for PHP 5.6
+
 ### 1.2.0
 
 New feature:
 
 - Changes due to Smaily workflows automation
 - Subdomain field parsed when full url entered
-- Separate url-s to run customer and cart cron.
+- Separate url-s to run customer and cart cron
 - Settings page updated for better user-friendliness
 - Cron tokens auto generated and url-example now dynamic
 - Optimized newsletter subscribe form to use in left/right column of your webpage
@@ -117,13 +121,13 @@ Bugfix:
 
 - Abandoned cart didn't erase email fields that were previously sent
 - Customer cron did't get new state of unsubscribed customers before synchronizing with Smaily
-- Rss-feed did't show discount and price correctly with taxes.
+- Rss-feed did't show discount and price correctly with taxes
 
 ### 1.1.0 - 2019
 
-- New Feature. Added Abandoned cart support.
-- Changed admin page behaviour when API credentials allready validated.
+- New Feature. Added Abandoned cart support
+- Changed admin page behaviour when API credentials allready validated
 
 ### 1.0.0 - 2018
 
-- This is the first public release.
+- This is the first public release
