@@ -27,7 +27,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     /**
      * Limit unsubscribers request batch size.
      */
-    const UNSUBSCRIBES_BATCH_LIMIT = 1000;
+    const UNSUBSCRIBERS_BATCH_LIMIT = 1000;
 
     /**
      * Limit subscribers query batch size.
@@ -54,7 +54,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     {
         if (Configuration::get('SMAILY_ENABLE_CRON') === "1") {
             // Get unsubscribers from smaily.
-            $unsubscribers_emails = $this->getUnsubscribersEmails(self::UNSUBSCRIBES_BATCH_LIMIT);
+            $unsubscribers_emails = $this->getUnsubscribersEmails(self::UNSUBSCRIBERS_BATCH_LIMIT);
             // Get subscribed customers from store database.
             $customers = Db::getInstance()->executeS("Select * from "._DB_PREFIX_."customer WHERE newsletter=1");
             // Subscribed customers email array.
