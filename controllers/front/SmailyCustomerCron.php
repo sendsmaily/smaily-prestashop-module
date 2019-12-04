@@ -57,7 +57,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $unsubscribers_emails = $this->getUnsubscribersEmails(self::UNSUBSCRIBERS_BATCH_LIMIT);
             // Get subscribed customers from store database.
             $customers = Db::getInstance()->executeS("Select * from "._DB_PREFIX_."customer WHERE newsletter=1");
-            // Subscribed customers email array.
+
             $subsribed_customer_emails = array();
             if (!empty($customers)) {
                 // Add customer emails to array.
@@ -122,9 +122,11 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     }
 
     /**
-     * Get unsubscribed users list from Smaily.
+     * Get unsubscribers email list from Smaily.
      *
-     * @return array $unsubscribers Unsubscribers list from Smaily.
+     * @param int $limit Limit request size.
+     *
+     * @return array $unsubscribers_emails Unsubscribers emails list.
      */
     private function getUnsubscribersEmails($limit = 1000)
     {
