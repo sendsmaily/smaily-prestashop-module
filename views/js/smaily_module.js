@@ -39,7 +39,7 @@ $(document).ready(function() {
     $.ajax({
       type: "POST",
       dataType: "json",
-      url: "admin-ajax.php",
+      url: "ajax-tab.php",
       data: {
         ajax: true,
         controller: "AdminSmailyforPrestashopAjax",
@@ -109,7 +109,7 @@ $(document).ready(function() {
     $.ajax({
       type: "POST",
       dataType: "json",
-      url: "admin-ajax.php",
+      url: "ajax-tab.php",
       data: {
         ajax: true,
         controller: "AdminSmailyforPrestashopAjax",
