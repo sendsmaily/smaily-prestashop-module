@@ -24,6 +24,16 @@
 
 class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleFrontController
 {
+    /**
+     * Limit unsubscribers request batch size.
+     */
+    const UNSUBSCRIBE_BATCH_LIMIT = 1000;
+
+    /**
+     * Limit subscribers query batch size.
+     */
+    const SUBSCRIBERS_BATCH_LIMIT = 1000;
+
     public function init()
     {
         parent::init();
@@ -44,28 +54,21 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     {
         if (Configuration::get('SMAILY_ENABLE_CRON') === "1") {
             // Get unsubscribers from smaily.
-            $unsubscribers = $this->getUnsubscribers();
-            // Unsubscribed emails array
-            $unsubscribers_email = array();
-            if (!empty($unsubscribers)) {
-                foreach ($unsubscribers as $unsubscriber) {
-                    $unsubscribers_email[] = $unsubscriber['email'];
-                }
-            }
+            $unsubscribers_emails = $this->getUnsubscribersEmails(self::UNSUBSCRIBE_BATCH_LIMIT);
             // Get subscribed customers from store database.
             $customers = Db::getInstance()->executeS("Select * from "._DB_PREFIX_."customer WHERE newsletter=1");
             // Subscribed customers email array.
-            $customers_subscribed = array();
+            $subsribed_customer_emails = array();
             if (!empty($customers)) {
                 // Add customer emails to array.
                 foreach ($customers as $customer) {
-                    $customers_subscribed[] = $customer['email'];
+                    $subsribed_customer_emails[] = $customer['email'];
                 }
                 // Remove subscribed status for unsubscribers.
-                foreach ($customers_subscribed as $customer) {
-                    if (in_array($customer, $unsubscribers_email)) {
+                foreach ($subsribed_customer_emails as $email) {
+                    if (in_array($email, $unsubscribers_emails)) {
                         $query = 'UPDATE ' . _DB_PREFIX_ . 'customer SET newsletter=0 WHERE email="' .
-                                pSQL($customer) . '"';
+                            pSQL($email) . '"';
                         Db::getInstance()->execute($query);
                     }
                 }
@@ -81,21 +84,21 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
                     $userdata = $this->getUserData($customer);
                     array_push($update_data, $userdata);
                 }
-                // Send subscribers to Smaily.
-                $response = $this->module->callApi('contact', $update_data, 'POST');
-                // Response logging.
-                if (isset($response['success'])) {
-                    $response = $response['result']['message'];
-                } else {
-                    $response =  $response['error'];
+
+                $chunks = array_chunk($update_data, self::SUBSCRIBERS_BATCH_LIMIT);
+                foreach ($chunks as $chunk) {
+                    // Send subscribers to Smaily.
+                    $response = $this->module->callApi('contact', $chunk, 'POST');
+                    // Response logging in case of error.
+                    if (isset($response['result']['code']) && $response['result']['code'] !== 101) {
+                        $this->module->logTofile('smaily-cron.txt', 'Customer sync failed - ' . $response['message']);
+                        break;
+                    }
                 }
-            } else {
-                $response = 'No customers to update!';
             }
-            $this->module->logTofile('smaily-cron.txt', $response);
-            echo($this->l('User synchronization done! '));
+            echo($this->l('User synchronization done!'));
         } else {
-            echo($this->l('User synchronization disabled! '));
+            echo($this->l('User synchronization disabled!'));
         }
     }
 
@@ -123,20 +126,35 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
      *
      * @return array $unsubscribers Unsubscribers list from Smaily.
      */
-    private function getUnsubscribers()
+    private function getUnsubscribersEmails($limit)
     {
         $data = array(
             'list' => 2,
+            'limit' => $limit,
+            'offset' => 0,
         );
-        // Api call to Smaily
-        $response = $this->module->callApi('contact', $data);
-        // If successful return unsubscribers.
-        if (isset($response['success'])) {
-            return $response['result'];
-        // If has errors save errors to log.
-        } else {
-            $this->module->logTofile('smaily-cron.txt', $response['error']);
-            return array();
+        $unsubscribers_emails = array();
+
+        while (true) {
+            // Api call to Smaily
+            $unsubscribers = $this->module->callApi('contact', $data);
+
+            // Stop if error.
+            if (!isset($unsubscribers['success'])) {
+                break;
+            }
+            // Stop if no more subscribers.
+            if (empty($unsubscribers['result'])) {
+                break;
+            }
+
+            foreach ($unsubscribers['result'] as $unsubscriber) {
+                $unsubscribers_emails[] = $unsubscriber['email'];
+            }
+            // Smaily API call offset is considered as page number, not SQL offset!
+            $data['offset']++;
         }
+
+        return $unsubscribers_emails;
     }
 }
