@@ -40,17 +40,20 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
         header('Content-Type: text/plain');
 
         if (Tools::getValue('token') != Configuration::get('SMAILY_CUSTOMER_CRON_TOKEN')) {
-            die($this->l('Access denied! '));
+            echo('Access denied!');
+            die(1);
         }
     
         if ((int) Configuration::get('SMAILY_ENABLE_CRON') !== 1) {
-            die($this->l('User synchronization disabled!'));
+            echo('User synchronization disabled!');
+            die(1);
         }
 
         if ($this->syncContacts()) {
-            die($this->l('User synchronization done!'));
+            die('User synchronization done!');
         } else {
-            die($this->l('User synchronization failed!'));
+            echo('User synchronization failed!');
+            die(1);
         }
     }
 
@@ -132,13 +135,15 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
 
             // Remove subscribed status for unsubscribers.
             $query = 'UPDATE ' . _DB_PREFIX_ . 'customer SET newsletter=0 WHERE email IN (' .
-            implode(
-                ', ',
-                array_map(function ($item) {
-                    return "'" . pSQL($item['email']) . "'";
-                },
-                $unsubscribers['result'])
-            ) . ')';
+                implode(
+                    ', ',
+                    array_map(
+                        function ($item) {
+                            return "'" . pSQL($item['email']) . "'";
+                        },
+                        $unsubscribers['result']
+                    )
+                ) . ')';
             $query_result = Db::getInstance()->execute($query);
             // Stop if query fails.
             if ($query_result === false) {
@@ -168,7 +173,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $sql->select('*');
             $sql->from('customer', 'c');
             $sql->where('c.newsletter = 1');
-            $sql->limit(strval($limit), $offset);
+            $sql->limit((string) $limit, $offset);
 
             $customers = Db::getInstance()->executeS($sql);
             // Stop if query fails.

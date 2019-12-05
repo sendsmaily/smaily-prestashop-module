@@ -33,7 +33,8 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
             $this->abandonedCart();
             die();
         } else {
-            die($this->l('Access denied! '));
+            echo('Access denied!');
+            die(1);
         }
     }
 
@@ -140,9 +141,10 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                     }
                 }
             }
-            echo($this->l('Abandoned carts emails sent!'));
+            echo('Abandoned carts emails sent!');
         } else {
-            echo($this->l('Abandoned cart disabled!'));
+            echo('Abandoned cart disabled!');
+            die(1);
         }
     }
 
