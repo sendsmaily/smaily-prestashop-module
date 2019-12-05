@@ -32,7 +32,7 @@ class SmailyForPrestashop extends Module
     {
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
-        $this->version = '1.2.1';
+        $this->version = '1.2.2';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(
@@ -42,6 +42,7 @@ class SmailyForPrestashop extends Module
         $this->bootstrap = true;
 
         parent::__construct();
+        $this->controllerAdmin = 'AdminSmailyForPrestashopAjax';
 
         $this->displayName = $this->l('Smaily for Prestashop');
         $this->description = $this->l('Smaily email marketing and automation module for PrestaShop.');
@@ -196,6 +197,7 @@ class SmailyForPrestashop extends Module
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
         }
+
         // Abandoned cart form.
         if (Tools::isSubmit('smaily_submit_abandoned_cart')) {
             // Enable Abandoned Cart.
@@ -314,8 +316,8 @@ class SmailyForPrestashop extends Module
         // Add subdomain to template.
         $this->context->smarty->assign(array(
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
-            ));
-          return $this->display(__FILE__, 'smaily_blocknewsletter.tpl');
+        ));
+        return $this->display(__FILE__, 'smaily_blocknewsletter.tpl');
     }
 
     // Display Block Newsletter in left column.
@@ -324,8 +326,8 @@ class SmailyForPrestashop extends Module
         // Add subdomain to template.
         $this->context->smarty->assign(array(
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
-            ));
-          return $this->display(__FILE__, 'smaily_blocknewsletter_column.tpl');
+        ));
+        return $this->display(__FILE__, 'smaily_blocknewsletter_column.tpl');
     }
 
     // Display Block Newsletter in right column.
@@ -342,9 +344,10 @@ class SmailyForPrestashop extends Module
             // Add JQuerry before module javascript.
             $this->context->controller->addJquery();
             $this->context->controller->addJS(array($this->_path.'views/js/smaily_module.js'));
-            // Add translated text for js variables.
+            // Add variables for js.
             Media::addJsDef(
                 array(
+                    'controller_url' => $this->context->link->getAdminLink($this->controllerAdmin),
                     'smailymessages' => array(
                         'no_autoresponders' => $this->l('No autoresponders created in Smaily!'),
                         'no_connection' => $this->l('There seems to be some problem with connecting to Smaily!'),
@@ -399,8 +402,6 @@ class SmailyForPrestashop extends Module
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         }
         curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         $result = json_decode(curl_exec($ch), true);
         // Error handling
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);

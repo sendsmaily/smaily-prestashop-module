@@ -99,6 +99,14 @@ Product category: {{ product_category_[1-10] }}.
 
 ## Changelog
 
+### 1.2.2
+
+New feature:
+- Data batching for newsletter subscribers synchronization
+
+Bugfix:
+- Validating credentials ajax call failing due to wrong post url
+
 ### 1.2.1
 
 - Support for PHP 5.6
