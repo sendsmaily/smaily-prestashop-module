@@ -80,25 +80,28 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
      * Get user data for customer based on settings for Syncronize Additional.
      *
      * @param array $customer   Customer array from Presta DB.
+     * @param array $fields     Additional synchronisation fields from settings.
+     *
      * @return array $userdata  Customer field values based of settings in Syncronize Additional.
      */
-    private function getUserData($customer)
+    private function getUserData($customer, $fields)
     {
         $userdata = array();
-        $syncronize_additonal = unserialize(Configuration::get('SMAILY_SYNCRONIZE_ADDITIONAL'));
-        if (!empty($syncronize_additonal)) {
-            foreach ($syncronize_additonal as $sync_data) {
-                if (isset($customer[pSQL($sync_data)])) {
-                    $userdata[pSQL($sync_data)] = $customer[pSQL($sync_data)];
+
+        if (!empty($fields)) {
+            foreach ($fields as $sync_data) {
+                if (isset($customer[$sync_data])) {
+                    $userdata[$sync_data] = $customer[$sync_data];
                 }
             }
         }
-        $userdata['email'] = pSQL($customer['email']);
+
+        $userdata['email'] = $customer['email'];
         return $userdata;
     }
 
     /**
-     * Get unsubscribers from smaily and change subscription status to unsubscribed in store.
+     * Get unsubscribers from Smaily and change subscription status to unsubscribed in store.
      *
      * @param int $limit Limit request size.
      *
@@ -107,10 +110,8 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     private function removeUnsubscribers($limit = 1000)
     {
         $offset = 0;
-        $is_success = true;
 
         while (true) {
-            // Api call to Smaily
             $unsubscribers = $this->module->callApi(
                 'contact',
                 array(
@@ -122,8 +123,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
 
             // Stop if error.
             if (!isset($unsubscribers['success'])) {
-                $is_success = false;
-                break;
+                return false;
             }
             // Stop if no more subscribers.
             if (empty($unsubscribers['result'])) {
@@ -140,17 +140,16 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
                 $unsubscribers['result'])
             ) . ')';
             $query_result = Db::getInstance()->execute($query);
-
+            // Stop if query fails.
             if ($query_result === false) {
-                $is_success = false;
-                break;
+                return false;
             }
 
             // Smaily API call offset is considered as page number, not SQL offset!
             $offset++;
         }
 
-        return $is_success;
+        return true;
     }
 
     /**
@@ -162,7 +161,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     public function sendSubscribersToSmaily($limit)
     {
         $offset = 0;
-        $is_success = true;
+        $additional_fields = unserialize(Configuration::get('SMAILY_SYNCRONIZE_ADDITIONAL'));
 
         while (true) {
             $sql = new DbQuery();
@@ -174,8 +173,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $customers = Db::getInstance()->executeS($sql);
             // Stop if query fails.
             if ($customers === false) {
-                $is_success = false;
-                break;
+                return false;
             }
             // Stop if no more qustomers.
             if (empty($customers)) {
@@ -184,7 +182,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
 
             $update_data = array();
             foreach ($customers as $customer) {
-                $userdata = $this->getUserData($customer);
+                $userdata = $this->getUserData($customer, $additional_fields);
                 array_push($update_data, $userdata);
             }
 
@@ -192,13 +190,12 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $response = $this->module->callApi('contact', $update_data, 'POST');
             // Stop if not successful update.
             if (isset($response['result']['code']) && $response['result']['code'] !== 101) {
-                $is_success =false;
-                break;
+                return false;
             }
 
             $offset += $limit;
         }
 
-        return $is_success;
+        return true;
     }
 }
