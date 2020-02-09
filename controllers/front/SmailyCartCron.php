@@ -45,107 +45,148 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
      */
     private function abandonedCart()
     {
-        if (Configuration::get('SMAILY_ENABLE_ABANDONED_CART') === "1") {
-            // Settings
-            $autoresponder = unserialize(Configuration::get('SMAILY_CART_AUTORESPONDER'));
-            $autoresponder_id = pSQL($autoresponder['id']);
-            $delay = pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME'));
-            // Values to sync array
-            $sync_fields = unserialize(Configuration::get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
-
-            // Select all carts where cart_id is not on orders table and exclude if excists in smaily_cart table.
-            // Gather customer data also.
-            $sql = 'SELECT c.id_cart,
-                        c.id_customer,
-                        c.date_upd,
-                        cu.firstname,
-                        cu.lastname,
-                        cu.email
-                    FROM ' . _DB_PREFIX_ . 'cart c
-                    LEFT JOIN ' . _DB_PREFIX_ . 'orders o
-                    ON (o.id_cart = c.id_cart)
-                    RIGHT JOIN ' . _DB_PREFIX_ . 'customer cu
-                    ON (cu.id_customer = c.id_customer)
-                    LEFT OUTER JOIN ' . _DB_PREFIX_ . 'smaily_cart sc
-                    ON (c.id_cart = sc.id_cart)
-                    WHERE sc.id_cart IS NULL
-                    AND DATE_SUB(CURDATE(),INTERVAL 10 DAY) <= c.date_add
-                    AND o.id_order IS NULL';
-
-            $sql .= Shop::addSqlRestriction(Shop::SHARE_CUSTOMER, 'c');
-            $sql .= ' GROUP BY cu.id_customer';
-
-            $abandoned_carts = Db::getInstance()->executeS($sql);
-            foreach ($abandoned_carts as $abandoned_cart) {
-                // If time has passed form last cart update
-                $cart_updated_time = strtotime($abandoned_cart['date_upd']);
-                $reminder_time = strtotime('+' . $delay . ' minutes', $cart_updated_time);
-                $current_time = strtotime(date('Y-m-d H:i') . ':00');
-
-                // Check if delay passed to send cart.
-                $id_customer = (int) $abandoned_cart['id_customer'];
-                $id_cart = (int) $abandoned_cart['id_cart'];
-
-                if ($current_time >= $reminder_time) {
-                    $cart = new Cart($abandoned_cart['id_cart']);
-                    $products = $cart->getProducts();
-
-                    // Dont continue if no products in cart.
-                    if (empty($products)) {
-                        continue;
-                    }
-
-                    $adresses = array(
-                        'email' => $abandoned_cart['email'],
-                        'firstname' => $abandoned_cart['firstname'],
-                        'lastname' => $abandoned_cart['lastname'],
-                        'store_url' => _PS_BASE_URL_.__PS_BASE_URI__,
-                    );
-                    // Populate abandoned cart with empty values for legacy api.
-                    $fields_available = array(
-                        'name',
-                        'description_short',
-                        'price',
-                        'category',
-                        'quantity'
-                    );
-                    foreach ($fields_available as $field) {
-                        for ($i=1; $i<=10; $i++) {
-                            $adresses['product_' . $field . '_' . $i] = '';
-                        }
-                    }
-                    // Collect products of abandoned cart.
-                    $count = 1;
-                    foreach ($products as $product) {
-                        if ($count <= 10) {
-                            foreach ($sync_fields as $sync_field) {
-                                $adresses['product_' . $sync_field .'_' . $count] = strip_tags($product[$sync_field]);
-                            }
-                        }
-                        $count++;
-                    }
-                    // Smaily api query.
-                    $query = array(
-                        'autoresponder' => $autoresponder_id,
-                        'addresses' => array($adresses)
-                    );
-                    // Send cart data to smaily api.
-                    $response = $this->module->callApi('autoresponder', $query, 'POST');
-                    // If email sent successfully update sent status in database.
-                    if (array_key_exists('success', $response) &&
-                        isset($response['result']['code']) &&
-                        $response['result']['code'] === 101) {
-                            $this->updateSentStatus($id_customer, $id_cart);
-                    } else {
-                        $this->module->logTofile('smaily-cart.txt', Tools::jsonEncode($response));
-                    }
-                }
-            }
-            echo('Abandoned carts emails sent!');
-        } else {
+        if (Configuration::get('SMAILY_ENABLE_ABANDONED_CART') !== "1") {
             echo('Abandoned cart disabled!');
             die(1);
         }
+
+        // Settings.
+        $autoresponder = unserialize(Configuration::get('SMAILY_CART_AUTORESPONDER'));
+        $autoresponder_id = pSQL($autoresponder['id']);
+        $delay = pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME'));
+        $sync_fields = unserialize(Configuration::get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
+
+        $abandoned_carts = $this->getAbandonedCarts();
+        foreach ($abandoned_carts as $abandoned_cart) {
+            $cart_updated_time = strtotime($abandoned_cart['date_upd']);
+            $reminder_time = strtotime('+' . $delay . ' minutes', $cart_updated_time);
+            $current_time = strtotime(date('Y-m-d H:i') . ':00');
+            // Don't continue if cart delay time has not passed.
+            if ($current_time < $reminder_time) {
+                continue;
+            }
+
+            // Get cart by id.
+            $id_customer = (int) $abandoned_cart['id_customer'];
+            $id_cart = (int) $abandoned_cart['id_cart'];
+            $cart = new Cart($abandoned_cart['id_cart']);
+
+            // Get cart products.
+            $products = $cart->getProducts();
+            // Don't continue if no products in cart.
+            if (empty($products)) {
+                continue;
+            }
+
+            // Initialize Smaily query.
+            $adresses = array(
+                'email' => $abandoned_cart['email'],
+            );
+
+            if (in_array('first_name', $sync_fields)) {
+                $adresses['first_name'] = $abandoned_cart['firstname'];
+            }
+
+            if (in_array('last_name', $sync_fields)) {
+                $adresses['last_name'] = $abandoned_cart['lastname'];
+            }
+            // TODO: Store url.?
+
+            // Populate abandoned cart with empty values for legacy api.
+            $fields_available = array(
+                'name',
+                'description',
+                'price',
+                'category',
+                'quantity',
+                'base_price',
+            );
+            foreach ($fields_available as $field) {
+                for ($i=1; $i<=10; $i++) {
+                    $adresses['product_' . $field . '_' . $i] = '';
+                }
+            }
+
+            // Collect products of abandoned cart.
+            $count = 1;
+            foreach ($products as $product) {
+                // Get only 10 products.
+                if ($count > 10) {
+                    break;
+                }
+                // Standardize template parameters across integrations.
+                foreach ($sync_fields as $sync_field) {
+                    switch ($sync_field) {
+                        case 'first_name':
+                        case 'last_name':
+                            // Skip customer fields
+                            break;
+                        case 'base_price':
+                            $adresses['product_base_price_' . $count] = $product['price_without_reduction'];
+                            break;
+                        case 'price':
+                            $adresses['product_price_' . $count] = $product['price_with_reduction'];
+                            break;
+                        case 'description':
+                            $adresses['product_description_' . $count] = strip_tags($product['description_short']);
+                            break;
+                        default:
+                            $adresses['product_' . $sync_field .'_' . $count] = strip_tags($product[$sync_field]);
+                            break;
+                    }
+                }
+                $count++;
+            }
+
+            // Smaily api query.
+            $query = array(
+                'autoresponder' => $autoresponder_id,
+                'addresses' => array($adresses)
+            );
+            // Send cart data to smaily api.
+            $response = $this->module->callApi('autoresponder', $query, 'POST');
+            // If email sent successfully update sent status in database.
+            if (array_key_exists('success', $response) &&
+                isset($response['result']['code']) &&
+                $response['result']['code'] === 101) {
+                    $this->updateSentStatus($id_customer, $id_cart);
+            } else {
+                $this->module->logTofile('smaily-cart.txt', Tools::jsonEncode($response));
+            }
+        }
+        echo('Abandoned carts emails sent!');
+    }
+
+    /**
+     * Gets abandoned cart data from DB.
+     *
+     * @return array Abandoned carts array
+     */
+    private function getAbandonedCarts()
+    {
+        // Select all carts where cart_id is not on orders table and exclude if excists in smaily_cart table.
+        // Gather customer data also.
+        $sql = 'SELECT c.id_cart,
+                    c.id_customer,
+                    c.date_upd,
+                    cu.firstname,
+                    cu.lastname,
+                    cu.email
+                FROM ' . _DB_PREFIX_ . 'cart c
+                LEFT JOIN ' . _DB_PREFIX_ . 'orders o
+                ON (o.id_cart = c.id_cart)
+                RIGHT JOIN ' . _DB_PREFIX_ . 'customer cu
+                ON (cu.id_customer = c.id_customer)
+                LEFT OUTER JOIN ' . _DB_PREFIX_ . 'smaily_cart sc
+                ON (c.id_cart = sc.id_cart)
+                WHERE sc.id_cart IS NULL
+                AND DATE_SUB(CURDATE(),INTERVAL 10 DAY) <= c.date_add
+                AND o.id_order IS NULL';
+
+        $sql .= Shop::addSqlRestriction(Shop::SHARE_CUSTOMER, 'c');
+        $sql .= ' GROUP BY cu.id_customer';
+
+        return Db::getInstance()->executeS($sql);
     }
 
     /**
