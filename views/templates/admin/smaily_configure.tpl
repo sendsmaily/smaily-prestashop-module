@@ -239,38 +239,56 @@
             <div class="col-lg-10">
               <div class="checkbox">
                 <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                  <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="first_name" {if 'first_name'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                    {l s="Customer First Name" mod='smailyforprestashop'}
+                </label>
+              </div>
+              <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                  <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="last_name" {if 'last_name'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                    {l s="Customer Last Name" mod='smailyforprestashop'}
+                </label>
+              </div>
+              <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
                   <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="name" {if 'name'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
                     {l s="Product Name" mod='smailyforprestashop'}
                 </label>
               </div>
-                <div class="checkbox">
-                  <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
-                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="description_short" {if 'description_short'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
-                      {l s="Description" mod='smailyforprestashop'}
-                  </label>
-                </div>
-                <div class="checkbox">
-                  <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
-                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="price" {if 'price'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
-                      {l s="Price" mod='smailyforprestashop'}
-                  </label>
-                </div>
-                <div class="checkbox">
-                  <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
-                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="category" {if 'category'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
-                      {l s="Category" mod='smailyforprestashop'}
-                  </label>
-                </div>
-                <div class="checkbox">
-                  <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
-                    <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="quantity" {if 'quantity'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
-                      {l s="Quantity" mod='smailyforprestashop'}
-                  </label>
-                </div>
-                <p class="help-block">
-                  {l s="Select additional fields to send to abandoned cart template. Firstname, lastname and store-url are always added." mod='smailyforprestashop'}
-                </p>
+              <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                  <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="description" {if 'description'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                    {l s="Product Description" mod='smailyforprestashop'}
+                </label>
               </div>
+              <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                  <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="price" {if 'price'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                    {l s="Product Price" mod='smailyforprestashop'}
+                </label>
+              </div>
+              <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                  <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="base_price" {if 'base_price'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                    {l s="Product Base Price" mod='smailyforprestashop'}
+                </label>
+              </div>
+              <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                  <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="category" {if 'category'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                    {l s="Product Category" mod='smailyforprestashop'}
+                </label>
+              </div>
+              <div class="checkbox">
+                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
+                  <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="quantity" {if 'quantity'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
+                    {l s="Product Quantity" mod='smailyforprestashop'}
+                </label>
+              </div>
+              <p class="help-block">
+                {l s="Select additional fields to send to abandoned cart template." mod='smailyforprestashop'}
+              </p>
+            </div>
           </div>
           <div class="form-group">
             <label class="control-label col-lg-2 required">
