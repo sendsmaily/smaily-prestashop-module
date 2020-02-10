@@ -90,7 +90,6 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
             if (in_array('last_name', $sync_fields)) {
                 $adresses['last_name'] = $abandoned_cart['lastname'];
             }
-            // TODO: Store url.?
 
             // Populate abandoned cart with empty values for legacy api.
             $fields_available = array(
@@ -112,6 +111,7 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
             foreach ($products as $product) {
                 // Get only 10 products.
                 if ($count > 10) {
+                    $adresses['over_10_products'] = 'true';
                     break;
                 }
                 // Standardize template parameters across integrations.
@@ -122,16 +122,25 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                             // Skip customer fields
                             break;
                         case 'base_price':
-                            $adresses['product_base_price_' . $count] = $product['price_without_reduction'];
+                            $adresses['product_base_price_' . $count] = Tools::displayPrice(
+                                $product['price_without_reduction']
+                            );
                             break;
                         case 'price':
-                            $adresses['product_price_' . $count] = $product['price_with_reduction'];
+                            $adresses['product_price_' . $count] = Tools::displayPrice(
+                                $product['price_with_reduction']
+                            );
+                            break;
+                        case 'sku':
+                            $adresses['product_sku_' . $count] = $product['reference'];
                             break;
                         case 'description':
-                            $adresses['product_description_' . $count] = strip_tags($product['description_short']);
+                            $adresses['product_description_' . $count] = htmlspecialchars(
+                                $product['description_short']
+                            );
                             break;
                         default:
-                            $adresses['product_' . $sync_field .'_' . $count] = strip_tags($product[$sync_field]);
+                            $adresses['product_' . $sync_field .'_' . $count] = $product[$sync_field];
                             break;
                     }
                 }
@@ -164,7 +173,7 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
      */
     private function getAbandonedCarts()
     {
-        // Select all carts where cart_id is not on orders table and exclude if excists in smaily_cart table.
+        // Select all carts where cart_id is not on orders table and exclude if exist in smaily_cart table.
         // Gather customer data also.
         $sql = 'SELECT c.id_cart,
                     c.id_customer,
