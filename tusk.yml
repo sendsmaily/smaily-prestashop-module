@@ -1,0 +1,42 @@
+tasks:
+  build:
+    usage: Build the Prestashop image
+    options:
+      username:
+        usage: Username to use for base images
+        default:
+          command: id -un
+      user_id:
+        usage: User id to use for base images
+        default:
+          command: id -u
+      group:
+        usage: User group name to use for base images
+        default:
+          command: id -gn
+      group_id:
+        usage: User group id to use for base images
+        default:
+          command: id -g
+    run:
+      - command: >
+          docker-compose -f ./.docker/docker-compose.yml build
+          --build-arg username=${username}
+          --build-arg user_id=${user_id}
+          --build-arg group=${group}
+          --build-arg group_id=${group_id}
+      - command: docker image prune -f
+
+  up:
+    usage: Start containers
+    run: docker-compose -f ./.docker/docker-compose.yml up -d
+
+  down:
+    usage: Stop containers
+    run: docker-compose -f ./.docker/docker-compose.yml down
+
+  post-install:
+    usage: Remove install folder and rename admin to admin1 after install
+    run:
+      - command: docker exec -it prestashop rm -fR /var/www/html/install
+      - command: docker exec -it prestashop mv /var/www/html/admin /var/www/html/admin1
