@@ -99,7 +99,7 @@ Product category: {{ product_category_[1-10] }}.
 
 ## Changelog
 
-### 1.2.3
+### 1.3.0
 
 - Standardize Abandoned Cart email template parameters across integrations
 - `firstname` and `lastname` parameter changed to `first_name` and `last_name`.
