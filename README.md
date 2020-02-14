@@ -79,25 +79,37 @@ Cron update data-log is stored in the root folder of Smaily plugin, inside "smai
 
 Here is a list of all the parameters available in Smaily email templating engine:
 
-Customer first name: {{ firstname }}.
+Customer first name: `{{ first_name }}`.
 
-Customer last name: {{ lastname }}
+Customer last name: `{{ last_name }}`.
 
-Store url: {{ store_url }}.
+Up to 10 products can be received in Smaily templating engine. You can reference each product with number 1-10 behind parameter name.
 
-Up to 10 products can be received in Smaily templating engine. You can refrence each product with number 1-10 behind parameter name.
+Product name: `{{ product_name_[1-10] }}`.
 
-Product name: {{ product_name_[1-10] }}.
+Product description: `{{ product_description_[1-10] }}`.
 
-Product description: {{ product_description_short_[1-10] }}.
+Product SKU/Reference: `{{ product_sku_[1-10] }}`.
 
-Product quantity: {{ product_quantity_[1-10] }}.
+Product quantity: `{{ product_quantity_[1-10] }}`.
 
-Product price: {{ product_price_[1-10] }}.
+Product price: `{{ product_price_[1-10] }}`.
 
-Product category: {{ product_category_[1-10] }}.
+Product base price : `{{ product_base_price_[1-10] }}`.
+
+Also you can determine if customer had more than 10 items in cart
+
+More than 10 items: `{{ over_10_products }}`.
 
 ## Changelog
+
+### 1.3.0
+
+- Standardize Abandoned Cart email template parameters across integrations
+- `firstname` and `lastname` parameter changed to `first_name` and `last_name`
+- `product_description_short` parameter changed to `product_description`
+- Added `product_base_price` and `product_sku` parameter
+- Removed `product_category` field
 
 ### 1.2.2
 
