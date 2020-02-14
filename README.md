@@ -97,8 +97,6 @@ Product price: `{{ product_price_[1-10] }}`.
 
 Product base price : `{{ product_base_price_[1-10] }}`.
 
-Product category: `{{ product_category_[1-10] }}`.
-
 Also you can determine if customer had more than 10 items in cart
 
 More than 10 items: `{{ over_10_products }}`.
@@ -111,6 +109,7 @@ More than 10 items: `{{ over_10_products }}`.
 - `firstname` and `lastname` parameter changed to `first_name` and `last_name`
 - `product_description_short` parameter changed to `product_description`
 - Added `product_base_price` and `product_sku` parameter
+- Removed `product_category` field
 
 ### 1.2.2
 

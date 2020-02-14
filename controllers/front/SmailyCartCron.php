@@ -95,8 +95,8 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
             $fields_available = array(
                 'name',
                 'description',
+                'sku',
                 'price',
-                'category',
                 'quantity',
                 'base_price',
             );
@@ -106,6 +106,7 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                 }
             }
 
+            $selected_fields = array_intersect($fields_available, $sync_fields);
             // Collect products of abandoned cart.
             $count = 1;
             foreach ($products as $product) {
@@ -115,12 +116,8 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                     break;
                 }
                 // Standardize template parameters across integrations.
-                foreach ($sync_fields as $sync_field) {
+                foreach ($selected_fields as $sync_field) {
                     switch ($sync_field) {
-                        case 'first_name':
-                        case 'last_name':
-                            // Skip customer fields
-                            break;
                         case 'base_price':
                             $adresses['product_base_price_' . $count] = Tools::displayPrice(
                                 $product['price_without_reduction']

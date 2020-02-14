@@ -281,12 +281,6 @@
               </div>
               <div class="checkbox">
                 <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
-                  <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="category" {if 'category'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
-                    {l s="Product Category" mod='smailyforprestashop'}
-                </label>
-              </div>
-              <div class="checkbox">
-                <label for="SMAILY_CART_SYNCRONIZE_ADDITIONAL">
                   <input type="checkbox" name="SMAILY_CART_SYNCRONIZE_ADDITIONAL[]" value="quantity" {if 'quantity'|in_array:$smaily_cart_syncronize_additional} checked {/if}>
                     {l s="Product Quantity" mod='smailyforprestashop'}
                 </label>
