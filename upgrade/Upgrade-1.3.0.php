@@ -29,20 +29,29 @@ if (!defined('_PS_VERSION_')) {
 /**
  * Migrates existing abandoned cart fields to new structure.
  */
-function upgrade_module_1_2_3()
+function upgrade_module_1_3_0()
 {
     $sync_fields = unserialize(Configuration::get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
     
     // Replace description_short->description.
-    if (in_array('description_short', $sync_fields)) {
-        unset($sync_fields['description_short']);
-        array_push($sync_fields, 'description');
+    $description_short = array_search('description_short', $sync_fields);
+    if ($description_short !== false) {
+        unset($sync_fields[$description_short]);
+        if (!in_array('description', $sync_fields)) {
+            array_push($sync_fields, 'description');
+        }
     }
 
     $cartEnabled = Configuration::get('SMAILY_ENABLE_ABANDONED_CART') === "1" ? true :false;
     // Add the previous default fields to sync array.
     if ($cartEnabled) {
         array_push($sync_fields, 'first_name', 'last_name');
+    }
+
+    // Remove product category field.
+    $category = array_search('category', $sync_fields);
+    if ($category !== false) {
+        unset($sync_fields[$category]);
     }
 
     return Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize($sync_fields));
