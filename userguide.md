@@ -1,6 +1,6 @@
 # USER GUIDE
 
-This guide will help you set up and configure Smaily email marketing and automation module for Prestashop.
+This guide will help you set up and configure Smaily for Prestashop module.
 
 ## Installation
 1. You can get the **Smaily for Prestashop module** from Smaily's [GitHub repository](https://github.com/sendsmaily/smaily-prestashop-module/releases).
