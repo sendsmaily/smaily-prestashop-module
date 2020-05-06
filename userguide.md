@@ -5,11 +5,11 @@ This guide will help you set up and configure Smaily email marketing and automat
 ## Installation
 1. You can get the **Smaily for Prestashop module** from Smaily's [GitHub repository](https://github.com/sendsmaily/smaily-prestashop-module/releases).
 
-2. Download the .zip file for the latest release. Extracted contents of the archive to a 'smailyforprestashop' folder.
+2. Download the .zip file for the latest release. Extracted contents of the archive to a `smailyforprestashop` folder.
 
-3. Upload the 'smailyforprestashop' folder to your site's /modules/ directory.
+3. Upload the `smailyforprestashop` folder to your site's `/modules/` directory.
 
-4. Navigate to **Modules -> Module Catalog**. Search for 'smaily' and click **Install**.
+4. Navigate to **Modules -> Module Catalog**. Search for "smaily" and click **Install**.
 
 ![Module install](assets/Install1.png)
 
