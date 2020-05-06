@@ -20,9 +20,11 @@ This guide will help you set up and configure Smaily email marketing and automat
 ![Module configuration path](assets/Install2.png)
 
 2. You will be presented with a configuration page for entering your Smaily API credentials - **subdomain, username, and password**.
-You must create your API account in Smaily first. You can follow our [tutorial](http://help.smaily.com/en/support/solutions/articles/16000062943-create-api-user) to create one.
+You can follow our [API user creation guide](http://help.smaily.com/en/support/solutions/articles/16000062943-create-api-user).
 
-3. After that, you can **validate connection** by saving configuration.
+3. Copy your API user credentials to the appropriate fields in the module configuration page.
+
+4. Click **Validate** to save the API user configuration.
 
 ![API credentials section](assets/APIcredentials.png)
 
