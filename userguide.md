@@ -45,7 +45,7 @@ We however recommend you place a Smaily form on your website, to collect subscri
 ## Customer synchronization
 
 Registered customers, who have opted for the newsletter will be added to Smaily's subscriber database during synchronization.
-1. Enable automatic customer synchronizationn feature under **Customer synchronization** section.
+1. Enable automatic customer synchronization feature under **Customer synchronization** section.
 2. There is an option to import **additional fields** available from the store into Smaily to personalize newsletter emails.
 3. The synchronization can be automated using the cron URL. Recommended synchronization interval is once a day or less.
 
