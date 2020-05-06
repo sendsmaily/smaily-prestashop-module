@@ -1,7 +1,6 @@
 # USER GUIDE
 
-## Smaily email marketing and automation extension module for PrestaShop.
->[Smaily](https://smaily.com/) is an intentionally simple tool for sending beautiful email newsletters.
+This guide will help you set up and configure Smaily email marketing and automation module for Prestashop.
 
 ## Installation
 1. You can get the **Smaily module for Prestashop** from Smaily's [GitHub repository](https://github.com/sendsmaily/smaily-prestashop-module/releases).
