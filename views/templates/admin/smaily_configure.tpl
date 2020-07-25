@@ -45,6 +45,9 @@
     <li class="nav-item">
       <a class="nav-link" id="abandoned-cart-tab" data-toggle="tab" href="#cart" role="tab">{l s="Abandoned Cart" mod='smailyforprestashop'}</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" id="rss-feed-tab" data-toggle="tab" href="#rss" role="tab">{l s="RSS Feed" mod='smailyforprestashop'}</a>
+    </li>
   </ul>
   {* Form content *}
   <div id='mymodule_wrapper' data-token='{$token}'></div>
@@ -331,9 +334,73 @@
         </div>
         <div class="panel-footer">
           <button type="submit" name="smaily_submit_abandoned_cart" class="btn btn-default pull-right" >
-            <i class="process-icon-save"></i> 
+            <i class="process-icon-save"></i>
             {l s="Save" mod='smailyforprestashop' }
           </button>
+        </div>
+      </form>
+    </div>
+    {* RSS feed settings *}
+    <div class="tab-pane active" id="rss" role="tabpanel">
+      <form id="smaily_rss_form" class="defaultForm form-horizontal" method="post" novalidate="novalidate">
+        <div class="form-wrapper">
+          <div class="form-group">
+            <label class="control-label col-lg-2">
+              {l s="Rss-feed" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <p style="word-wrap:break-word;"><strong>{$smaily_rssfeed_url}</strong></p>
+              <p class="help-block"> {l s="Copy this URL into your template editor's RSS block" mod='smailyforprestashop'}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2 required">
+              {l s="Product limit" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <div class="input-group">
+                <input type="number" value="15" min="1" max="250" name="SMAILY_RSS_PRODUCT_LIMIT" id="SMAILY_RSS_PRODUCT_LIMIT" value="">
+                <span class="input-group-addon">
+                  {l s="Minutes" mod='smailyforprestashop'}
+                </span>
+              </div>
+              <p class="help-block">
+                {l s="Limit how many products you will add to your feed. Maximum 250." mod='smailyforprestashop'}
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2 required">
+              {l s="Sort category" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <select name="SMAILY_RSS_SORT_CATEGORY" id="SMAILY_RSS_SORT_CATEGORY">
+                <option>Updated At</option>
+                <option>Random</option>
+                <option>Name</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2 required">
+              {l s="Sort order" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <select name="SMAILY_RSS_SORT_ORDER" id="SMAILY_RSS_SORT_ORDER">
+                <option>Ascending</option>
+                <option>Descending</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2 required">
+              {l s="Products category" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <select name="SMAILY_RSS_PRODUCT_CATEGORY" id="SMAILY_RSS_PRODUCT_CATEGORY">
+              </select>
+            </div>
+          </div>
         </div>
       </form>
     </div>
