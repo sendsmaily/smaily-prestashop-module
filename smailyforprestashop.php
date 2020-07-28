@@ -280,6 +280,9 @@ class SmailyForPrestashop extends Module
         $cart_autoresponder_for_template = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
         $cart_autoresponder_for_template = str_replace('\"', '"', $cart_autoresponder_for_template);
         $cart_autoresponder_for_template = unserialize($cart_autoresponder_for_template);
+        //
+        $categories = Category::getNestedCategories(null, Context::getContext()->language->id);
+        //
         // Assign variables to template if available.
         $this->context->smarty->assign(
             array(
@@ -304,10 +307,22 @@ class SmailyForPrestashop extends Module
                 'smailyforprestashop',
                 'SmailyCartCron'
             ),
+            'smaily_rss_product_categories' => $this->normalizeCategoriesForTemplate($categories)
             )
         );
         // Display settings form.
         return $output .= $this->display(__FILE__, 'views/templates/admin/smaily_configure.tpl');
+    }
+
+    public function normalizeCategoriesForTemplate($categories) {
+        $normalized = array();
+        foreach ( $categories as $category ) {
+            $normalized[$category['id_category']] = $category['name'];
+            if (isset($category['children']) && is_array($category['children'])) {
+                $normalized = array_merge($normalized, $this->normalizeCategoriesForTemplate($category['children']));
+            }
+        }
+        return $normalized;
     }
 
     // Display Block Newsletter in footer.

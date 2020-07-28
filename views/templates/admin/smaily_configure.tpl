@@ -341,18 +341,9 @@
       </form>
     </div>
     {* RSS feed settings *}
-    <div class="tab-pane active" id="rss" role="tabpanel">
+    <div class="tab-pane" id="rss" role="tabpanel">
       <form id="smaily_rss_form" class="defaultForm form-horizontal" method="post" novalidate="novalidate">
         <div class="form-wrapper">
-          <div class="form-group">
-            <label class="control-label col-lg-2">
-              {l s="Rss-feed" mod='smailyforprestashop'}
-            </label>
-            <div class="col-lg-10">
-              <p style="word-wrap:break-word;"><strong>{$smaily_rssfeed_url}</strong></p>
-              <p class="help-block"> {l s="Copy this URL into your template editor's RSS block" mod='smailyforprestashop'}</p>
-            </div>
-          </div>
           <div class="form-group">
             <label class="control-label col-lg-2 required">
               {l s="Product limit" mod='smailyforprestashop'}
@@ -398,7 +389,24 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_PRODUCT_CATEGORY" id="SMAILY_RSS_PRODUCT_CATEGORY">
+              {foreach $smaily_rss_product_categories as $id => $name}
+                <option value='{$id}'>
+                  {$name}
+                </option>
+              {/foreach}
               </select>
+              <pre>
+                {print_r($)}
+              </pre>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2">
+              {l s="Rss-feed" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <p style="word-wrap:break-word;"><strong>{$smaily_rssfeed_url}</strong></p>
+              <p class="help-block"> {l s="Copy this URL into your template editor's RSS block" mod='smailyforprestashop'}</p>
             </div>
           </div>
         </div>
