@@ -346,14 +346,29 @@
         <div class="form-wrapper">
           <div class="form-group">
             <label class="control-label col-lg-2 required">
+              {l s="Products category" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <select name="SMAILY_RSS_PRODUCT_CATEGORY" id="SMAILY_RSS_PRODUCT_CATEGORY">
+              <option value=''>All products</option>
+              {foreach $smaily_rss_product_categories as $id=>$name}
+                <option value='{$id}'>
+                  {$name}
+                </option>
+              {/foreach}
+              </select>
+              <p class="help-block">
+                {l s="Show products from only this category." mod='smailyforprestashop'}
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2 required">
               {l s="Product limit" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
               <div class="input-group">
-                <input type="number" value="15" min="1" max="250" name="SMAILY_RSS_PRODUCT_LIMIT" id="SMAILY_RSS_PRODUCT_LIMIT" value="">
-                <span class="input-group-addon">
-                  {l s="Minutes" mod='smailyforprestashop'}
-                </span>
+                <input type="number" value="15" min="1" max="250" name="SMAILY_RSS_PRODUCT_LIMIT" id="SMAILY_RSS_PRODUCT_LIMIT" >
               </div>
               <p class="help-block">
                 {l s="Limit how many products you will add to your feed. Maximum 250." mod='smailyforprestashop'}
@@ -366,10 +381,15 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_SORT_CATEGORY" id="SMAILY_RSS_SORT_CATEGORY">
-                <option>Updated At</option>
-                <option>Random</option>
-                <option>Name</option>
+                <option value="date_add">Date Added</option>
+                <option value="date_upd">Date Updated</option>
+                <option value="name">Name</option>
+                <option value="price">Price</option>
+                <option value="id_product">Product ID</option>
               </select>
+              <p class="help-block">
+                {l s="Sort products by this category." mod='smailyforprestashop'}
+              </p>
             </div>
           </div>
           <div class="form-group">
@@ -378,26 +398,9 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_SORT_ORDER" id="SMAILY_RSS_SORT_ORDER">
-                <option>Ascending</option>
-                <option>Descending</option>
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
               </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-lg-2 required">
-              {l s="Products category" mod='smailyforprestashop'}
-            </label>
-            <div class="col-lg-10">
-              <select name="SMAILY_RSS_PRODUCT_CATEGORY" id="SMAILY_RSS_PRODUCT_CATEGORY">
-              {foreach $smaily_rss_product_categories as $id => $name}
-                <option value='{$id}'>
-                  {$name}
-                </option>
-              {/foreach}
-              </select>
-              <pre>
-                {print_r($)}
-              </pre>
             </div>
           </div>
           <div class="form-group">
@@ -409,6 +412,12 @@
               <p class="help-block"> {l s="Copy this URL into your template editor's RSS block" mod='smailyforprestashop'}</p>
             </div>
           </div>
+        </div>
+        <div class="panel-footer">
+          <button type="submit" name="smaily_submit_rss" class="btn btn-default pull-right" >
+            <i class="process-icon-save"></i>
+            {l s="Save" mod='smailyforprestashop' }
+          </button>
         </div>
       </form>
     </div>
