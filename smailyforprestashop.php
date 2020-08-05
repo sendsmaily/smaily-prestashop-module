@@ -72,7 +72,7 @@ class SmailyForPrestashop extends Module
             !Configuration::updateValue('SMAILY_ABANDONED_CART_TIME', '') ||
             !Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize(array())) ||
             !Configuration::updateValue('SMAILY_CART_SYNCRONIZE_ADDITIONAL', serialize(array())) ||
-            !Configuration::updateValue('SMAILY_RSS_PRODUCT_CATEGORY', '') ||
+            !Configuration::updateValue('SMAILY_RSS_PRODUCT_CATEGORY_ID', '') ||
             !Configuration::updateValue('SMAILY_RSS_PRODUCT_LIMIT', 50) ||
             !Configuration::updateValue('SMAILY_RSS_SORT_CATEGORY', 'date_upd') ||
             !Configuration::updateValue('SMAILY_RSS_SORT_ORDER', 'desc') ||
@@ -126,7 +126,7 @@ class SmailyForPrestashop extends Module
         !Configuration::deleteByName('SMAILY_ABANDONED_CART_TIME') ||
         !Configuration::deleteByName('SMAILY_SYNCRONIZE_ADDITIONAL') ||
         !Configuration::deleteByName('SMAILY_CART_SYNCRONIZE_ADDITIONAL') ||
-        !Configuration::deleteByName('SMAILY_RSS_PRODUCT_CATEGORY') ||
+        !Configuration::deleteByName('SMAILY_RSS_PRODUCT_CATEGORY_ID') ||
         !Configuration::deleteByName('SMAILY_RSS_PRODUCT_LIMIT') ||
         !Configuration::deleteByName('SMAILY_RSS_SORT_CATEGORY') ||
         !Configuration::deleteByName('SMAILY_RSS_SORT_ORDER') ||
@@ -261,7 +261,7 @@ class SmailyForPrestashop extends Module
         }
         // RSS
         if (Tools::isSubmit('smaily_submit_rss')) {
-            $product_category = pSQL(Tools::getValue('SMAILY_RSS_PRODUCT_CATEGORY'));
+            $product_category_id = pSQL(Tools::getValue('SMAILY_RSS_PRODUCT_CATEGORY_ID'));
             $product_limit = pSQL(Tools::getValue('SMAILY_RSS_PRODUCT_LIMIT'));
             $sort_category = pSQL(Tools::getValue('SMAILY_RSS_SORT_CATEGORY'));
             $sort_order = pSQL(Tools::getValue('SMAILY_RSS_SORT_ORDER'));
@@ -272,7 +272,7 @@ class SmailyForPrestashop extends Module
                 $output .= $this->displayError($this->l('Please validate credentials before saving.'));
             } else {
                 // Update settings.
-                Configuration::updateValue('SMAILY_RSS_PRODUCT_CATEGORY', $product_category);
+                Configuration::updateValue('SMAILY_RSS_PRODUCT_CATEGORY_ID', $product_category_id);
                 Configuration::updateValue('SMAILY_RSS_PRODUCT_LIMIT', $product_limit);
                 Configuration::updateValue('SMAILY_RSS_SORT_CATEGORY', $sort_category);
                 Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $sort_order);
@@ -336,7 +336,11 @@ class SmailyForPrestashop extends Module
                 'smailyforprestashop',
                 'SmailyCartCron'
             ),
-            'smaily_rss_product_categories' => $this->normalizeCategoriesForTemplate($categories)
+            'smaily_rss_product_categories' => $this->normalizeCategoriesForTemplate($categories),
+            'smaily_rss_product_category_selected' => pSQL(Configuration::get('SMAILY_RSS_PRODUCT_CATEGORY_ID')),
+            'smaily_rss_product_limit' => pSQL(Configuration::get('SMAILY_RSS_PRODUCT_LIMIT')),
+            'smaily_rss_sort_category' => pSQL(Configuration::get('SMAILY_RSS_SORT_CATEGORY')),
+            'smaily_rss_sort_order' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
             )
         );
         // Display settings form.
@@ -356,8 +360,21 @@ class SmailyForPrestashop extends Module
     }
 
     private function generateCronUrlFromSettings() {
-        $base_url = Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed');
-        return $base_url;
+        $id_category = pSQL(Configuration::get('SMAILY_RSS_PRODUCT_CATEGORY_ID')) ? pSQL(Configuration::get('SMAILY_RSS_PRODUCT_CATEGORY_ID')) : 'all';
+        $limit = pSQL(Configuration::get('SMAILY_RSS_PRODUCT_LIMIT')) ? pSQL(Configuration::get('SMAILY_RSS_PRODUCT_LIMIT')) : '25';
+        $order_by = pSQL(Configuration::get('SMAILY_RSS_SORT_CATEGORY')) ? pSQL(Configuration::get('SMAILY_RSS_SORT_CATEGORY')) : 'date_upd';
+        $order_way = pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')) ? pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')) : 'desc';
+        $url = Context::getContext()->link->getModuleLink(
+            'smailyforprestashop',
+            'SmailyRssFeed',
+            array(
+                'id_category' => $id_category,
+                'limit' => $limit,
+                'order_by' => $order_by,
+                'order_way' => $order_way
+            )
+        );
+        return $url;
     }
 
     // Display Block Newsletter in footer.

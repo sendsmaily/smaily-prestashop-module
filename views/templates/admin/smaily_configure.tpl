@@ -349,10 +349,10 @@
               {l s="Products category" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <select name="SMAILY_RSS_PRODUCT_CATEGORY" id="SMAILY_RSS_PRODUCT_CATEGORY">
-              <option value=''>All products</option>
+              <select name="SMAILY_RSS_PRODUCT_CATEGORY_ID" id="SMAILY_RSS_PRODUCT_CATEGORY_ID">
+              <option value='all' {($smaily_rss_product_category_selected === '') ? 'selected' : ''}>All products</option>
               {foreach $smaily_rss_product_categories as $id=>$name}
-                <option value='{$id}'>
+                <option value='{$id}' {( (int) $smaily_rss_product_category_selected === $id) ? 'selected' : ''}>
                   {$name}
                 </option>
               {/foreach}
@@ -368,7 +368,7 @@
             </label>
             <div class="col-lg-10">
               <div class="input-group">
-                <input type="number" value="15" min="1" max="250" name="SMAILY_RSS_PRODUCT_LIMIT" id="SMAILY_RSS_PRODUCT_LIMIT" >
+                <input type="number" value="{$smaily_rss_product_limit}" min="1" max="250" name="SMAILY_RSS_PRODUCT_LIMIT" id="SMAILY_RSS_PRODUCT_LIMIT" >
               </div>
               <p class="help-block">
                 {l s="Limit how many products you will add to your feed. Maximum 250." mod='smailyforprestashop'}
@@ -381,11 +381,11 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_SORT_CATEGORY" id="SMAILY_RSS_SORT_CATEGORY">
-                <option value="date_add">Date Added</option>
-                <option value="date_upd">Date Updated</option>
-                <option value="name">Name</option>
-                <option value="price">Price</option>
-                <option value="id_product">Product ID</option>
+                <option value="date_add" {($smaily_rss_sort_category === 'date_add') ? 'selected' : ''}>Date Added</option>
+                <option value="date_upd" {($smaily_rss_sort_category === 'date_upd') ? 'selected' : ''}>Date Updated</option>
+                <option value="name" {($smaily_rss_sort_category === 'name') ? 'selected' : ''}>Name</option>
+                <option value="price" {($smaily_rss_sort_category === 'price') ? 'selected' : ''}>Price</option>
+                <option value="id_product" {($smaily_rss_sort_category === 'id_product') ? 'selected' : ''}>Product ID</option>
               </select>
               <p class="help-block">
                 {l s="Sort products by this category." mod='smailyforprestashop'}
@@ -398,8 +398,8 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_SORT_ORDER" id="SMAILY_RSS_SORT_ORDER">
-                <option value="asc">Ascending</option>
-                <option value="desc">Descending</option>
+                <option value="asc" {($smaily_rss_sort_order === 'asc') ? 'selected' : ''}>Ascending</option>
+                <option value="desc" {($smaily_rss_sort_order === 'desc') ? 'selected' : ''}>Descending</option>
               </select>
             </div>
           </div>
