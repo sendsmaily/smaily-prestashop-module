@@ -340,7 +340,7 @@
               {l s="Products category" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <select name="SMAILY_RSS_CATEGORY_ID" id="SMAILY_RSS_CATEGORY_ID">
+              <select name="SMAILY_RSS_CATEGORY_ID" id="SMAILY_RSS_CATEGORY_ID" class="smaily-rss-options">
               <option value='all_products' {($smaily_rss_selected_category_id === 'all_products') ? 'selected' : ''}>All products</option>
               {foreach $smaily_rss_available_category_ids as $id=>$name}
                 <option value='{$id}' {($smaily_rss_selected_category_id === $id) ? 'selected' : ''}>
@@ -359,7 +359,7 @@
             </label>
             <div class="col-lg-10">
               <div class="input-group">
-                <input type="number" value="{$smaily_rss_limit}" min="1" max="250" name="SMAILY_RSS_LIMIT" id="SMAILY_RSS_LIMIT" >
+                <input type="number" value="{$smaily_rss_limit}" min="1" max="250" name="SMAILY_RSS_LIMIT" id="SMAILY_RSS_LIMIT" class="smaily-rss-options">
               </div>
               <p class="help-block">
                 {l s="Limit how many products you will add to your feed. Maximum 250." mod='smailyforprestashop'}
@@ -371,7 +371,7 @@
               {l s="Order by" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <select name="SMAILY_RSS_ORDER_BY" id="SMAILY_RSS_ORDER_BY">
+              <select name="SMAILY_RSS_ORDER_BY" id="SMAILY_RSS_ORDER_BY" class="smaily-rss-options">
                 <option value="date_add" {($smaily_rss_order_by === 'date_add') ? 'selected' : ''}>Date Added</option>
                 <option value="date_upd" {($smaily_rss_order_by === 'date_upd') ? 'selected' : ''}>Date Updated</option>
                 <option value="name" {($smaily_rss_order_by === 'name') ? 'selected' : ''}>Name</option>
@@ -385,7 +385,7 @@
               {l s="Order direction" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <select name="SMAILY_RSS_ORDER_WAY" id="SMAILY_RSS_ORDER_WAY">
+              <select name="SMAILY_RSS_ORDER_WAY" id="SMAILY_RSS_ORDER_WAY" class="smaily-rss-options">
                 <option value="asc" {($smaily_rss_order_way === 'asc') ? 'selected' : ''}>Ascending</option>
                 <option value="desc" {($smaily_rss_order_way === 'desc') ? 'selected' : ''}>Descending</option>
               </select>
@@ -396,7 +396,7 @@
               {l s="Rss-feed" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <p style="word-wrap:break-word;"><strong>{$smaily_rssfeed_url}</strong></p>
+              <p style="word-wrap:break-word;"><strong id="smaily-rss-feed-url" name="smaily-rss-feed-url">{$smaily_rssfeed_url}</strong></p>
               <p class="help-block"> {l s="Copy this URL into your template editor's RSS block" mod='smailyforprestashop'}</p>
             </div>
           </div>

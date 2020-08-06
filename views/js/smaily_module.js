@@ -93,6 +93,34 @@ $(document).ready(function() {
     });
   });
 
+  // Generate RSS product feed URL if options change.
+  $(".smaily-rss-options").change(function(event) {
+    var rss_url_base = smaiy_rss_url + '?';
+    var parameters = {};
+
+    var rss_limit = $('#SMAILY_RSS_LIMIT').val();
+    if (rss_limit != "") {
+      parameters.limit = rss_limit;
+    }
+
+    var rss_order_by = $('#SMAILY_RSS_ORDER_BY').val();
+    if (rss_order_by != "") {
+      parameters.order_by = rss_order_by;
+    }
+
+    var rss_order_way = $('#SMAILY_RSS_ORDER_WAY').val();
+    if (rss_order_way != "") {
+      parameters.order_way = rss_order_way;
+    }
+
+    var rss_category = $('#SMAILY_RSS_CATEGORY_ID').val();
+    if (rss_category != "all_products") {
+      parameters.category = rss_category;
+    }
+
+    $('#smaily-rss-feed-url').html(rss_url_base + $.param(parameters));
+  });
+
   // Load autoresponders when visiting settings page.
   (function() {
     // Check if credentials are set.
