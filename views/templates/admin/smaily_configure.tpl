@@ -86,15 +86,6 @@
               </p>
             </div>
           </div>
-          <div class="form-group">
-            <label class="control-label col-lg-2">
-              {l s="Rss-feed" mod='smailyforprestashop'}
-            </label>
-            <div class="col-lg-10">
-              <p style="word-wrap:break-word;"><strong>{$smaily_rssfeed_url}</strong></p>
-              <p class="help-block"> {l s="Copy this URL into your template editor's RSS block" mod='smailyforprestashop'}</p>
-            </div>
-          </div>
         </div>
         <div class="panel-footer" id="smaily-validate-form-group">
         {if empty($smaily_password)}
