@@ -96,7 +96,7 @@ $(document).ready(function() {
   // Generate RSS product feed URL if options change.
   $(".smaily-rss-options").change(function(event) {
     var rss_url_base = smaiy_rss_url + '?';
-    var parameters = {};
+    var url_parameters = {};
 
     var rss_limit = $('#SMAILY_RSS_LIMIT').val();
     if (rss_limit != "") {
@@ -113,12 +113,12 @@ $(document).ready(function() {
       parameters.order_way = rss_order_way;
     }
 
-    var rss_category = $('#SMAILY_RSS_CATEGORY_ID').val();
+    var rss_category_id = $('#SMAILY_RSS_CATEGORY_ID').val();
     if (rss_category != "all_products") {
-      parameters.id_category = rss_category;
+      parameters.id_category = rss_category_id;
     }
 
-    $('#smaily-rss-feed-url').html(rss_url_base + $.param(parameters));
+    $('#smaily-rss-feed-url').html(rss_url_base + $.param(url_parameters));
   });
 
   // Load autoresponders when visiting settings page.
