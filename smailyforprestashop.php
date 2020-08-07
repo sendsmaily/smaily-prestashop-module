@@ -347,7 +347,13 @@ class SmailyForPrestashop extends Module
         return $output .= $this->display(__FILE__, 'views/templates/admin/smaily_configure.tpl');
     }
 
-
+    /**
+     * Recursively go through categories in array and normalize for template.
+     *
+     * @param array $categories Enabled categories in Prestashop catalog.
+     *
+     * @return array Categories in format: array(category id => category name).
+     */
     private function recursivelyNormalizeCategoriesForTemplate($categories)
     {
         $normalized = array();
@@ -360,6 +366,12 @@ class SmailyForPrestashop extends Module
         return $normalized;
     }
 
+    /**
+     * Make CRON URL with query parameters.
+     *
+     * @return string $url
+     * e.g example.com/en/module/smailyforprestashop/SmailyRssFeed?limit=50&order_by=date_upd&order_way=desc&id_category=2
+     */
     private function generateCronUrlFromSettings()
     {
         $query_arguments = array(
