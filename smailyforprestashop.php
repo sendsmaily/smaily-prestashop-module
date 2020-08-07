@@ -354,7 +354,7 @@ class SmailyForPrestashop extends Module
         foreach ( $categories as $category ) {
             $normalized[$category['id_category']] = $category['name'];
             if (isset($category['children']) && is_array($category['children'])) {
-                $normalized = array_merge($normalized, $this->recursivelyNormalizeCategoriesForTemplate($category['children']));
+                $normalized += $this->recursivelyNormalizeCategoriesForTemplate($category['children']);
             }
         }
         return $normalized;
