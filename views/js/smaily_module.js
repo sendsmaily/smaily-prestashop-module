@@ -115,7 +115,7 @@ $(document).ready(function() {
 
     var rss_category = $('#SMAILY_RSS_CATEGORY_ID').val();
     if (rss_category != "all_products") {
-      parameters.category = rss_category;
+      parameters.id_category = rss_category;
     }
 
     $('#smaily-rss-feed-url').html(rss_url_base + $.param(parameters));
