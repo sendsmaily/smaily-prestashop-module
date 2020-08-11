@@ -422,7 +422,7 @@ class SmailyForPrestashop extends Module
             Media::addJsDef(
                 array(
                     'controller_url' => $this->context->link->getAdminLink($this->controllerAdmin),
-                    'smaiy_rss_url' => Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
+                    'smaily_rss_url' => Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
                     'smailymessages' => array(
                         'no_autoresponders' => $this->l('No autoresponders created in Smaily!'),
                         'no_connection' => $this->l('There seems to be some problem with connecting to Smaily!'),

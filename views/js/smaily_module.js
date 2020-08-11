@@ -95,7 +95,7 @@ $(document).ready(function() {
 
   // Generate RSS product feed URL if options change.
   $(".smaily-rss-options").change(function(event) {
-    var rss_url_base = smaiy_rss_url + '?';
+    var rss_url_base = smaily_rss_url + '?';
     var url_parameters = {};
 
     var rss_limit = $('#SMAILY_RSS_LIMIT').val();
