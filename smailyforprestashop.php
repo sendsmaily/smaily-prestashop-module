@@ -373,8 +373,8 @@ class SmailyForPrestashop extends Module
             'order_by' => Configuration::get('SMAILY_RSS_SORT_BY'),
             'order_way' => Configuration::get('SMAILY_RSS_SORT_ORDER'),
         );
-        if (pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID')) !== 'all_products') {
-            $query_arguments['id_category'] = pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID'));
+        if (Configuration::get('SMAILY_RSS_CATEGORY_ID') !== 'all_products') {
+            $query_arguments['id_category'] = Configuration::get('SMAILY_RSS_CATEGORY_ID');
         }
 
         return Context::getContext()->link->getModuleLink(
