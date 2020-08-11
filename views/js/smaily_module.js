@@ -103,12 +103,12 @@ $(document).ready(function() {
       parameters.limit = rss_limit;
     }
 
-    var rss_order_by = $('#SMAILY_RSS_ORDER_BY').val();
+    var rss_order_by = $('#SMAILY_RSS_SORT_BY').val();
     if (rss_order_by != "") {
       parameters.order_by = rss_order_by;
     }
 
-    var rss_order_way = $('#SMAILY_RSS_ORDER_WAY').val();
+    var rss_order_way = $('#SMAILY_RSS_SORT_ORDER').val();
     if (rss_order_way != "") {
       parameters.order_way = rss_order_way;
     }

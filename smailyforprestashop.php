@@ -74,8 +74,8 @@ class SmailyForPrestashop extends Module
             !Configuration::updateValue('SMAILY_CART_SYNCRONIZE_ADDITIONAL', serialize(array())) ||
             !Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', 'all_products') ||
             !Configuration::updateValue('SMAILY_RSS_LIMIT', '50') ||
-            !Configuration::updateValue('SMAILY_RSS_ORDER_BY', 'date_upd') ||
-            !Configuration::updateValue('SMAILY_RSS_ORDER_WAY', 'desc') ||
+            !Configuration::updateValue('SMAILY_RSS_SORT_BY', 'date_upd') ||
+            !Configuration::updateValue('SMAILY_RSS_SORT_ORDER', 'desc') ||
             // Add tab to sidebar
             !$this->installTab('AdminAdmin', 'AdminSmailyforprestashopAjax', 'Smaily for PrestaShop') ||
             // Add Newsletter subscription form.
@@ -128,8 +128,8 @@ class SmailyForPrestashop extends Module
         !Configuration::deleteByName('SMAILY_CART_SYNCRONIZE_ADDITIONAL') ||
         !Configuration::deleteByName('SMAILY_RSS_CATEGORY_ID') ||
         !Configuration::deleteByName('SMAILY_RSS_LIMIT') ||
-        !Configuration::deleteByName('SMAILY_RSS_ORDER_BY') ||
-        !Configuration::deleteByName('SMAILY_RSS_ORDER_WAY') ||
+        !Configuration::deleteByName('SMAILY_RSS_SORT_BY') ||
+        !Configuration::deleteByName('SMAILY_RSS_SORT_ORDER') ||
         // Remove sideTab of smaily module.
         !$this->uninstallTab('AdminSmailyforprestashopAjax')
         ) {
@@ -263,14 +263,14 @@ class SmailyForPrestashop extends Module
         if (Tools::isSubmit('smaily_submit_rss')) {
             $id_category = pSQL(Tools::getValue('SMAILY_RSS_CATEGORY_ID'));
             $limit = pSQL(Tools::getValue('SMAILY_RSS_LIMIT'));
-            $order_by = pSQL(Tools::getValue('SMAILY_RSS_ORDER_BY'));
-            $order_way = pSQL(Tools::getValue('SMAILY_RSS_ORDER_WAY'));
+            $order_by = pSQL(Tools::getValue('SMAILY_RSS_SORT_BY'));
+            $order_way = pSQL(Tools::getValue('SMAILY_RSS_SORT_ORDER'));
 
             // Update settings.
             Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $id_category);
             Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
-            Configuration::updateValue('SMAILY_RSS_ORDER_BY', $order_by);
-            Configuration::updateValue('SMAILY_RSS_ORDER_WAY', $order_way);
+            Configuration::updateValue('SMAILY_RSS_SORT_BY', $order_by);
+            Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $order_way);
             // Display success message.
             $output .= $this->displayConfirmation($this->l('RSS settings updated'));
         }
@@ -333,8 +333,8 @@ class SmailyForPrestashop extends Module
             'smaily_rss_available_category_ids' => $this->recursivelyNormalizeCategoriesForTemplate($categories),
             'smaily_rss_selected_category_id' => pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID')),
             'smaily_rss_limit' => pSQL(Configuration::get('SMAILY_RSS_LIMIT')),
-            'smaily_rss_order_by' => pSQL(Configuration::get('SMAILY_RSS_ORDER_BY')),
-            'smaily_rss_order_way' => pSQL(Configuration::get('SMAILY_RSS_ORDER_WAY')),
+            'smaily_rss_order_by' => pSQL(Configuration::get('SMAILY_RSS_SORT_BY')),
+            'smaily_rss_order_way' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
             )
         );
         // Display settings form.
@@ -370,8 +370,8 @@ class SmailyForPrestashop extends Module
     {
         $query_arguments = array(
             'limit' => pSQL(Configuration::get('SMAILY_RSS_LIMIT')),
-            'order_by' => pSQL(Configuration::get('SMAILY_RSS_ORDER_BY')),
-            'order_way' => pSQL(Configuration::get('SMAILY_RSS_ORDER_WAY')),
+            'order_by' => pSQL(Configuration::get('SMAILY_RSS_SORT_BY')),
+            'order_way' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
         );
         if (pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID')) !== 'all_products') {
             $query_arguments['id_category'] = pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID'));

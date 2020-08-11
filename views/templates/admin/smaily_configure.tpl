@@ -371,7 +371,7 @@
               {l s="Order by" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <select name="SMAILY_RSS_ORDER_BY" id="SMAILY_RSS_ORDER_BY" class="smaily-rss-options">
+              <select name="SMAILY_RSS_SORT_BY" id="SMAILY_RSS_SORT_BY" class="smaily-rss-options">
                 <option value="date_add" {($smaily_rss_order_by === 'date_add') ? 'selected' : ''}>Date Added</option>
                 <option value="date_upd" {($smaily_rss_order_by === 'date_upd') ? 'selected' : ''}>Date Updated</option>
                 <option value="name" {($smaily_rss_order_by === 'name') ? 'selected' : ''}>Name</option>
@@ -385,7 +385,7 @@
               {l s="Order direction" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <select name="SMAILY_RSS_ORDER_WAY" id="SMAILY_RSS_ORDER_WAY" class="smaily-rss-options">
+              <select name="SMAILY_RSS_SORT_ORDER" id="SMAILY_RSS_SORT_ORDER" class="smaily-rss-options">
                 <option value="asc" {($smaily_rss_order_way === 'asc') ? 'selected' : ''}>Ascending</option>
                 <option value="desc" {($smaily_rss_order_way === 'desc') ? 'selected' : ''}>Descending</option>
               </select>
