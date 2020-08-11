@@ -261,24 +261,18 @@ class SmailyForPrestashop extends Module
         }
         // RSS
         if (Tools::isSubmit('smaily_submit_rss')) {
-            $category_id = pSQL(Tools::getValue('SMAILY_RSS_CATEGORY_ID'));
+            $id_category = pSQL(Tools::getValue('SMAILY_RSS_CATEGORY_ID'));
             $limit = pSQL(Tools::getValue('SMAILY_RSS_LIMIT'));
             $order_by = pSQL(Tools::getValue('SMAILY_RSS_ORDER_BY'));
             $order_way = pSQL(Tools::getValue('SMAILY_RSS_ORDER_WAY'));
 
-            // Check if subdomain is saved to db to verify that credentials are validated.
-            if (empty(Configuration::get('SMAILY_SUBDOMAIN'))) {
-                // Display error message.
-                $output .= $this->displayError($this->l('Please validate credentials before saving.'));
-            } else {
-                // Update settings.
-                Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $category_id);
-                Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
-                Configuration::updateValue('SMAILY_RSS_ORDER_BY', $order_by);
-                Configuration::updateValue('SMAILY_RSS_ORDER_WAY', $order_way);
-                // Display success message.
-                $output .= $this->displayConfirmation($this->l('RSS settings updated'));
-            }
+            // Update settings.
+            Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $id_category);
+            Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
+            Configuration::updateValue('SMAILY_RSS_ORDER_BY', $order_by);
+            Configuration::updateValue('SMAILY_RSS_ORDER_WAY', $order_way);
+            // Display success message.
+            $output .= $this->displayConfirmation($this->l('RSS settings updated'));
         }
 
         // Get syncronize additional values for template.
