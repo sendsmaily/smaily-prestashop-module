@@ -343,7 +343,7 @@
               <select name="SMAILY_RSS_CATEGORY_ID" id="SMAILY_RSS_CATEGORY_ID" class="smaily-rss-options">
               <option value='all_products' {($smaily_rss_selected_category_id === 'all_products') ? 'selected' : ''}>All products</option>
               {foreach $smaily_rss_available_category_ids as $id=>$name}
-                <option value='{$id}' {($smaily_rss_selected_category_id === $id) ? 'selected' : ''}>
+                <option value='{$id}' {( (int) $smaily_rss_selected_category_id === $id) ? 'selected' : ''}>
                   {$name}
                 </option>
               {/foreach}
