@@ -303,9 +303,9 @@ class SmailyForPrestashop extends Module
         $cart_autoresponder_for_template = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
         $cart_autoresponder_for_template = str_replace('\"', '"', $cart_autoresponder_for_template);
         $cart_autoresponder_for_template = unserialize($cart_autoresponder_for_template);
-        //
+
         $categories = Category::getNestedCategories(null, Context::getContext()->language->id);
-        //
+
         // Assign variables to template if available.
         $this->context->smarty->assign(
             array(
