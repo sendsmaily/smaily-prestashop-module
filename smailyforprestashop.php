@@ -369,9 +369,9 @@ class SmailyForPrestashop extends Module
     private function buildRssUrlFromSettings()
     {
         $query_arguments = array(
-            'limit' => pSQL(Configuration::get('SMAILY_RSS_LIMIT')),
-            'order_by' => pSQL(Configuration::get('SMAILY_RSS_SORT_BY')),
-            'order_way' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
+            'limit' => Configuration::get('SMAILY_RSS_LIMIT'),
+            'order_by' => Configuration::get('SMAILY_RSS_SORT_BY'),
+            'order_way' => Configuration::get('SMAILY_RSS_SORT_ORDER'),
         );
         if (pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID')) !== 'all_products') {
             $query_arguments['id_category'] = pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID'));
