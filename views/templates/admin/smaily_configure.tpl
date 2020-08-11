@@ -372,11 +372,11 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_SORT_BY" id="SMAILY_RSS_SORT_BY" class="smaily-rss-options">
-                <option value="date_add" {($smaily_rss_order_by === 'date_add') ? 'selected' : ''}>Date Added</option>
-                <option value="date_upd" {($smaily_rss_order_by === 'date_upd') ? 'selected' : ''}>Date Updated</option>
-                <option value="name" {($smaily_rss_order_by === 'name') ? 'selected' : ''}>Name</option>
-                <option value="price" {($smaily_rss_order_by === 'price') ? 'selected' : ''}>Price</option>
-                <option value="id_product" {($smaily_rss_order_by === 'id_product') ? 'selected' : ''}>Product ID</option>
+                <option value="date_add" {($smaily_rss_sort_by === 'date_add') ? 'selected' : ''}>Date Added</option>
+                <option value="date_upd" {($smaily_rss_sort_by === 'date_upd') ? 'selected' : ''}>Date Updated</option>
+                <option value="name" {($smaily_rss_sort_by === 'name') ? 'selected' : ''}>Name</option>
+                <option value="price" {($smaily_rss_sort_by === 'price') ? 'selected' : ''}>Price</option>
+                <option value="id_product" {($smaily_rss_sort_by === 'id_product') ? 'selected' : ''}>Product ID</option>
               </select>
             </div>
           </div>
@@ -386,8 +386,8 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_SORT_ORDER" id="SMAILY_RSS_SORT_ORDER" class="smaily-rss-options">
-                <option value="asc" {($smaily_rss_order_way === 'asc') ? 'selected' : ''}>Ascending</option>
-                <option value="desc" {($smaily_rss_order_way === 'desc') ? 'selected' : ''}>Descending</option>
+                <option value="asc" {($smaily_rss_sort_order === 'asc') ? 'selected' : ''}>Ascending</option>
+                <option value="desc" {($smaily_rss_sort_order === 'desc') ? 'selected' : ''}>Descending</option>
               </select>
             </div>
           </div>

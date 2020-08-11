@@ -263,14 +263,14 @@ class SmailyForPrestashop extends Module
         if (Tools::isSubmit('smaily_submit_rss')) {
             $id_category = pSQL(Tools::getValue('SMAILY_RSS_CATEGORY_ID'));
             $limit = pSQL(Tools::getValue('SMAILY_RSS_LIMIT'));
-            $order_by = pSQL(Tools::getValue('SMAILY_RSS_SORT_BY'));
-            $order_way = pSQL(Tools::getValue('SMAILY_RSS_SORT_ORDER'));
+            $sort_by = pSQL(Tools::getValue('SMAILY_RSS_SORT_BY'));
+            $sort_order = pSQL(Tools::getValue('SMAILY_RSS_SORT_ORDER'));
 
             // Update settings.
             Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $id_category);
             Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
-            Configuration::updateValue('SMAILY_RSS_SORT_BY', $order_by);
-            Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $order_way);
+            Configuration::updateValue('SMAILY_RSS_SORT_BY', $sort_by);
+            Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $sort_order);
             // Display success message.
             $output .= $this->displayConfirmation($this->l('RSS settings updated'));
         }
@@ -333,8 +333,8 @@ class SmailyForPrestashop extends Module
             'smaily_rss_available_category_ids' => $this->recursivelyNormalizeCategoriesForTemplate($categories),
             'smaily_rss_selected_category_id' => pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID')),
             'smaily_rss_limit' => pSQL(Configuration::get('SMAILY_RSS_LIMIT')),
-            'smaily_rss_order_by' => pSQL(Configuration::get('SMAILY_RSS_SORT_BY')),
-            'smaily_rss_order_way' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
+            'smaily_rss_sort_by' => pSQL(Configuration::get('SMAILY_RSS_SORT_BY')),
+            'smaily_rss_sort_order' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
             )
         );
         // Display settings form.
