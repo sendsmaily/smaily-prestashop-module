@@ -321,7 +321,7 @@ class SmailyForPrestashop extends Module
             'smaily_syncronize_additional' => $sync_array,
             'smaily_cart_syncronize_additional' => $cart_sync_array,
             'token' => Tools::getAdminTokenLite('AdminSmailyforprestashopAjax'),
-            'smaily_rssfeed_url' => $this->generateCronUrlFromSettings(),
+            'smaily_rssfeed_url' => $this->buildRssUrlFromSettings(),
             'smaily_customer_cron_url' => Context::getContext()->link->getModuleLink(
                 'smailyforprestashop',
                 'SmailyCustomerCron'
@@ -361,12 +361,12 @@ class SmailyForPrestashop extends Module
     }
 
     /**
-     * Make CRON URL with query parameters.
+     * Make RSS URL with query parameters.
      *
      * @return string $url
      * e.g example.com/en/module/smailyforprestashop/SmailyRssFeed?limit=50&order_by=date_upd&order_way=desc&id_category=2
      */
-    private function generateCronUrlFromSettings()
+    private function buildRssUrlFromSettings()
     {
         $query_arguments = array(
             'limit' => pSQL(Configuration::get('SMAILY_RSS_LIMIT')),
