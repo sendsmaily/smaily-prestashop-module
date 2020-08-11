@@ -377,12 +377,11 @@ class SmailyForPrestashop extends Module
             $query_arguments['id_category'] = pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID'));
         }
 
-        $url = Context::getContext()->link->getModuleLink(
+        return Context::getContext()->link->getModuleLink(
             'smailyforprestashop',
             'SmailyRssFeed',
             $query_arguments
         );
-        return $url;
     }
 
     // Display Block Newsletter in footer.
