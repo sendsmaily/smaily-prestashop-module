@@ -100,22 +100,22 @@ $(document).ready(function() {
 
     var rss_limit = $('#SMAILY_RSS_LIMIT').val();
     if (rss_limit != "") {
-      parameters.limit = rss_limit;
+      url_parameters.limit = rss_limit;
     }
 
-    var rss_order_by = $('#SMAILY_RSS_SORT_BY').val();
-    if (rss_order_by != "") {
-      parameters.order_by = rss_order_by;
+    var rss_sort_by = $('#SMAILY_RSS_SORT_BY').val();
+    if (rss_sort_by != "") {
+      url_parameters.order_by = rss_sort_by;
     }
 
-    var rss_order_way = $('#SMAILY_RSS_SORT_ORDER').val();
-    if (rss_order_way != "") {
-      parameters.order_way = rss_order_way;
+    var rss_sort_order = $('#SMAILY_RSS_SORT_ORDER').val();
+    if (rss_sort_order != "") {
+      url_parameters.order_way = rss_sort_order;
     }
 
     var rss_category_id = $('#SMAILY_RSS_CATEGORY_ID').val();
-    if (rss_category != "all_products") {
-      parameters.id_category = rss_category_id;
+    if (rss_category_id != "all_products") {
+      url_parameters.id_category = rss_category_id;
     }
 
     $('#smaily-rss-feed-url').html(rss_url_base + $.param(url_parameters));
