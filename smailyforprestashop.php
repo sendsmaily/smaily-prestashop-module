@@ -263,9 +263,6 @@ class SmailyForPrestashop extends Module
         }
         // RSS
         if (Tools::isSubmit('smaily_submit_rss')) {
-            $sort_by = Tools::getValue('SMAILY_RSS_SORT_BY');
-            $sort_order = Tools::getValue('SMAILY_RSS_SORT_ORDER');
-
             // Update settings.
             $category_id = (int) Tools::getValue('category_id');
             $category_id = $category_id <= 0 ? false : $category_id;
