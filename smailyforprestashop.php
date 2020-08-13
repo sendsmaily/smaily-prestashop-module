@@ -261,16 +261,24 @@ class SmailyForPrestashop extends Module
         }
         // RSS
         if (Tools::isSubmit('smaily_submit_rss')) {
-            $id_category = pSQL(Tools::getValue('SMAILY_RSS_CATEGORY_ID'));
+            $category_id = pSQL(Tools::getValue('SMAILY_RSS_CATEGORY_ID'));
             $limit = pSQL(Tools::getValue('SMAILY_RSS_LIMIT'));
             $sort_by = pSQL(Tools::getValue('SMAILY_RSS_SORT_BY'));
             $sort_order = pSQL(Tools::getValue('SMAILY_RSS_SORT_ORDER'));
 
             // Update settings.
-            Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $id_category);
-            Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
-            Configuration::updateValue('SMAILY_RSS_SORT_BY', $sort_by);
-            Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $sort_order);
+            if ($category_id && $category_id === 'all_products' || is_int(intval($category_id))) {
+                Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $category_id);
+            }
+            if ($limit >= 1 && is_int($limit)) {
+                Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
+            }
+            if (in_array($sort_by, array('date_add', 'date_upd', 'name', 'price', 'id_product'))) {
+                Configuration::updateValue('SMAILY_RSS_SORT_BY', $sort_by);
+            }
+            if ($sort_order === 'asc' || $sort_order === 'desc') {
+                Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $sort_order);
+            }
             // Display success message.
             $output .= $this->displayConfirmation($this->l('RSS settings updated'));
         }

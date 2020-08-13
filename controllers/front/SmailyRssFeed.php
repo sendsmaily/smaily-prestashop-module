@@ -32,6 +32,22 @@ class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontC
 
     public function generateRssFeed()
     {
+        $limit = 50;
+        $order_by = 'date_upd';
+        $order_way = 'desc';
+        $id_category = false;
+        if (Tools::getValue('limit') >= 1 && is_int(Tools::getValue('limit'))) {
+            $limit = Tools::getValue('limit');
+        }
+        if (in_array(Tools::getValue('order_by'), array('date_add', 'date_upd', 'name', 'price', 'id_product'))) {
+            $order_by = Tools::getValue('order_by');
+        }
+        if (Tools::getValue('order_way') === 'asc' || Tools::getValue('order_way') === 'desc') {
+            $order_way = Tools::getValue('order_way');
+        }
+        if (Tools::getValue('id_category') && Tools::getValue('id_category') === 'all_products' || is_int(intval(Tools::getValue('id_category')))) {
+            $id_category = Tools::getValue('id_category');
+        }
         $products = Product::getProducts(
             $this->context->language->id,
             0, // start number
