@@ -21,7 +21,7 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_05118375527d94e35408
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_0db377921f4ce762c62526131097968f'] = 'Üldsätted';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_fec6b1393cb5a616a7b19766d1c612c4'] = 'Kasutajate Sünkroniseerimine';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_7b02e2dc3e9cead891aa9c8f2421cf5a'] = 'Unustatud Ostukorv';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_7eca39de358415bfb69b727a9557cd1c'] = 'Uudisvoog';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_7eca39de358415bfb69b727a9557cd1c'] = 'RSS-voog';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_beed05bccb8b6f21466910eb4a4f142b'] = 'Alamdomeen';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_e253c20d41b297237f90aa77a1ee1ae9'] = 'Näiteks demo -  https://demo.sendsmaily.net/';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_f6039d44b29456b20f8f373155ae4973'] = 'Kasutajatunnus';
@@ -52,9 +52,10 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_361a2e0648660de5428f
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_f670ea66cfb0e90bd6090472ad692694'] = 'Minutit';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_e553d7a992213a4c4421d425404d5b61'] = 'Aeg pärast mida loetakse ostukorv hüljatuks kui klient on lisanud viimase toote. Miinimum väärtus 15 minutit.';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_d4647e3ff0ce2748179d79283d78efe4'] = 'Toodete kategooria';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_40dec546414c1ebdfde8d9858f0938c3'] = 'Kõik tooted';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_7f9e6d9931f9be51b9684d397eebd595'] = 'Näita üksnes selle kategooria tooteid';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_c1983ca83a423f06a8fa9d48b504d661'] = 'Toodete limiit';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_1aaf8fdbe2c4146c0f428a8c2bce3cf9'] = 'Piira mitu toodet kuvatakse uudisvoos. Maksimum 250.';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_1aaf8fdbe2c4146c0f428a8c2bce3cf9'] = 'Piira mitu toodet kuvatakse RSS-voos. Maksimum 250.';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_01fda57aa6c7e9f07f5aa36b108e95cb'] = 'Järjesta tooteid';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_93a524d9a34a84b2c8b9f0575c08b6c8'] = 'Loomisaeg';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_9c34a97f10f573b8d1cc54832a13da30'] = 'Viimati uuendatud';

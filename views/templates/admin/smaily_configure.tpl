@@ -341,7 +341,7 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_CATEGORY_ID" id="SMAILY_RSS_CATEGORY_ID" class="smaily-rss-options">
-              <option value='' {($smaily_rss_selected_category_id === '') ? 'selected' : ''}>All products</option>
+              <option value='' {($smaily_rss_selected_category_id === '') ? 'selected' : ''}>{l s="All products" mod='smailyforprestashop'}</option>
               {foreach $smaily_rss_available_category_ids as $id=>$name}
                 <option value='{$id}' {( (int) $smaily_rss_selected_category_id === $id) ? 'selected' : ''}>
                   {$name}
