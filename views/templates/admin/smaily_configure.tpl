@@ -372,11 +372,11 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_SORT_BY" id="SMAILY_RSS_SORT_BY" class="smaily-rss-options">
-                <option value="date_add" {($smaily_rss_sort_by === 'date_add') ? 'selected' : ''}>Date Added</option>
-                <option value="date_upd" {($smaily_rss_sort_by === 'date_upd') ? 'selected' : ''}>Date Updated</option>
-                <option value="name" {($smaily_rss_sort_by === 'name') ? 'selected' : ''}>Name</option>
-                <option value="price" {($smaily_rss_sort_by === 'price') ? 'selected' : ''}>Price</option>
-                <option value="id_product" {($smaily_rss_sort_by === 'id_product') ? 'selected' : ''}>Product ID</option>
+                <option value="date_add" {($smaily_rss_sort_by === 'date_add') ? 'selected' : ''}>{l s="Date Added" mod='smailyforprestashop'}</option>
+                <option value="date_upd" {($smaily_rss_sort_by === 'date_upd') ? 'selected' : ''}>{l s="Date Updated" mod='smailyforprestashop'}</option>
+                <option value="name" {($smaily_rss_sort_by === 'name') ? 'selected' : ''}>{l s="Name" mod='smailyforprestashop'}</option>
+                <option value="price" {($smaily_rss_sort_by === 'price') ? 'selected' : ''}>{l s="Price" mod='smailyforprestashop'}</option>
+                <option value="id_product" {($smaily_rss_sort_by === 'id_product') ? 'selected' : ''}>{l s="Product ID" mod='smailyforprestashop'}</option>
               </select>
             </div>
           </div>
@@ -386,11 +386,13 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_RSS_SORT_ORDER" id="SMAILY_RSS_SORT_ORDER" class="smaily-rss-options">
-                <option value="asc" {($smaily_rss_sort_order === 'asc') ? 'selected' : ''}>Ascending</option>
-                <option value="desc" {($smaily_rss_sort_order === 'desc') ? 'selected' : ''}>Descending</option>
+                <option value="asc" {($smaily_rss_sort_order === 'asc') ? 'selected' : ''}>{l s="Ascending" mod='smailyforprestashop'}</option>
+                <option value="desc" {($smaily_rss_sort_order === 'desc') ? 'selected' : ''}>{l s="Descending" mod='smailyforprestashop'}</option>
               </select>
             </div>
           </div>
+          <pre>
+          </pre>
           <div class="form-group">
             <label class="control-label col-lg-2">
               {l s="Rss-feed" mod='smailyforprestashop'}
