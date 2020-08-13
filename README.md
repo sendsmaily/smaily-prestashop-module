@@ -103,6 +103,13 @@ More than 10 items: `{{ over_10_products }}`.
 
 ## Changelog
 
+### 1.4.0
+
+- Added RSS settings tab.
+- New options for RSS product feed: order by, order direction, product category.
+- Generate RSS feed in more user friendly manner.
+- Fix bug which caused invalid CRON URLs, when Friendly URL option was disabled.
+
 ### 1.3.0
 
 - Standardize Abandoned Cart email template parameters across integrations
