@@ -320,8 +320,6 @@ class SmailyForPrestashop extends Module
             array(
             'smaily_enable_cron' =>  pSQL(Configuration::get('SMAILY_ENABLE_CRON')),
             'smaily_enable_abandoned_cart' => pSQL(Configuration::get('SMAILY_ENABLE_ABANDONED_CART')),
-            'smaily_customer_cron_token' => $customer_cron_token,
-            'smaily_cart_cron_token' => $cart_cron_token,
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
             'smaily_username' => pSQL(Configuration::get('SMAILY_USERNAME')),
             'smaily_password' => pSQL(Configuration::get('SMAILY_PASSWORD')),
@@ -333,11 +331,13 @@ class SmailyForPrestashop extends Module
             'smaily_rssfeed_url' => $this->buildRssUrlFromSettings(),
             'smaily_customer_cron_url' => Context::getContext()->link->getModuleLink(
                 'smailyforprestashop',
-                'SmailyCustomerCron'
+                'SmailyCustomerCron',
+                array('token' => $customer_cron_token)
             ),
             'smaily_cart_cron_url' => Context::getContext()->link->getModuleLink(
                 'smailyforprestashop',
-                'SmailyCartCron'
+                'SmailyCartCron',
+                array('token' => $cart_cron_token)
             ),
             'smaily_rss_available_category_ids' => $this->recursivelyNormalizeCategoriesForTemplate($categories),
             'smaily_rss_selected_category_id' => pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID')),
