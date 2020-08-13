@@ -32,31 +32,25 @@ class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontC
 
     public function generateRssFeed()
     {
-        // Hardcoded values in v1.3.0 and older.
-        $limit = 50;
-        $order_by = 'date_upd';
-        $order_way = 'desc';
-        $id_category = false;
-        // Make sure the values are what we are expecting.
-        if (Tools::getValue('limit') >= 1 && is_int(Tools::getValue('limit'))) {
-            $limit = Tools::getValue('limit');
-        }
-        if (in_array(Tools::getValue('order_by'), array('date_add', 'date_upd', 'name', 'price', 'id_product'))) {
-            $order_by = Tools::getValue('order_by');
-        }
-        if (Tools::getValue('order_way') === 'asc' || Tools::getValue('order_way') === 'desc') {
-            $order_way = Tools::getValue('order_way');
-        }
-        if (Tools::getValue('id_category') && Tools::getValue('id_category') === 'all_products' || is_int(intval(Tools::getValue('id_category')))) {
-            $id_category = Tools::getValue('id_category');
-        }
+        $limit = (int) Tools::getValue('limit');
+        $limit = $limit >= 1 && $limit <= 250 ? $limit : 50;
+
+        $sort_by = Tools::getValue('sort_by');
+        $sort_by = in_array($sort_by, SmailyForPrestashop::$allowed_sort_by_values, true) ? $sort_by : 'date_upd';
+
+        $sort_order = Tools::getValue('sort_order');
+        $sort_order = in_array($sort_order, array('asc', 'desc'), true) ? $sort_order : 'desc';
+
+        $category_id = (int) Tools::getValue('category_id');
+        $category_id = $category_id <= 0 ? false : $category_id;
+
         $products = Product::getProducts(
             $this->context->language->id,
             0, // start number
-            $limit,
-            $order_by,
-            $order_way,
-            $id_category,
+            $limit, // hardcoded 50 in < 1.4.0
+            $sort_by, // hardcoded date_upd in < 1.4.0
+            $sort_order, // hardcoded desc in < 1.4.0
+            $category_id, // hardcoded false in < 1.4.0
             true // only active products
         );
         $baseUrl = Tools::getHttpHost(true).__PS_BASE_URI__;

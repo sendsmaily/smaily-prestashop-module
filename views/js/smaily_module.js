@@ -105,17 +105,17 @@ $(document).ready(function() {
 
     var rss_sort_by = $('#SMAILY_RSS_SORT_BY').val();
     if (rss_sort_by != "") {
-      url_parameters.order_by = rss_sort_by;
+      url_parameters.sort_by = rss_sort_by;
     }
 
     var rss_sort_order = $('#SMAILY_RSS_SORT_ORDER').val();
     if (rss_sort_order != "") {
-      url_parameters.order_way = rss_sort_order;
+      url_parameters.sort_order = rss_sort_order;
     }
 
     var rss_category_id = $('#SMAILY_RSS_CATEGORY_ID').val();
-    if (rss_category_id != "all_products") {
-      url_parameters.id_category = rss_category_id;
+    if (rss_category_id != "") {
+      url_parameters.category_id = rss_category_id;
     }
 
     $('#smaily-rss-feed-url').html(rss_url_base + $.param(url_parameters));

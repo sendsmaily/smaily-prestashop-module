@@ -50,6 +50,8 @@ class SmailyForPrestashop extends Module
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
     }
 
+    public static $allowed_sort_by_values = array('date_add', 'date_upd', 'name', 'price', 'id_product');
+
     public function install()
     {
         // Check if multistore is enabled
@@ -72,7 +74,7 @@ class SmailyForPrestashop extends Module
             !Configuration::updateValue('SMAILY_ABANDONED_CART_TIME', '') ||
             !Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize(array())) ||
             !Configuration::updateValue('SMAILY_CART_SYNCRONIZE_ADDITIONAL', serialize(array())) ||
-            !Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', 'all_products') ||
+            !Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', '') ||
             !Configuration::updateValue('SMAILY_RSS_LIMIT', '50') ||
             !Configuration::updateValue('SMAILY_RSS_SORT_BY', 'date_upd') ||
             !Configuration::updateValue('SMAILY_RSS_SORT_ORDER', 'desc') ||
@@ -261,24 +263,26 @@ class SmailyForPrestashop extends Module
         }
         // RSS
         if (Tools::isSubmit('smaily_submit_rss')) {
-            $category_id = Tools::getValue('SMAILY_RSS_CATEGORY_ID');
-            $limit = Tools::getValue('SMAILY_RSS_LIMIT');
             $sort_by = Tools::getValue('SMAILY_RSS_SORT_BY');
             $sort_order = Tools::getValue('SMAILY_RSS_SORT_ORDER');
 
             // Update settings.
-            if ($category_id && $category_id === 'all_products' || is_int(intval($category_id))) {
-                Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $category_id);
-            }
-            if ($limit >= 1 && is_int($limit)) {
-                Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
-            }
-            if (in_array($sort_by, array('date_add', 'date_upd', 'name', 'price', 'id_product'))) {
-                Configuration::updateValue('SMAILY_RSS_SORT_BY', $sort_by);
-            }
-            if ($sort_order === 'asc' || $sort_order === 'desc') {
-                Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $sort_order);
-            }
+            $category_id = (int) Tools::getValue('category_id');
+            $category_id = $category_id <= 0 ? false : $category_id;
+            Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $category_id);
+
+            $limit = (int) Tools::getValue('limit');
+            $limit = $limit >= 1 && $limit <= 250 ? $limit : 50;
+            Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
+
+            $sort_by = Tools::getValue('sort_by');
+            $sort_by = in_array($sort_by, SmailyForPrestashop::$allowed_sort_by_values, true) ? $sort_by : 'date_upd';
+            Configuration::updateValue('SMAILY_RSS_SORT_BY', $sort_by);
+
+            $sort_order = Tools::getValue('sort_order');
+            $sort_order = in_array($sort_order, array('asc', 'desc'), true) ? $sort_order : 'desc';
+            Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $sort_order);
+
             // Display success message.
             $output .= $this->displayConfirmation($this->l('RSS settings updated'));
         }
@@ -372,17 +376,17 @@ class SmailyForPrestashop extends Module
      * Make RSS URL with query parameters.
      *
      * @return string $url
-     * e.g example.com/en/module/smailyforprestashop/SmailyRssFeed?limit=50&order_by=date_upd&order_way=desc&id_category=2
+     * e.g example.com/en/module/smailyforprestashop/SmailyRssFeed?limit=50&sort_by=date_upd&sort_order=desc&category_id=2
      */
     private function buildRssUrlFromSettings()
     {
         $query_arguments = array(
             'limit' => Configuration::get('SMAILY_RSS_LIMIT'),
-            'order_by' => Configuration::get('SMAILY_RSS_SORT_BY'),
-            'order_way' => Configuration::get('SMAILY_RSS_SORT_ORDER'),
+            'sort_by' => Configuration::get('SMAILY_RSS_SORT_BY'),
+            'sort_order' => Configuration::get('SMAILY_RSS_SORT_ORDER'),
         );
-        if (Configuration::get('SMAILY_RSS_CATEGORY_ID') !== 'all_products') {
-            $query_arguments['id_category'] = Configuration::get('SMAILY_RSS_CATEGORY_ID');
+        if (Configuration::get('SMAILY_RSS_CATEGORY_ID') !== '') {
+            $query_arguments['category_id'] = Configuration::get('SMAILY_RSS_CATEGORY_ID');
         }
 
         return Context::getContext()->link->getModuleLink(
