@@ -32,10 +32,12 @@ class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontC
 
     public function generateRssFeed()
     {
+        // Hardcoded values in v1.3.0 and older.
         $limit = 50;
         $order_by = 'date_upd';
         $order_way = 'desc';
         $id_category = false;
+        // Make sure the values are what we are expecting.
         if (Tools::getValue('limit') >= 1 && is_int(Tools::getValue('limit'))) {
             $limit = Tools::getValue('limit');
         }
@@ -51,11 +53,10 @@ class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontC
         $products = Product::getProducts(
             $this->context->language->id,
             0, // start number
-            // '50', 'dateupd' and 'desc' were hardcoded values in v1.3.0 and older.
-            Tools::getValue('limit') ? Tools::getValue('limit') : 50,
-            Tools::getValue('order_by') ? Tools::getValue('order_by') : 'date_upd',
-            Tools::getValue('order_way') ? Tools::getValue('order_way') : 'desc',
-            Tools::getValue('id_category') ? Tools::getValue('id_category') : false,
+            $limit,
+            $order_by,
+            $order_way,
+            $id_category,
             true // only active products
         );
         $baseUrl = Tools::getHttpHost(true).__PS_BASE_URI__;
