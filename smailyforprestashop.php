@@ -285,8 +285,6 @@ class SmailyForPrestashop extends Module
             array(
             'smaily_enable_cron' =>  pSQL(Configuration::get('SMAILY_ENABLE_CRON')),
             'smaily_enable_abandoned_cart' => pSQL(Configuration::get('SMAILY_ENABLE_ABANDONED_CART')),
-            'smaily_customer_cron_token' => $customer_cron_token,
-            'smaily_cart_cron_token' => $cart_cron_token,
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
             'smaily_username' => pSQL(Configuration::get('SMAILY_USERNAME')),
             'smaily_password' => pSQL(Configuration::get('SMAILY_PASSWORD')),
