@@ -261,10 +261,10 @@ class SmailyForPrestashop extends Module
         }
         // RSS
         if (Tools::isSubmit('smaily_submit_rss')) {
-            $category_id = pSQL(Tools::getValue('SMAILY_RSS_CATEGORY_ID'));
-            $limit = pSQL(Tools::getValue('SMAILY_RSS_LIMIT'));
-            $sort_by = pSQL(Tools::getValue('SMAILY_RSS_SORT_BY'));
-            $sort_order = pSQL(Tools::getValue('SMAILY_RSS_SORT_ORDER'));
+            $category_id = Tools::getValue('SMAILY_RSS_CATEGORY_ID');
+            $limit = Tools::getValue('SMAILY_RSS_LIMIT');
+            $sort_by = Tools::getValue('SMAILY_RSS_SORT_BY');
+            $sort_order = Tools::getValue('SMAILY_RSS_SORT_ORDER');
 
             // Update settings.
             if ($category_id && $category_id === 'all_products' || is_int(intval($category_id))) {
