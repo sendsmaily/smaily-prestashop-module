@@ -73,12 +73,6 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_198584454b0ce1
 $_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_e3bf47a46c6efd3bb53fedb5136bdf1c'] = 'Te võite igal ajal oma uudiskirja tellimuse tühistada.';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_cbef6aeeb39bd1078e8869492fd83f1c'] = 'Täname uudiskirjaga liitumise eest!';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_e3678541149247bb751545e796269b8f'] = 'Midagi läks valesti uudiskirjaga liitumisel, palun proovi uuesti!';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_3805f49499fa5010c394e219aa1fe7a0'] = 'Saage meie värskeimaid uudiseid ja eripakkumisi';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_a4d3b161ce1309df1c4e25df28694b7b'] = 'Telli';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_198584454b0ce1101ff5b50323325aa8'] = 'Teie e-posti aadress';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_e3bf47a46c6efd3bb53fedb5136bdf1c'] = 'Te võite igal ajal oma uudiskirja tellimuse tühistada.';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_cbef6aeeb39bd1078e8869492fd83f1c'] = 'Täname uudiskirjaga liitumise eest!';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_blocknewsletter_column_e3678541149247bb751545e796269b8f'] = 'Midagi läks valesti uudiskirjaga liitumisel, palun proovi uuesti!';
 $_MODULE['<{smailyforprestashop}prestashop>adminsmailyforprestashopajaxcontroller_04ce02c2ca2327bc6651fd8359e29959'] = 'Palun sisesta alamdomeen!';
 $_MODULE['<{smailyforprestashop}prestashop>adminsmailyforprestashopajaxcontroller_544373e5036db114055a7273925d383d'] = 'Palun sisesta kasutajatunnus!';
 $_MODULE['<{smailyforprestashop}prestashop>adminsmailyforprestashopajaxcontroller_afa29ddf9281626cc3c38c6916fc85f8'] = 'Palun sisesta parool!';
