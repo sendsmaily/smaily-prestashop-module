@@ -32,7 +32,7 @@ class SmailyForPrestashop extends Module
     {
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
-        $this->version = '1.3.0';
+        $this->version = '1.4.0';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(
@@ -49,6 +49,8 @@ class SmailyForPrestashop extends Module
 
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
     }
+
+    public static $allowed_sort_by_values = array('date_add', 'date_upd', 'name', 'price', 'id_product');
 
     public function install()
     {
@@ -72,6 +74,10 @@ class SmailyForPrestashop extends Module
             !Configuration::updateValue('SMAILY_ABANDONED_CART_TIME', '') ||
             !Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize(array())) ||
             !Configuration::updateValue('SMAILY_CART_SYNCRONIZE_ADDITIONAL', serialize(array())) ||
+            !Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', '') ||
+            !Configuration::updateValue('SMAILY_RSS_LIMIT', '50') ||
+            !Configuration::updateValue('SMAILY_RSS_SORT_BY', 'date_upd') ||
+            !Configuration::updateValue('SMAILY_RSS_SORT_ORDER', 'desc') ||
             // Add tab to sidebar
             !$this->installTab('AdminAdmin', 'AdminSmailyforprestashopAjax', 'Smaily for PrestaShop') ||
             // Add Newsletter subscription form.
@@ -122,6 +128,10 @@ class SmailyForPrestashop extends Module
         !Configuration::deleteByName('SMAILY_ABANDONED_CART_TIME') ||
         !Configuration::deleteByName('SMAILY_SYNCRONIZE_ADDITIONAL') ||
         !Configuration::deleteByName('SMAILY_CART_SYNCRONIZE_ADDITIONAL') ||
+        !Configuration::deleteByName('SMAILY_RSS_CATEGORY_ID') ||
+        !Configuration::deleteByName('SMAILY_RSS_LIMIT') ||
+        !Configuration::deleteByName('SMAILY_RSS_SORT_BY') ||
+        !Configuration::deleteByName('SMAILY_RSS_SORT_ORDER') ||
         // Remove sideTab of smaily module.
         !$this->uninstallTab('AdminSmailyforprestashopAjax')
         ) {
@@ -251,6 +261,28 @@ class SmailyForPrestashop extends Module
                 $output .= $this->displayConfirmation($this->l('Abandoned cart settings updated'));
             }
         }
+        // RSS
+        if (Tools::isSubmit('smaily_submit_rss')) {
+            // Update settings.
+            $category_id = (int) Tools::getValue('SMAILY_RSS_CATEGORY_ID');
+            $category_id = $category_id <= 0 ? false : $category_id;
+            Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $category_id);
+
+            $limit = (int) Tools::getValue('SMAILY_RSS_LIMIT');
+            $limit = $limit >= 1 && $limit <= 250 ? $limit : 50;
+            Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
+
+            $sort_by = Tools::getValue('SMAILY_RSS_SORT_BY');
+            $sort_by = in_array($sort_by, SmailyForPrestashop::$allowed_sort_by_values, true) ? $sort_by : 'date_upd';
+            Configuration::updateValue('SMAILY_RSS_SORT_BY', $sort_by);
+
+            $sort_order = Tools::getValue('SMAILY_RSS_SORT_ORDER');
+            $sort_order = in_array($sort_order, array('asc', 'desc'), true) ? $sort_order : 'desc';
+            Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $sort_order);
+
+            // Display success message.
+            $output .= $this->displayConfirmation($this->l('RSS settings updated'));
+        }
 
         // Get syncronize additional values for template.
         if (false !== unserialize(Configuration::get('SMAILY_SYNCRONIZE_ADDITIONAL'))) {
@@ -280,6 +312,9 @@ class SmailyForPrestashop extends Module
         $cart_autoresponder_for_template = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
         $cart_autoresponder_for_template = str_replace('\"', '"', $cart_autoresponder_for_template);
         $cart_autoresponder_for_template = unserialize($cart_autoresponder_for_template);
+
+        $categories = Category::getNestedCategories(null, Context::getContext()->language->id);
+
         // Assign variables to template if available.
         $this->context->smarty->assign(
             array(
@@ -295,7 +330,7 @@ class SmailyForPrestashop extends Module
             'smaily_syncronize_additional' => $sync_array,
             'smaily_cart_syncronize_additional' => $cart_sync_array,
             'token' => Tools::getAdminTokenLite('AdminSmailyforprestashopAjax'),
-            'smaily_rssfeed_url' => Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
+            'smaily_rssfeed_url' => $this->buildRssUrlFromSettings(),
             'smaily_customer_cron_url' => Context::getContext()->link->getModuleLink(
                 'smailyforprestashop',
                 'SmailyCustomerCron'
@@ -304,10 +339,58 @@ class SmailyForPrestashop extends Module
                 'smailyforprestashop',
                 'SmailyCartCron'
             ),
+            'smaily_rss_available_category_ids' => $this->recursivelyNormalizeCategoriesForTemplate($categories),
+            'smaily_rss_selected_category_id' => pSQL(Configuration::get('SMAILY_RSS_CATEGORY_ID')),
+            'smaily_rss_limit' => pSQL(Configuration::get('SMAILY_RSS_LIMIT')),
+            'smaily_rss_sort_by' => pSQL(Configuration::get('SMAILY_RSS_SORT_BY')),
+            'smaily_rss_sort_order' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
             )
         );
         // Display settings form.
         return $output .= $this->display(__FILE__, 'views/templates/admin/smaily_configure.tpl');
+    }
+
+    /**
+     * Recursively go through categories in array and normalize for template.
+     *
+     * @param array $categories Enabled categories in Prestashop catalog.
+     *
+     * @return array Categories in format: array(category id => category name).
+     */
+    private function recursivelyNormalizeCategoriesForTemplate($categories)
+    {
+        $normalized = array();
+        foreach ( $categories as $category ) {
+            $normalized[$category['id_category']] = $category['name'];
+            if (isset($category['children']) && is_array($category['children'])) {
+                $normalized += $this->recursivelyNormalizeCategoriesForTemplate($category['children']);
+            }
+        }
+        return $normalized;
+    }
+
+    /**
+     * Make RSS URL with query parameters.
+     *
+     * @return string $url
+     * e.g example.com/en/module/smailyforprestashop/SmailyRssFeed?limit=50&sort_by=date_upd&sort_order=desc&category_id=2
+     */
+    private function buildRssUrlFromSettings()
+    {
+        $query_arguments = array(
+            'limit' => Configuration::get('SMAILY_RSS_LIMIT'),
+            'sort_by' => Configuration::get('SMAILY_RSS_SORT_BY'),
+            'sort_order' => Configuration::get('SMAILY_RSS_SORT_ORDER'),
+        );
+        if (Configuration::get('SMAILY_RSS_CATEGORY_ID') !== '') {
+            $query_arguments['category_id'] = Configuration::get('SMAILY_RSS_CATEGORY_ID');
+        }
+
+        return Context::getContext()->link->getModuleLink(
+            'smailyforprestashop',
+            'SmailyRssFeed',
+            $query_arguments
+        );
     }
 
     // Display Block Newsletter in footer.
@@ -348,6 +431,7 @@ class SmailyForPrestashop extends Module
             Media::addJsDef(
                 array(
                     'controller_url' => $this->context->link->getAdminLink($this->controllerAdmin),
+                    'smaily_rss_url' => Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
                     'smailymessages' => array(
                         'no_autoresponders' => $this->l('No autoresponders created in Smaily!'),
                         'no_connection' => $this->l('There seems to be some problem with connecting to Smaily!'),
