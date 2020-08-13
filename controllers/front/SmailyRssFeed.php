@@ -32,7 +32,27 @@ class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontC
 
     public function generateRssFeed()
     {
-        $products = Product::getProducts($this->context->language->id, 0, 50, 'date_upd', 'desc', false, true);
+        $limit = (int) Tools::getValue('limit');
+        $limit = $limit >= 1 && $limit <= 250 ? $limit : 50;
+
+        $sort_by = Tools::getValue('sort_by');
+        $sort_by = in_array($sort_by, SmailyForPrestashop::$allowed_sort_by_values, true) ? $sort_by : 'date_upd';
+
+        $sort_order = Tools::getValue('sort_order');
+        $sort_order = in_array($sort_order, array('asc', 'desc'), true) ? $sort_order : 'desc';
+
+        $category_id = (int) Tools::getValue('category_id');
+        $category_id = $category_id <= 0 ? false : $category_id;
+
+        $products = Product::getProducts(
+            $this->context->language->id,
+            0, // start number
+            $limit, // hardcoded 50 in < 1.4.0
+            $sort_by, // hardcoded date_upd in < 1.4.0
+            $sort_order, // hardcoded desc in < 1.4.0
+            $category_id, // hardcoded false in < 1.4.0
+            true // only active products
+        );
         $baseUrl = Tools::getHttpHost(true).__PS_BASE_URI__;
         $rss ='<?xml version="1.0" encoding="utf-8"?>' .
             '<rss xmlns:smly="https://sendsmaily.net/schema/editor/rss.xsd" version="2.0">' .
@@ -75,7 +95,7 @@ class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontC
             }
             $rss .= '<item>
             <title><![CDATA['. $name .']]></title>
-            
+
             <link><![CDATA['. $product_url . ']]></link>
             <guid isPermaLink="True">'. $baseUrl . '</guid>
             <pubDate>' . date("D, d M Y H:i:s", strtotime($date_add)) . '</pubDate>
