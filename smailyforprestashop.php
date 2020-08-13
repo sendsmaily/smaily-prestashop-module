@@ -264,19 +264,19 @@ class SmailyForPrestashop extends Module
         // RSS
         if (Tools::isSubmit('smaily_submit_rss')) {
             // Update settings.
-            $category_id = (int) Tools::getValue('category_id');
+            $category_id = (int) Tools::getValue('SMAILY_RSS_CATEGORY_ID');
             $category_id = $category_id <= 0 ? false : $category_id;
             Configuration::updateValue('SMAILY_RSS_CATEGORY_ID', $category_id);
 
-            $limit = (int) Tools::getValue('limit');
+            $limit = (int) Tools::getValue('SMAILY_RSS_LIMIT');
             $limit = $limit >= 1 && $limit <= 250 ? $limit : 50;
             Configuration::updateValue('SMAILY_RSS_LIMIT', $limit);
 
-            $sort_by = Tools::getValue('sort_by');
+            $sort_by = Tools::getValue('SMAILY_RSS_SORT_BY');
             $sort_by = in_array($sort_by, SmailyForPrestashop::$allowed_sort_by_values, true) ? $sort_by : 'date_upd';
             Configuration::updateValue('SMAILY_RSS_SORT_BY', $sort_by);
 
-            $sort_order = Tools::getValue('sort_order');
+            $sort_order = Tools::getValue('SMAILY_RSS_SORT_ORDER');
             $sort_order = in_array($sort_order, array('asc', 'desc'), true) ? $sort_order : 'desc';
             Configuration::updateValue('SMAILY_RSS_SORT_ORDER', $sort_order);
 
