@@ -298,11 +298,13 @@ class SmailyForPrestashop extends Module
             'smaily_rssfeed_url' => Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
             'smaily_customer_cron_url' => Context::getContext()->link->getModuleLink(
                 'smailyforprestashop',
-                'SmailyCustomerCron'
+                'SmailyCustomerCron',
+                array('token' => $customer_cron_token)
             ),
             'smaily_cart_cron_url' => Context::getContext()->link->getModuleLink(
                 'smailyforprestashop',
-                'SmailyCartCron'
+                'SmailyCartCron',
+                array('token' => $cart_cron_token)
             ),
             )
         );

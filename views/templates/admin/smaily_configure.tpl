@@ -181,7 +181,7 @@
               {l s="Cron url" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <p><strong>{$smaily_customer_cron_url}?token={$smaily_customer_cron_token}</strong></p>
+              <p><strong>{$smaily_customer_cron_url}</strong></p>
               <p class="help-block">
                 {l s="To schedule automatic sync, set up CRON in your hosting and use this URL." mod='smailyforprestashop'}
               </p>
@@ -322,7 +322,7 @@
               {l s="Cron url" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <p><strong>{$smaily_cart_cron_url}?token={$smaily_cart_cron_token}</strong></p>
+              <p><strong>{$smaily_cart_cron_url}</strong></p>
               <p class="help-block">
                 {l s="To schedule automatic sync, set up CRON in your hosting and use this URL." mod='smailyforprestashop'}
               </p>
