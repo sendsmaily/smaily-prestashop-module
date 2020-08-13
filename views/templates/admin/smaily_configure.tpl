@@ -391,8 +391,6 @@
               </select>
             </div>
           </div>
-          <pre>
-          </pre>
           <div class="form-group">
             <label class="control-label col-lg-2">
               {l s="Rss-feed" mod='smailyforprestashop'}
