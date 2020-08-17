@@ -1,0 +1,6 @@
+controllers                controllers/
+translations               translations/
+upgrade                    upgrade/
+views                      views/
+index.php                  index.php
+smailyforprestashop.php    smailyforprestashop.php

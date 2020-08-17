@@ -16,3 +16,15 @@ RUN if grep -q ${group} /etc/group; then \
 
 # Add local www-data group to the user
 RUN usermod -a -G www-data ${username}
+
+RUN curl -SL https://raw.githubusercontent.com/colinmollenhour/modman/master/modman -o /usr/local/bin/modman \
+    && chmod +x /usr/local/bin/modman
+
+RUN mkdir /var/www/html/modules/smailyforprestashop
+WORKDIR /var/www/html/modules/smailyforprestashop
+
+# Entrypoint for symlinking Smaily plugin files
+ADD ./entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["apache2-foreground"]

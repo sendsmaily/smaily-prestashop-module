@@ -21,7 +21,7 @@ services:
       - DB_NAME=prestashop
     volumes:
       - prestashop-data:/var/www/html
-      - ../.:/var/www/html/modules/smailyforprestashop
+      - ../.:/var/www/html/smailyforprestashop
     depends_on:
     - db
 
