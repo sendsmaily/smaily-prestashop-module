@@ -9,7 +9,7 @@ while !(mysql_ready); do
     echo "Waiting for MySQL to finish start up..."
 done
 
-# Link module files to OpenCart installation.
+# Link module files to Prestashop.
 if [ ! -d ./.modman ]; then
     modman init
 fi

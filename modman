@@ -1,6 +1,10 @@
-controllers                controllers/
-translations               translations/
-upgrade                    upgrade/
-views                      views/
+controllers/admin/*        controllers/admin
+controllers/front/*        controllers/front
+translations/*             translations
+upgrade/*                  upgrade
+views/js/*                 views/js
+views/templates/admin/*    views/templates/admin
+views/templates/hook/*     views/templates/hook
 index.php                  index.php
 smailyforprestashop.php    smailyforprestashop.php
+logo.png                   logo.png
