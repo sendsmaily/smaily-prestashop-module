@@ -44,7 +44,7 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_bb7b3c6261b41de1bd1f
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_5588ea18ef47155105d7d11abcb7e4e1'] = 'Croni URL';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_9cc2022eb76bc383c713c406b6ae96f2'] = 'Et aktiveerida automaatne kontaktide sünkroniseerimine seadistage Cron oma teenusepakkuja juures.';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_c9cc8cce247e49bae79f15173ce97354'] = 'Salvesta';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_a27d20b558af715c91592bcee1019dee'] = 'Aktiveeri Unustaud Ostukorvi Meeldetuletus';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_a27d20b558af715c91592bcee1019dee'] = 'Aktiveeri Unustatud Ostukorvi Meeldetuletus';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_872bc575218e7dd2c749633da28c24ab'] = 'Automaatvastaja';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_3c6afc2203f77fb15d7b584e12960540'] = 'Vali Automaatvastaja';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_99770d280600b3c7ecc14faec49165ed'] = '(valitud)';
