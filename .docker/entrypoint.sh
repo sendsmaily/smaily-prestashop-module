@@ -11,8 +11,8 @@ done
 
 # Link module files to Prestashop.
 if [ ! -d ./.modman ]; then
-    modman init
+    su www-data -s /bin/bash -c "modman init"
 fi
-modman link /var/www/html/smailyforprestashop
+su www-data -s /bin/bash -c "modman link /smailyforprestashop"
 
 docker-php-entrypoint "$@"

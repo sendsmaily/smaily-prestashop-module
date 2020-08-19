@@ -17,22 +17,7 @@ RUN if grep -q ${group} /etc/group; then \
 # Add local www-data group to the user
 RUN usermod -a -G www-data ${username}
 
-RUN mkdir /var/www/html/modules/smailyforprestashop
-WORKDIR /var/www/html/modules/smailyforprestashop
-RUN mkdir controllers \
-    && mkdir controllers/admin \
-    && mkdir controllers/front \
-    && mkdir translations \
-    && mkdir upgrade \
-    && mkdir views \
-    && mkdir views/js \
-    && mkdir views/templates \
-    && mkdir views/templates/admin \
-    && mkdir views/templates/hook
-
-RUN chown -R www-data:www-data /var/www/html/modules/ \
-    && find /var/www/html/modules/ -type d -exec chmod 2775 {} \+ \
-    && find /var/www/html/modules/ -type f -exec chmod 664 {} \+
+WORKDIR /var/www/html
 
 # Modman is used for symlinking plugin files to modules folder
 RUN curl -SL https://raw.githubusercontent.com/colinmollenhour/modman/master/modman -o /usr/local/bin/modman \
