@@ -16,3 +16,13 @@ RUN if grep -q ${group} /etc/group; then \
 
 # Add local www-data group to the user
 RUN usermod -a -G www-data ${username}
+
+WORKDIR /var/www/html
+
+# Modman is used for symlinking plugin files to modules folder
+RUN curl -SL https://raw.githubusercontent.com/colinmollenhour/modman/master/modman -o /usr/local/bin/modman \
+    && chmod +x /usr/local/bin/modman
+
+ADD ./entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["apache2-foreground"]
