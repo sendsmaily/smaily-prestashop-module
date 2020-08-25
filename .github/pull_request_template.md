@@ -2,7 +2,7 @@
 
 **Version changelog**
 
-A list of changes regarding the next major version release:
+A list of changes regarding the next version release:
 
 1. Short description of the new feature/fix - #Issue/PR-Number
 2. Short description of the new feature/fix - #Issue/PR-Number
