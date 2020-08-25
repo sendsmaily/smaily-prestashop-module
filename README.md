@@ -109,7 +109,6 @@ More than 10 items: `{{ over_10_products }}`.
 - New options for RSS product feed: order by, order direction, product category.
 - Generate RSS feed in more user friendly manner.
 - Fix bug which caused invalid CRON URLs, when Friendly URL option was disabled.
-- Add Estonian translations for additional fields in abandoned cart settings.
 
 ### 1.3.0
 
