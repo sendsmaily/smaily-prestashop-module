@@ -71,8 +71,8 @@ Smaily's module can create an RSS link of available Prestashop products.
 ![RSS section](assets/RSS.png)
 The module provides several options for generating an RSS feed link.
 1. **Products category**: selecting a category will display only products under that category in the RSS feed.
-2. **Product limit**: limit what is the maximum amount of products displayed in the RSS feed.
-3. **Order by**: order products in the RSS feed by this
+2. **Product limit**: limit what is the maximum amount of products displayed in the RSS feed. Limit can be a value between 1 and 250.
+3. **Order by**: order products in the RSS feed by this.
 4. **Order direction**: in which direction will the module order products.
 
 The generated RSS feed link can be copied to your template editor's RSS block to display products directly in your newsletter. For this, you can follow our [RSS feed manual](http://help.smaily.com/en/support/solutions/articles/16000077027-rss-feed).
