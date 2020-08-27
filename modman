@@ -1,0 +1,10 @@
+controllers/admin/*        modules/smailyforprestashop/controllers/admin
+controllers/front/*        modules/smailyforprestashop/controllers/front
+translations/*             modules/smailyforprestashop/translations
+upgrade/*                  modules/smailyforprestashop/upgrade
+views/js/*                 modules/smailyforprestashop/views/js
+views/templates/admin/*    modules/smailyforprestashop/views/templates/admin
+views/templates/hook/*     modules/smailyforprestashop/views/templates/hook
+index.php                  modules/smailyforprestashop/index.php
+smailyforprestashop.php    modules/smailyforprestashop/smailyforprestashop.php
+logo.png                   modules/smailyforprestashop/logo.png

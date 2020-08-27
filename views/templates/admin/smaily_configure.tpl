@@ -45,6 +45,9 @@
     <li class="nav-item">
       <a class="nav-link" id="abandoned-cart-tab" data-toggle="tab" href="#cart" role="tab">{l s="Abandoned Cart" mod='smailyforprestashop'}</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" id="rss-feed-tab" data-toggle="tab" href="#rss" role="tab">{l s="RSS Feed" mod='smailyforprestashop'}</a>
+    </li>
   </ul>
   {* Form content *}
   <div id='mymodule_wrapper' data-token='{$token}'></div>
@@ -81,15 +84,6 @@
               <p class="help-block">
                   <a href="http://help.smaily.com/en/support/solutions/articles/16000062943-create-api-user" target="_blank"> {l s="How to create API credentials?" mod='smailyforprestashop'}</a>
               </p>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-lg-2">
-              {l s="Rss-feed" mod='smailyforprestashop'}
-            </label>
-            <div class="col-lg-10">
-              <p style="word-wrap:break-word;"><strong>{$smaily_rssfeed_url}</strong></p>
-              <p class="help-block"> {l s="Copy this URL into your template editor's RSS block" mod='smailyforprestashop'}</p>
             </div>
           </div>
         </div>
@@ -181,7 +175,7 @@
               {l s="Cron url" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <p><strong>{$smaily_customer_cron_url}?token={$smaily_customer_cron_token}</strong></p>
+              <p><strong>{$smaily_customer_cron_url}</strong></p>
               <p class="help-block">
                 {l s="To schedule automatic sync, set up CRON in your hosting and use this URL." mod='smailyforprestashop'}
               </p>
@@ -322,7 +316,7 @@
               {l s="Cron url" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <p><strong>{$smaily_cart_cron_url}?token={$smaily_cart_cron_token}</strong></p>
+              <p><strong>{$smaily_cart_cron_url}</strong></p>
               <p class="help-block">
                 {l s="To schedule automatic sync, set up CRON in your hosting and use this URL." mod='smailyforprestashop'}
               </p>
@@ -331,7 +325,85 @@
         </div>
         <div class="panel-footer">
           <button type="submit" name="smaily_submit_abandoned_cart" class="btn btn-default pull-right" >
-            <i class="process-icon-save"></i> 
+            <i class="process-icon-save"></i>
+            {l s="Save" mod='smailyforprestashop' }
+          </button>
+        </div>
+      </form>
+    </div>
+    {* RSS feed settings *}
+    <div class="tab-pane" id="rss" role="tabpanel">
+      <form id="smaily_rss_form" class="defaultForm form-horizontal" method="post" novalidate="novalidate">
+        <div class="form-wrapper">
+          <div class="form-group">
+            <label class="control-label col-lg-2 required">
+              {l s="Products category" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <select name="SMAILY_RSS_CATEGORY_ID" id="SMAILY_RSS_CATEGORY_ID" class="smaily-rss-options">
+              <option value='' {($smaily_rss_selected_category_id === '') ? 'selected' : ''}>{l s="All products" mod='smailyforprestashop'}</option>
+              {foreach $smaily_rss_available_category_ids as $id=>$name}
+                <option value='{$id}' {( (int) $smaily_rss_selected_category_id === $id) ? 'selected' : ''}>
+                  {$name}
+                </option>
+              {/foreach}
+              </select>
+              <p class="help-block">
+                {l s="Show products only from this category." mod='smailyforprestashop'}
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2 required">
+              {l s="Product limit" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <div class="input-group">
+                <input type="number" value="{$smaily_rss_limit}" min="1" max="250" name="SMAILY_RSS_LIMIT" id="SMAILY_RSS_LIMIT" class="smaily-rss-options">
+              </div>
+              <p class="help-block">
+                {l s="Limit how many products you will add to your feed. Maximum 250." mod='smailyforprestashop'}
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2 required">
+              {l s="Order by" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <select name="SMAILY_RSS_SORT_BY" id="SMAILY_RSS_SORT_BY" class="smaily-rss-options">
+                <option value="date_add" {($smaily_rss_sort_by === 'date_add') ? 'selected' : ''}>{l s="Date Added" mod='smailyforprestashop'}</option>
+                <option value="date_upd" {($smaily_rss_sort_by === 'date_upd') ? 'selected' : ''}>{l s="Date Updated" mod='smailyforprestashop'}</option>
+                <option value="name" {($smaily_rss_sort_by === 'name') ? 'selected' : ''}>{l s="Name" mod='smailyforprestashop'}</option>
+                <option value="price" {($smaily_rss_sort_by === 'price') ? 'selected' : ''}>{l s="Price" mod='smailyforprestashop'}</option>
+                <option value="id_product" {($smaily_rss_sort_by === 'id_product') ? 'selected' : ''}>{l s="Product ID" mod='smailyforprestashop'}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2 required">
+              {l s="Order direction" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <select name="SMAILY_RSS_SORT_ORDER" id="SMAILY_RSS_SORT_ORDER" class="smaily-rss-options">
+                <option value="asc" {($smaily_rss_sort_order === 'asc') ? 'selected' : ''}>{l s="Ascending" mod='smailyforprestashop'}</option>
+                <option value="desc" {($smaily_rss_sort_order === 'desc') ? 'selected' : ''}>{l s="Descending" mod='smailyforprestashop'}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2">
+              {l s="Rss-feed" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <p style="word-wrap:break-word;"><strong id="smaily-rss-feed-url" name="smaily-rss-feed-url">{$smaily_rssfeed_url}</strong></p>
+              <p class="help-block"> {l s="Copy this URL into your template editor's RSS block" mod='smailyforprestashop'}</p>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <button type="submit" name="smaily_submit_rss" class="btn btn-default pull-right" >
+            <i class="process-icon-save"></i>
             {l s="Save" mod='smailyforprestashop' }
           </button>
         </div>
