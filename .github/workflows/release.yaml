@@ -12,11 +12,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: master
+          path: smailyforprestashop
 
       - name: Compress ZIP
         uses: TheDoctor0/zip-release@v0.3.0
         with:
           filename: release.zip
+          path: smailyforprestashop
           exclusions: "*.git* /*.docker/* /*assets/* /*tusk.yml"
 
       - name: Get release
