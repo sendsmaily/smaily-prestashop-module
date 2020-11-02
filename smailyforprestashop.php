@@ -78,6 +78,8 @@ class SmailyForPrestashop extends Module
             !Configuration::updateValue('SMAILY_RSS_LIMIT', '50') ||
             !Configuration::updateValue('SMAILY_RSS_SORT_BY', 'date_upd') ||
             !Configuration::updateValue('SMAILY_RSS_SORT_ORDER', 'desc') ||
+            !Configuration::updateValue('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION', 0) ||
+            !Configuration::updateValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER', '') ||
             // Add tab to sidebar
             !$this->installTab('AdminAdmin', 'AdminSmailyforprestashopAjax', 'Smaily for PrestaShop') ||
             // Add Newsletter subscription form.
@@ -132,6 +134,9 @@ class SmailyForPrestashop extends Module
         !Configuration::deleteByName('SMAILY_RSS_LIMIT') ||
         !Configuration::deleteByName('SMAILY_RSS_SORT_BY') ||
         !Configuration::deleteByName('SMAILY_RSS_SORT_ORDER') ||
+        !Configuration::deleteByName('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION') ||
+        !Configuration::deleteByName('SMAILY_CUSTOMER_JOIN_AUTORESPONDER') ||
+
         // Remove sideTab of smaily module.
         !$this->uninstallTab('AdminSmailyforprestashopAjax')
         ) {
@@ -164,9 +169,10 @@ class SmailyForPrestashop extends Module
             ) {
                 // Disable customer sync.
                 Configuration::updateValue('SMAILY_ENABLE_CRON', 0);
-                // Disable abandoned cart cron and remove autoresponder.
+                // Disable abandoned cart cron and remove all autoresponders.
                 Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', 0);
                 Configuration::updateValue('SMAILY_CART_AUTORESPONDER', '');
+                Configuration::updateValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER', '');
                 // Return success message.
                 $output .= $this->displayConfirmation($this->l('Credentials removed!'));
             } else {
@@ -194,6 +200,9 @@ class SmailyForPrestashop extends Module
                     $escaped_sync_additional[] = pSQL($value);
                 }
             }
+            $enable_optin_if_customer_joins_with_subscription = pSQL(Tools::getValue('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION'));
+            $customer_join_autoresponder = pSQL((Tools::getValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER')));
+            $escaped_customer_join_autoresponder = $this->decodeAndCleanAutoresponderValue($customer_join_autoresponder);
             // Check if subdomain is saved to db to verify that credentials are validated.
             if (empty(Configuration::get('SMAILY_SUBDOMAIN'))) {
                 // Display error message.
@@ -203,6 +212,8 @@ class SmailyForPrestashop extends Module
                 Configuration::updateValue('SMAILY_ENABLE_CRON', $enable_cron);
                 Configuration::updateValue('SMAILY_CUSTOMER_CRON_TOKEN', $customer_cron_token);
                 Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize($escaped_sync_additional));
+                Configuration::updateValue('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION', $enable_optin_if_customer_joins_with_subscription);
+                Configuration::updateValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER', serialize($escaped_customer_join_autoresponder));
                 // Display success message.
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
@@ -223,16 +234,7 @@ class SmailyForPrestashop extends Module
             }
             // Abandoned cart Autoresponder
             $cart_autoresponder = pSQL((Tools::getValue('SMAILY_CART_AUTORESPONDER')));
-            $cart_autoresponder = str_replace('\"', '"', $cart_autoresponder);
-            // Get autoresponder array from json string.
-            $cart_autoresponder = Tools::jsonDecode($cart_autoresponder);
-            // Clean autoresponder for inserting to database.
-            $escaped_cart_autoresponder = array();
-            if (!empty($cart_autoresponder)) {
-                foreach ($cart_autoresponder as $key => $value) {
-                    $escaped_cart_autoresponder[ pSQL($key)] = pSQL($value);
-                }
-            }
+            $escaped_cart_autoresponder = $this->decodeAndCleanAutoresponderValue($cart_autoresponder);
             // Syncronize additional for abandoned cart template.
             $cart_syncronize_additional = Tools::getValue('SMAILY_CART_SYNCRONIZE_ADDITIONAL');
             $cart_escaped_sync_additional = array();
@@ -308,14 +310,20 @@ class SmailyForPrestashop extends Module
         } else {
             $cart_cron_token = uniqid();
         }
+        // Get customer join autoresponder values for template.
+        $customer_join_autoresponder = pSQL((Configuration::get('SMAILY_CUSTOMER_JOIN_AUTORESPONDER')));
+        $customer_join_autoresponder_for_template = $this->unSerializeAutoresponderForTemplate($customer_join_autoresponder);
+        var_dump($customer_join_autoresponder);
+        var_dump($customer_join_autoresponder_for_template);
         // Get abandoned cart autoresponder values for template.
-        $cart_autoresponder_for_template = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
-        $cart_autoresponder_for_template = str_replace('\"', '"', $cart_autoresponder_for_template);
-        $cart_autoresponder_for_template = unserialize($cart_autoresponder_for_template);
+        $cart_autoresponder = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
+        $cart_autoresponder_for_template = $this->unSerializeAutoresponderForTemplate($cart_autoresponder);
+        var_dump($cart_autoresponder);
+        var_dump($cart_autoresponder_for_template);
 
         $categories = Category::getNestedCategories(null, Context::getContext()->language->id);
 
-        // Assign variables to template if available.
+        // Assign variables to template if available._for_template =
         $this->context->smarty->assign(
             array(
             'smaily_enable_cron' =>  pSQL(Configuration::get('SMAILY_ENABLE_CRON')),
@@ -329,6 +337,8 @@ class SmailyForPrestashop extends Module
             'smaily_cart_syncronize_additional' => $cart_sync_array,
             'token' => Tools::getAdminTokenLite('AdminSmailyforprestashopAjax'),
             'smaily_rssfeed_url' => $this->buildRssUrlFromSettings(),
+            'smaily_customer_cron_token' => $customer_cron_token,
+            'smaily_cart_cron_token' => $cart_cron_token,
             'smaily_customer_cron_url' => Context::getContext()->link->getModuleLink(
                 'smailyforprestashop',
                 'SmailyCustomerCron',
@@ -344,10 +354,37 @@ class SmailyForPrestashop extends Module
             'smaily_rss_limit' => pSQL(Configuration::get('SMAILY_RSS_LIMIT')),
             'smaily_rss_sort_by' => pSQL(Configuration::get('SMAILY_RSS_SORT_BY')),
             'smaily_rss_sort_order' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
+            'smaily_customer_join_autoresponder' => $customer_join_autoresponder_for_template,
+            'smaily_enable_optin_if_customer_joins_with_subscription' => pSQL(Configuration::get('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION')),
             )
         );
         // Display settings form.
         return $output .= $this->display(__FILE__, 'views/templates/admin/smaily_configure.tpl');
+    }
+
+    /**
+     * TODO
+     */
+    private function decodeAndCleanAutoresponderValue($cart_autoresponder) {
+        $cart_autoresponder = str_replace('\"', '"', $cart_autoresponder);
+        // Get autoresponder array from json string.
+        $cart_autoresponder = Tools::jsonDecode($cart_autoresponder);
+        // Clean autoresponder for inserting to database.
+        $escaped_cart_autoresponder = array();
+        if (!empty($cart_autoresponder)) {
+            foreach ($cart_autoresponder as $key => $value) {
+                $escaped_cart_autoresponder[ pSQL($key)] = pSQL($value);
+            }
+        }
+        return $escaped_cart_autoresponder;
+    }
+
+    /**
+     * TODO
+     */
+    private function unSerializeAutoresponderForTemplate($autoresponder) {
+        $autoresponder = str_replace('\"', '"', $autoresponder);
+        return unserialize($autoresponder);
     }
 
     /**
