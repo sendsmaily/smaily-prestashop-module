@@ -334,6 +334,8 @@ class SmailyForPrestashop extends Module
                 'SmailyCustomerCron',
                 array('token' => $customer_cron_token)
             ),
+            'smaily_customer_cron_token' => $customer_cron_token,
+            'smaily_cart_cron_token' => $cart_cron_token,
             'smaily_cart_cron_url' => Context::getContext()->link->getModuleLink(
                 'smailyforprestashop',
                 'SmailyCartCron',
