@@ -168,9 +168,10 @@ class SmailyForPrestashop extends Module
             ) {
                 // Disable customer sync.
                 Configuration::updateValue('SMAILY_ENABLE_CRON', 0);
-                // Disable abandoned cart cron and remove autoresponder.
+                // Disable abandoned cart cron and remove all autoresponders.
                 Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', 0);
                 Configuration::updateValue('SMAILY_CART_AUTORESPONDER', '');
+                Configuration::updateValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER', '');
                 // Return success message.
                 $output .= $this->displayConfirmation($this->l('Credentials removed!'));
             } else {
