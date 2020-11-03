@@ -64,6 +64,18 @@ $(document).ready(function() {
           $("#smaily-validate-form-group").hide();
           // Check if there are any autoresponders.
           if (result["autoresponders"].length > 0) {
+            // Append received autoresponders to "Trigger Opt-in Automation If Customer Joins With Newsletter Subscription".
+            $.each(result["autoresponders"], function(index, item) {
+              $("#SMAILY_CUSTOMER_JOIN_AUTORESPONDER").append(
+                $("<option>", {
+                  value: JSON.stringify({
+                    name: item["title"],
+                    id: item["id"]
+                  }),
+                  text: item["title"]
+                })
+              );
+            });
             // Append received autoresponders to Select Autoresponder options.
             $.each(result["autoresponders"], function(index, item) {
               $("#SMAILY_CART_AUTORESPONDER").append(
@@ -78,6 +90,11 @@ $(document).ready(function() {
             });
           } else {
             // When no autoresponders created display message.
+            $("#SMAILY_CUSTOMER_JOIN_AUTORESPONDER").append(
+              $("<option>")
+                .val("")
+                .text(smailymessages.no_autoresponders)
+            );
             $("#SMAILY_CART_AUTORESPONDER").append(
               $("<option>")
                 .val("")
@@ -164,10 +181,24 @@ $(document).ready(function() {
                   text: item["title"]
                 })
               );
+              $("#SMAILY_CUSTOMER_JOIN_AUTORESPONDER").append(
+                $("<option>", {
+                  value: JSON.stringify({
+                    name: item["title"],
+                    id: item["id"]
+                  }),
+                  text: item["title"]
+                })
+              );
             });
           } else {
             // When no autoresponders created display message.
             $("#SMAILY_CART_AUTORESPONDER").append(
+              $("<option>")
+                .val("")
+                .text(smailymessages.no_autoresponders)
+            );
+            $("#SMAILY_CUSTOMER_JOIN_AUTORESPONDER").append(
               $("<option>")
                 .val("")
                 .text(smailymessages.no_autoresponders)
