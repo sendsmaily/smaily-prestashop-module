@@ -78,6 +78,8 @@ class SmailyForPrestashop extends Module
             !Configuration::updateValue('SMAILY_RSS_LIMIT', '50') ||
             !Configuration::updateValue('SMAILY_RSS_SORT_BY', 'date_upd') ||
             !Configuration::updateValue('SMAILY_RSS_SORT_ORDER', 'desc') ||
+            !Configuration::updateValue('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION', 0) ||
+            !Configuration::updateValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER', '') ||
             // Add tab to sidebar
             !$this->installTab('AdminAdmin', 'AdminSmailyforprestashopAjax', 'Smaily for PrestaShop') ||
             // Add Newsletter subscription form.
@@ -132,6 +134,8 @@ class SmailyForPrestashop extends Module
         !Configuration::deleteByName('SMAILY_RSS_LIMIT') ||
         !Configuration::deleteByName('SMAILY_RSS_SORT_BY') ||
         !Configuration::deleteByName('SMAILY_RSS_SORT_ORDER') ||
+        !Configuration::deleteByName('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION') ||
+        !Configuration::deleteByName('SMAILY_CUSTOMER_JOIN_AUTORESPONDER') ||
         // Remove sideTab of smaily module.
         !$this->uninstallTab('AdminSmailyforprestashopAjax')
         ) {
