@@ -85,7 +85,9 @@ class SmailyForPrestashop extends Module
             // Add Newsletter subscription form.
             !$this->registerHook('footerBefore') ||
             !$this->registerHook('leftColumn') ||
-            !$this->registerHook('rightColumn')
+            !$this->registerHook('rightColumn') ||
+            // User has option to trigger opt-in when customer joins store & newsletter through sign-up.
+            !$this->registerHook('actionCustomerAccountAdd')
         ) {
             return false;
         }
@@ -475,6 +477,47 @@ class SmailyForPrestashop extends Module
                     )
                 )
             );
+        }
+    }
+
+    /**
+     * Trigger Smaily Opt-in if customer joins with newsletter subscription.
+     *
+     * @param array $params Array of parameters being passed to the hook function.
+     * @return bool Success of the operation.
+     */
+    public function hookActionCustomerAccountAdd($params)
+    {
+        if (empty($params['newCustomer'])) {
+            return false;
+        }
+        $email = $params['newCustomer']->email;
+        if (!Validate::isEmail($email)) {
+            return false;
+        }
+        $is_newsletter_checked = $params['newCustomer']->newsletter === "1";
+        $is_subscription_optin_enabled = Configuration::get('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION') === "1";
+        if (!$is_newsletter_checked || !$is_subscription_optin_enabled) {
+            return false;
+        }
+
+        $autoresponder = unserialize(Configuration::get('SMAILY_CUSTOMER_JOIN_AUTORESPONDER'));
+        $autoresponder_id = isset($autoresponder['id']) ? $autoresponder['id'] : '';
+        $query = array(
+            'autoresponder' => $autoresponder_id,
+            'addresses' => [['email' => $email]]
+        );
+        $response = $this->callApi('autoresponder', $query, 'POST');
+        $opt_in_successful = array_key_exists('success', $response) && isset($response['result']['code']) && $response['result']['code'] === 101;
+        if (array_key_exists('success', $response) &&
+            isset($response['result']['code']) &&
+            $response['result']['code'] === 101) {
+                return true; // All good.
+        } else {
+            // Supply query values to $response variable and save log of unsuccesful operation.
+            $response['query'] = $query;
+            $this->logTofile('smaily-customer-join.txt', Tools::jsonEncode($response));
+            return false;
         }
     }
 
