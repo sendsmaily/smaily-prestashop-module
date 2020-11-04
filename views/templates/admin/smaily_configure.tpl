@@ -200,7 +200,7 @@
           </div>
           <div class="form-group">
             <label class="control-label col-lg-2">
-              {l s="Opt-in Automation If Customer Joins With Newsletter Subscription" mod='smailyforprestashop'}
+              {l s="Automation to trigger on customer sign-up" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_OPTIN_AUTORESPONDER" id="SMAILY_OPTIN_AUTORESPONDER">
