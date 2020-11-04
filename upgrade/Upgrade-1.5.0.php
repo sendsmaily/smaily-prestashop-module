@@ -31,7 +31,7 @@ if (!defined('_PS_VERSION_')) {
  */
 function upgrade_module_1_5_0($object)
 {
-    Configuration::updateValue('SMAILY_OPTIN_ENABLED', 0);
-    Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', '');
-    return $this->registerHook('actionCustomerAccountAdd')
+    return (Configuration::updateValue('SMAILY_OPTIN_ENABLED', 0) &&
+        Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', '') &&
+        $object->registerHook('actionCustomerAccountAdd'));
 }
