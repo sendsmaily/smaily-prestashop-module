@@ -78,8 +78,8 @@ class SmailyForPrestashop extends Module
             !Configuration::updateValue('SMAILY_RSS_LIMIT', '50') ||
             !Configuration::updateValue('SMAILY_RSS_SORT_BY', 'date_upd') ||
             !Configuration::updateValue('SMAILY_RSS_SORT_ORDER', 'desc') ||
-            !Configuration::updateValue('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION', 0) ||
-            !Configuration::updateValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER', '') ||
+            !Configuration::updateValue('SMAILY_OPTIN_ENABLED', 0) ||
+            !Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', '') ||
             // Add tab to sidebar
             !$this->installTab('AdminAdmin', 'AdminSmailyforprestashopAjax', 'Smaily for PrestaShop') ||
             // Add Newsletter subscription form.
@@ -136,8 +136,8 @@ class SmailyForPrestashop extends Module
         !Configuration::deleteByName('SMAILY_RSS_LIMIT') ||
         !Configuration::deleteByName('SMAILY_RSS_SORT_BY') ||
         !Configuration::deleteByName('SMAILY_RSS_SORT_ORDER') ||
-        !Configuration::deleteByName('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION') ||
-        !Configuration::deleteByName('SMAILY_CUSTOMER_JOIN_AUTORESPONDER') ||
+        !Configuration::deleteByName('SMAILY_OPTIN_ENABLED') ||
+        !Configuration::deleteByName('SMAILY_OPTIN_AUTORESPONDER') ||
         // Remove sideTab of smaily module.
         !$this->uninstallTab('AdminSmailyforprestashopAjax')
         ) {
@@ -173,7 +173,7 @@ class SmailyForPrestashop extends Module
                 // Disable abandoned cart cron and remove all autoresponders.
                 Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', 0);
                 Configuration::updateValue('SMAILY_CART_AUTORESPONDER', '');
-                Configuration::updateValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER', '');
+                Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', '');
                 // Return success message.
                 $output .= $this->displayConfirmation($this->l('Credentials removed!'));
             } else {
@@ -201,8 +201,8 @@ class SmailyForPrestashop extends Module
                     $escaped_sync_additional[] = pSQL($value);
                 }
             }
-            $enable_optin_if_customer_joins_with_subscription = pSQL(Tools::getValue('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION'));
-            $customer_join_autoresponder = pSQL((Tools::getValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER')));
+            $enable_optin_if_customer_joins_with_subscription = pSQL(Tools::getValue('SMAILY_OPTIN_ENABLED'));
+            $customer_join_autoresponder = pSQL((Tools::getValue('SMAILY_OPTIN_AUTORESPONDER')));
             $escaped_customer_join_autoresponder = $this->decodeAndCleanAutoresponderValue($customer_join_autoresponder);
             // Check if subdomain is saved to db to verify that credentials are validated.
             if (empty(Configuration::get('SMAILY_SUBDOMAIN'))) {
@@ -213,8 +213,8 @@ class SmailyForPrestashop extends Module
                 Configuration::updateValue('SMAILY_ENABLE_CRON', $enable_cron);
                 Configuration::updateValue('SMAILY_CUSTOMER_CRON_TOKEN', $customer_cron_token);
                 Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize($escaped_sync_additional));
-                Configuration::updateValue('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION', $enable_optin_if_customer_joins_with_subscription);
-                Configuration::updateValue('SMAILY_CUSTOMER_JOIN_AUTORESPONDER', serialize($escaped_customer_join_autoresponder));
+                Configuration::updateValue('SMAILY_OPTIN_ENABLED', $enable_optin_if_customer_joins_with_subscription);
+                Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', serialize($escaped_customer_join_autoresponder));
                 // Display success message.
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
@@ -312,7 +312,7 @@ class SmailyForPrestashop extends Module
             $cart_cron_token = uniqid();
         }
         // Get customer join autoresponder values for template.
-        $customer_join_autoresponder = pSQL((Configuration::get('SMAILY_CUSTOMER_JOIN_AUTORESPONDER')));
+        $customer_join_autoresponder = pSQL((Configuration::get('SMAILY_OPTIN_AUTORESPONDER')));
         $customer_join_autoresponder_for_template = $this->unSerializeAutoresponderForTemplate($customer_join_autoresponder);
         // Get abandoned cart autoresponder values for template.
         $cart_autoresponder = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
@@ -349,8 +349,8 @@ class SmailyForPrestashop extends Module
             'smaily_rss_limit' => pSQL(Configuration::get('SMAILY_RSS_LIMIT')),
             'smaily_rss_sort_by' => pSQL(Configuration::get('SMAILY_RSS_SORT_BY')),
             'smaily_rss_sort_order' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
-            'smaily_customer_join_autoresponder' => $customer_join_autoresponder_for_template,
-            'smaily_enable_optin_if_customer_joins_with_subscription' => pSQL(Configuration::get('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION')),
+            'smaily_optin_autoresponder' => $customer_join_autoresponder_for_template,
+            'smaily_optin_enabled' => pSQL(Configuration::get('SMAILY_OPTIN_ENABLED')),
             )
         );
         // Display settings form.
@@ -496,12 +496,12 @@ class SmailyForPrestashop extends Module
             return false;
         }
         $is_newsletter_checked = $params['newCustomer']->newsletter === "1";
-        $is_subscription_optin_enabled = Configuration::get('SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION') === "1";
+        $is_subscription_optin_enabled = Configuration::get('SMAILY_OPTIN_ENABLED') === "1";
         if (!$is_newsletter_checked || !$is_subscription_optin_enabled) {
             return false;
         }
 
-        $autoresponder = unserialize(Configuration::get('SMAILY_CUSTOMER_JOIN_AUTORESPONDER'));
+        $autoresponder = unserialize(Configuration::get('SMAILY_OPTIN_AUTORESPONDER'));
         $autoresponder_id = isset($autoresponder['id']) ? $autoresponder['id'] : '';
         $query = array(
             'autoresponder' => $autoresponder_id,

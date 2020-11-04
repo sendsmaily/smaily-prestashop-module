@@ -187,9 +187,9 @@
             </label>
             <div class="col-lg-10">
               <span class="switch prestashop-switch fixed-width-lg">
-                <input type="radio" name="SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION" id="Enable" value="1" {($smaily_enable_optin_if_customer_joins_with_subscription == 1) ? 'checked' :'' }>
+                <input type="radio" name="SMAILY_OPTIN_ENABLED" id="Enable" value="1" {($smaily_optin_enabled == 1) ? 'checked' :'' }>
                 <label for="Enable">{l s="Yes" mod='smailyforprestashop'}</label>
-                <input type="radio" name="SMAILY_ENABLE_OPTIN_IF_CUSTOMER_JOINS_WITH_SUBSCRIPTION" id="Disable" value="0" {($smaily_enable_optin_if_customer_joins_with_subscription == 0) ? 'checked' :'' }>
+                <input type="radio" name="SMAILY_OPTIN_ENABLED" id="Disable" value="0" {($smaily_optin_enabled == 0) ? 'checked' :'' }>
                 <label for="Disable">{l s="No" mod='smailyforprestashop'}</label>
                 <a class="slide-button btn"></a>
               </span>
@@ -200,14 +200,14 @@
               {l s="Opt-in Automation If Customer Joins With Newsletter Subscription" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <select name="SMAILY_CUSTOMER_JOIN_AUTORESPONDER" id="SMAILY_CUSTOMER_JOIN_AUTORESPONDER">
-                {if empty($smaily_customer_join_autoresponder)}
+              <select name="SMAILY_OPTIN_AUTORESPONDER" id="SMAILY_OPTIN_AUTORESPONDER">
+                {if empty($smaily_optin_autoresponder)}
                 <option value="">
                   {l s="No Autoresponder" mod='smailyforprestashop'}
                 </option>
                 {else}
-                <option value='{$smaily_customer_join_autoresponder|json_encode}'>
-                  {$smaily_customer_join_autoresponder['name']} {l s="(selected)" mod='smailyforprestashop'}
+                <option value='{$smaily_optin_autoresponder|json_encode}'>
+                  {$smaily_optin_autoresponder['name']} {l s="(selected)" mod='smailyforprestashop'}
                 </option>
                 {/if}
               </select>
