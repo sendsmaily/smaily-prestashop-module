@@ -202,8 +202,7 @@ class SmailyForPrestashop extends Module
                 }
             }
             $enable_optin_if_customer_joins_with_subscription = pSQL(Tools::getValue('SMAILY_OPTIN_ENABLED'));
-            $customer_join_autoresponder = pSQL((Tools::getValue('SMAILY_OPTIN_AUTORESPONDER')));
-            $escaped_customer_join_autoresponder = $this->decodeAndCleanAutoresponderValue($customer_join_autoresponder);
+            $customer_join_autoresponder = pSQL(Tools::getValue('SMAILY_OPTIN_AUTORESPONDER'));
             // Check if subdomain is saved to db to verify that credentials are validated.
             if (empty(Configuration::get('SMAILY_SUBDOMAIN'))) {
                 // Display error message.
@@ -214,7 +213,7 @@ class SmailyForPrestashop extends Module
                 Configuration::updateValue('SMAILY_CUSTOMER_CRON_TOKEN', $customer_cron_token);
                 Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize($escaped_sync_additional));
                 Configuration::updateValue('SMAILY_OPTIN_ENABLED', $enable_optin_if_customer_joins_with_subscription);
-                Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', serialize($escaped_customer_join_autoresponder));
+                Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', $customer_join_autoresponder);
                 // Display success message.
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
@@ -312,8 +311,7 @@ class SmailyForPrestashop extends Module
             $cart_cron_token = uniqid();
         }
         // Get customer join autoresponder values for template.
-        $customer_join_autoresponder = pSQL((Configuration::get('SMAILY_OPTIN_AUTORESPONDER')));
-        $customer_join_autoresponder_for_template = $this->unSerializeAutoresponderForTemplate($customer_join_autoresponder);
+        $optin_autoresponder = pSQL(Configuration::get('SMAILY_OPTIN_AUTORESPONDER'));
         // Get abandoned cart autoresponder values for template.
         $cart_autoresponder = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
         $cart_autoresponder_for_template = $this->unSerializeAutoresponderForTemplate($cart_autoresponder);
@@ -349,7 +347,7 @@ class SmailyForPrestashop extends Module
             'smaily_rss_limit' => pSQL(Configuration::get('SMAILY_RSS_LIMIT')),
             'smaily_rss_sort_by' => pSQL(Configuration::get('SMAILY_RSS_SORT_BY')),
             'smaily_rss_sort_order' => pSQL(Configuration::get('SMAILY_RSS_SORT_ORDER')),
-            'smaily_optin_autoresponder' => $customer_join_autoresponder_for_template,
+            'smaily_optin_autoresponder' => $optin_autoresponder,
             'smaily_optin_enabled' => pSQL(Configuration::get('SMAILY_OPTIN_ENABLED')),
             )
         );
@@ -501,8 +499,8 @@ class SmailyForPrestashop extends Module
             return false;
         }
 
-        $autoresponder = unserialize(Configuration::get('SMAILY_OPTIN_AUTORESPONDER'));
-        $autoresponder_id = isset($autoresponder['id']) ? $autoresponder['id'] : '';
+        $autoresponder = Configuration::get('SMAILY_OPTIN_AUTORESPONDER');
+        $autoresponder_id = empty($autoresponder) ? '' : (int) $autoresponder;
         $query = array(
             'autoresponder' => $autoresponder_id,
             'addresses' => [['email' => $email]]

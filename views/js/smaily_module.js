@@ -138,8 +138,7 @@ $(document).ready(function() {
     $('#smaily-rss-feed-url').html(rss_url_base + $.param(url_parameters));
   });
 
-  // Load autoresponders when visiting settings page.
-  (function() {
+    // Load autoresponders when visiting settings page.
     // Check if credentials are set.
     var subdomain = $("#SMAILY_SUBDOMAIN").val();
     var username = $("#SMAILY_USERNAME").val();
@@ -170,6 +169,7 @@ $(document).ready(function() {
         if (result["success"] === true) {
           // Check if there are any autoresponders.
           if (result["autoresponders"].length > 0) {
+            var selected_id = parseInt($("#SMAILY_OPTIN_AUTORESPONDER").attr('data-selected-id'));
             // Append autoresponder to cart autoresponders list.
             $.each(result["autoresponders"], function(index, item) {
               $("#SMAILY_CART_AUTORESPONDER").append(
@@ -183,11 +183,9 @@ $(document).ready(function() {
               );
               $("#SMAILY_OPTIN_AUTORESPONDER").append(
                 $("<option>", {
-                  value: JSON.stringify({
-                    name: item["title"],
-                    id: item["id"]
-                  }),
-                  text: item["title"]
+                  value: item["id"],
+                  text: item["title"],
+                  selected: selected_id === item["id"]
                 })
               );
             });
@@ -211,7 +209,6 @@ $(document).ready(function() {
         displayMessage(smailymessages.no_connection, true);
       }
     });
-  })();
 
   // Function to display messages in smaily-messages block.
   function displayMessage(message) {
