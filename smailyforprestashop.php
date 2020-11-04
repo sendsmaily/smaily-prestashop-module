@@ -201,7 +201,7 @@ class SmailyForPrestashop extends Module
                     $escaped_sync_additional[] = pSQL($value);
                 }
             }
-            $enable_optin_if_customer_joins_with_subscription = pSQL(Tools::getValue('SMAILY_OPTIN_ENABLED'));
+            $optin_enabled = pSQL(Tools::getValue('SMAILY_OPTIN_ENABLED'));
             $customer_join_autoresponder = pSQL(Tools::getValue('SMAILY_OPTIN_AUTORESPONDER'));
             // Check if subdomain is saved to db to verify that credentials are validated.
             if (empty(Configuration::get('SMAILY_SUBDOMAIN'))) {
@@ -212,7 +212,7 @@ class SmailyForPrestashop extends Module
                 Configuration::updateValue('SMAILY_ENABLE_CRON', $enable_cron);
                 Configuration::updateValue('SMAILY_CUSTOMER_CRON_TOKEN', $customer_cron_token);
                 Configuration::updateValue('SMAILY_SYNCRONIZE_ADDITIONAL', serialize($escaped_sync_additional));
-                Configuration::updateValue('SMAILY_OPTIN_ENABLED', $enable_optin_if_customer_joins_with_subscription);
+                Configuration::updateValue('SMAILY_OPTIN_ENABLED', $optin_enabled);
                 Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', $customer_join_autoresponder);
                 // Display success message.
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
