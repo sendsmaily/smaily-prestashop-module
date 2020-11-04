@@ -204,11 +204,9 @@
             </label>
             <div class="col-lg-10">
               <select name="SMAILY_OPTIN_AUTORESPONDER" id="SMAILY_OPTIN_AUTORESPONDER" data-selected-id={$smaily_optin_autoresponder}>
-                {if empty($smaily_optin_autoresponder)}
                 <option value="">
                   {l s="No Autoresponder" mod='smailyforprestashop'}
                 </option>
-                {/if}
               </select>
             </div>
           </div>
