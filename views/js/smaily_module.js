@@ -64,15 +64,15 @@ $(document).ready(function() {
           $("#smaily-validate-form-group").hide();
           // Check if there are any autoresponders.
           if (result["autoresponders"].length > 0) {
+            var optin_selected_id = parseInt($("#SMAILY_OPTIN_AUTORESPONDER").attr('data-selected-id'));
+            var cart_selected_id = parseInt($("#SMAILY_CART_AUTORESPONDER").attr('data-selected-id'));
             // Append received autoresponders to "Trigger Opt-in Automation If Customer Joins With Newsletter Subscription".
             $.each(result["autoresponders"], function(index, item) {
               $("#SMAILY_OPTIN_AUTORESPONDER").append(
                 $("<option>", {
-                  value: JSON.stringify({
-                    name: item["title"],
-                    id: item["id"]
-                  }),
-                  text: item["title"]
+                  value: item["id"],
+                  text: item["title"],
+                  selected: optin_selected_id === item["id"]
                 })
               );
             });
@@ -80,21 +80,15 @@ $(document).ready(function() {
             $.each(result["autoresponders"], function(index, item) {
               $("#SMAILY_CART_AUTORESPONDER").append(
                 $("<option>", {
-                  value: JSON.stringify({
-                    name: item["title"],
-                    id: item["id"]
-                  }),
-                  text: item["title"]
+                  value: item["id"],
+                  text: item["title"],
+                  selected: cart_selected_id === item["id"]
                 })
               );
             });
           } else {
             // When no autoresponders created display message.
-            $("#SMAILY_OPTIN_AUTORESPONDER").append(
-              $("<option>")
-                .val("")
-                .text(smailymessages.no_autoresponders)
-            );
+            displayMessage(smailymessages.no_autoresponders, true);
             $("#SMAILY_CART_AUTORESPONDER").append(
               $("<option>")
                 .val("")
@@ -169,23 +163,22 @@ $(document).ready(function() {
         if (result["success"] === true) {
           // Check if there are any autoresponders.
           if (result["autoresponders"].length > 0) {
-            var selected_id = parseInt($("#SMAILY_OPTIN_AUTORESPONDER").attr('data-selected-id'));
+            var optin_selected_id = parseInt($("#SMAILY_OPTIN_AUTORESPONDER").attr('data-selected-id'));
+            var cart_selected_id = parseInt($("#SMAILY_CART_AUTORESPONDER").attr('data-selected-id'));
             // Append autoresponder to cart autoresponders list.
             $.each(result["autoresponders"], function(index, item) {
               $("#SMAILY_CART_AUTORESPONDER").append(
                 $("<option>", {
-                  value: JSON.stringify({
-                    name: item["title"],
-                    id: item["id"]
-                  }),
-                  text: item["title"]
+                  value: item["id"],
+                  text: item["title"],
+                  selected: cart_selected_id === item["id"]
                 })
               );
               $("#SMAILY_OPTIN_AUTORESPONDER").append(
                 $("<option>", {
                   value: item["id"],
                   text: item["title"],
-                  selected: selected_id === item["id"]
+                  selected: optin_selected_id === item["id"]
                 })
               );
             });

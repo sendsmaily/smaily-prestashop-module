@@ -242,14 +242,10 @@
               {l s="Autoresponder" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <select name="SMAILY_CART_AUTORESPONDER" id="SMAILY_CART_AUTORESPONDER">
+              <select name="SMAILY_CART_AUTORESPONDER" id="SMAILY_CART_AUTORESPONDER" data-selected-id={$smaily_cart_autoresponder}>
                 {if empty($smaily_cart_autoresponder)}
                 <option value="">
                   {l s="Select Autoresponder" mod='smailyforprestashop'}
-                </option>
-                {else}
-                <option value='{$smaily_cart_autoresponder|json_encode}'>
-                  {$smaily_cart_autoresponder['name']} {l s="(selected)" mod='smailyforprestashop'}
                 </option>
                 {/if}
               </select>

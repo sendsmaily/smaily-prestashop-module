@@ -233,8 +233,7 @@ class SmailyForPrestashop extends Module
                 $cart_cron_token = uniqid();
             }
             // Abandoned cart Autoresponder
-            $cart_autoresponder = pSQL((Tools::getValue('SMAILY_CART_AUTORESPONDER')));
-            $escaped_cart_autoresponder = $this->decodeAndCleanAutoresponderValue($cart_autoresponder);
+            $cart_autoresponder = pSQL(Tools::getValue('SMAILY_CART_AUTORESPONDER'));
             // Syncronize additional for abandoned cart template.
             $cart_syncronize_additional = Tools::getValue('SMAILY_CART_SYNCRONIZE_ADDITIONAL');
             $cart_escaped_sync_additional = array();
@@ -252,7 +251,7 @@ class SmailyForPrestashop extends Module
                 $output .= $this->displayError($this->l('Select autoresponder for abandoned cart.'));
             } else {
                 Configuration::updateValue('SMAILY_ENABLE_ABANDONED_CART', $enable_abandoned_cart);
-                Configuration::updateValue('SMAILY_CART_AUTORESPONDER', serialize($escaped_cart_autoresponder));
+                Configuration::updateValue('SMAILY_CART_AUTORESPONDER', $cart_autoresponder);
                 Configuration::updateValue('SMAILY_ABANDONED_CART_TIME', $abandoned_cart_time);
                 Configuration::updateValue('SMAILY_CART_CRON_TOKEN', $cart_cron_token);
                 Configuration::updateValue(
@@ -313,8 +312,7 @@ class SmailyForPrestashop extends Module
         // Get customer join autoresponder values for template.
         $optin_autoresponder = pSQL(Configuration::get('SMAILY_OPTIN_AUTORESPONDER'));
         // Get abandoned cart autoresponder values for template.
-        $cart_autoresponder = pSQL((Configuration::get('SMAILY_CART_AUTORESPONDER')));
-        $cart_autoresponder_for_template = $this->unSerializeAutoresponderForTemplate($cart_autoresponder);
+        $cart_autoresponder = pSQL(Configuration::get('SMAILY_CART_AUTORESPONDER'));
 
         $categories = Category::getNestedCategories(null, Context::getContext()->language->id);
 
@@ -326,7 +324,7 @@ class SmailyForPrestashop extends Module
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
             'smaily_username' => pSQL(Configuration::get('SMAILY_USERNAME')),
             'smaily_password' => pSQL(Configuration::get('SMAILY_PASSWORD')),
-            'smaily_cart_autoresponder' => $cart_autoresponder_for_template,
+            'smaily_cart_autoresponder' => $cart_autoresponder,
             'smaily_abandoned_cart_time' => pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME')),
             'smaily_syncronize_additional' => $sync_array,
             'smaily_cart_syncronize_additional' => $cart_sync_array,
