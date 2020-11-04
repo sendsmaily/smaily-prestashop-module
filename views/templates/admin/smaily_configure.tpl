@@ -183,7 +183,7 @@
           </div>
           <div class="form-group">
             <label class="control-label col-lg-2">
-              {l s="Trigger Opt-in If Customer Joins With Newsletter Subscription" mod='smailyforprestashop'}
+              {l s="Trigger opt-in on customer sign-up" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
               <span class="switch prestashop-switch fixed-width-lg">
