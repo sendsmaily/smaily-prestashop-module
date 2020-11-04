@@ -191,6 +191,11 @@ $(document).ready(function() {
             });
           } else {
             // When no autoresponders created display message.
+            $("#SMAILY_CART_AUTORESPONDER").append(
+              $("<option>")
+                .val("")
+                .text(smailymessages.no_autoresponders)
+            );
             displayMessage(smailymessages.no_autoresponders, true);
           }
         }
