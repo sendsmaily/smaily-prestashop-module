@@ -193,6 +193,9 @@
                 <label for="Disable">{l s="No" mod='smailyforprestashop'}</label>
                 <a class="slide-button btn"></a>
               </span>
+              <p class="help-block">
+                {l s="Opt-in will only be triggered when customer creates an account & signs-up for newsletter. Changes to newsletter subscription in admin won't trigger an opt-in." mod='smailyforprestashop'}
+              </p>
             </div>
           </div>
           <div class="form-group">
