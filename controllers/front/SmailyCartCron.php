@@ -51,8 +51,7 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
         }
 
         // Settings.
-        $autoresponder = unserialize(Configuration::get('SMAILY_CART_AUTORESPONDER'));
-        $autoresponder_id = pSQL($autoresponder['id']);
+        $autoresponder_id = pSQL(Configuration::get('SMAILY_CART_AUTORESPONDER'));
         $delay = pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME'));
         $sync_fields = unserialize(Configuration::get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
 

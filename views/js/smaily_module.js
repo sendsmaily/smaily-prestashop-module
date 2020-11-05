@@ -64,20 +64,31 @@ $(document).ready(function() {
           $("#smaily-validate-form-group").hide();
           // Check if there are any autoresponders.
           if (result["autoresponders"].length > 0) {
+            var optin_selected_id = parseInt($("#SMAILY_OPTIN_AUTORESPONDER").attr('data-selected-id'));
+            var cart_selected_id = parseInt($("#SMAILY_CART_AUTORESPONDER").attr('data-selected-id'));
+            // Append received autoresponders to "Trigger Opt-in Automation If Customer Joins With Newsletter Subscription".
+            $.each(result["autoresponders"], function(index, item) {
+              $("#SMAILY_OPTIN_AUTORESPONDER").append(
+                $("<option>", {
+                  value: item["id"],
+                  text: item["title"],
+                  selected: optin_selected_id === item["id"]
+                })
+              );
+            });
             // Append received autoresponders to Select Autoresponder options.
             $.each(result["autoresponders"], function(index, item) {
               $("#SMAILY_CART_AUTORESPONDER").append(
                 $("<option>", {
-                  value: JSON.stringify({
-                    name: item["title"],
-                    id: item["id"]
-                  }),
-                  text: item["title"]
+                  value: item["id"],
+                  text: item["title"],
+                  selected: cart_selected_id === item["id"]
                 })
               );
             });
           } else {
             // When no autoresponders created display message.
+            displayMessage(smailymessages.no_autoresponders, true);
             $("#SMAILY_CART_AUTORESPONDER").append(
               $("<option>")
                 .val("")
@@ -121,66 +132,74 @@ $(document).ready(function() {
     $('#smaily-rss-feed-url').html(rss_url_base + $.param(url_parameters));
   });
 
-  // Load autoresponders when visiting settings page.
-  (function() {
-    // Check if credentials are set.
-    var subdomain = $("#SMAILY_SUBDOMAIN").val();
-    var username = $("#SMAILY_USERNAME").val();
-    var password = $("#SMAILY_PASSWORD").val();
-    // Continue if credentials are set.
-    if (subdomain == "" || username == "" || password == "") {
-      return;
-    }
-    // Show spinner
-    $("#smaily-spinner").show();
-    // Make ajax call to controller.
-    $.ajax({
-      type: "POST",
-      dataType: "json",
-      url: controller_url,
-      data: {
-        ajax: true,
-        controller: "AdminSmailyforPrestashopAjax",
-        action: "GetAutoresponders",
-        token: $("#mymodule_wrapper").attr("data-token")
-      },
-      success: function success(result) {
-        $("#smaily-spinner").hide();
-        //Display error messages above form.
-        if (result["error"]) {
-          displayMessage(result["error"], true);
-        }
-        if (result["success"] === true) {
-          // Check if there are any autoresponders.
-          if (result["autoresponders"].length > 0) {
-            // Append autoresponder to cart autoresponders list.
-            $.each(result["autoresponders"], function(index, item) {
-              $("#SMAILY_CART_AUTORESPONDER").append(
-                $("<option>", {
-                  value: JSON.stringify({
-                    name: item["title"],
-                    id: item["id"]
-                  }),
-                  text: item["title"]
-                })
-              );
-            });
-          } else {
-            // When no autoresponders created display message.
-            $("#SMAILY_CART_AUTORESPONDER").append(
-              $("<option>")
-                .val("")
-                .text(smailymessages.no_autoresponders)
-            );
-          }
-        }
-      },
-      error: function error() {
-        $("#smaily-spinner").hide();
-        displayMessage(smailymessages.no_connection, true);
+    (function() {
+      // Load autoresponders when visiting settings page.
+      // Check if credentials are set.
+      var subdomain = $("#SMAILY_SUBDOMAIN").val();
+      var username = $("#SMAILY_USERNAME").val();
+      var password = $("#SMAILY_PASSWORD").val();
+      // Continue if credentials are set.
+      if (subdomain == "" || username == "" || password == "") {
+        return;
       }
-    });
-  })();
+      // Show spinner
+      $("#smaily-spinner").show();
+      // Make ajax call to controller.
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: controller_url,
+        data: {
+          ajax: true,
+          controller: "AdminSmailyforPrestashopAjax",
+          action: "GetAutoresponders",
+          token: $("#mymodule_wrapper").attr("data-token")
+        },
+        success: function success(result) {
+          $("#smaily-spinner").hide();
+          //Display error messages above form.
+          if (result["error"]) {
+            displayMessage(result["error"], true);
+          }
+          if (result["success"] === true) {
+            // Check if there are any autoresponders.
+            if (result["autoresponders"].length > 0) {
+              var optin_selected_id = parseInt($("#SMAILY_OPTIN_AUTORESPONDER").attr('data-selected-id'));
+              var cart_selected_id = parseInt($("#SMAILY_CART_AUTORESPONDER").attr('data-selected-id'));
+              // Append autoresponder to cart autoresponders list.
+              $.each(result["autoresponders"], function(index, item) {
+                $("#SMAILY_CART_AUTORESPONDER").append(
+                  $("<option>", {
+                    value: item["id"],
+                    text: item["title"],
+                    selected: cart_selected_id === item["id"]
+                  })
+                );
+                $("#SMAILY_OPTIN_AUTORESPONDER").append(
+                  $("<option>", {
+                    value: item["id"],
+                    text: item["title"],
+                    selected: optin_selected_id === item["id"]
+                  })
+                );
+              });
+            } else {
+              // When no autoresponders created display message.
+              $("#SMAILY_CART_AUTORESPONDER").append(
+                $("<option>")
+                  .val("")
+                  .text(smailymessages.no_autoresponders)
+              );
+              displayMessage(smailymessages.no_autoresponders, true);
+            }
+          }
+        },
+        error: function error() {
+          $("#smaily-spinner").hide();
+          displayMessage(smailymessages.no_connection, true);
+        }
+      })
+    })();
 
   // Function to display messages in smaily-messages block.
   function displayMessage(message) {
