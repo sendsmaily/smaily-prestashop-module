@@ -354,37 +354,6 @@ class SmailyForPrestashop extends Module
     }
 
     /**
-     * Decode and clean autoresponder.
-     *
-     * @param string  $cart_autoresponder "{\"name\":\"Newsletter\",\"id\":28}"
-     * @return array $escaped_cart_autoresponder {["name"]=> string(14) "Newsletter" ["id"]=> int(28)}
-     */
-    private function decodeAndCleanAutoresponderValue($cart_autoresponder) {
-        $cart_autoresponder = str_replace('\"', '"', $cart_autoresponder);
-        // Get autoresponder array from json string.
-        $cart_autoresponder = Tools::jsonDecode($cart_autoresponder);
-        // Clean autoresponder for inserting to database.
-        $escaped_cart_autoresponder = array();
-        if (!empty($cart_autoresponder)) {
-            foreach ($cart_autoresponder as $key => $value) {
-                $escaped_cart_autoresponder[ pSQL($key)] = pSQL($value);
-            }
-        }
-        return $escaped_cart_autoresponder;
-    }
-
-    /**
-     * Unserialize autoresponder to array for template.
-     *
-     * @param string $autoresponder a:2:{s:4:\"name\";s:14:\"Newsletter\";s:2:\"id\";i:28;}
-     * @return array $autoresponder {["name"]=> string(14) "Newsletter" ["id"]=> int(28)}
-     */
-    private function unSerializeAutoresponderForTemplate($autoresponder) {
-        $autoresponder = str_replace('\"', '"', $autoresponder);
-        return unserialize($autoresponder);
-    }
-
-    /**
      * Recursively go through categories in array and normalize for template.
      *
      * @param array $categories Enabled categories in Prestashop catalog.
