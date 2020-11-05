@@ -31,7 +31,11 @@ if (!defined('_PS_VERSION_')) {
  */
 function upgrade_module_1_5_0($object)
 {
-    return (Configuration::updateValue('SMAILY_OPTIN_ENABLED', 0) &&
+    // 1.5.0+ saves only autoresponder ID to database instead of the whole autoresponder serialized.
+    $cart_autoresponder = unserialize(pSQL(Configuration::get('SMAILY_CART_AUTORESPONDER')));
+    $autoresponder_id = isset($cart_autoresponder['id']) ? $cart_autoresponder : '';
+    return (Configuration::updateValue('SMAILY_CART_AUTORESPONDER', $autoresponder_id) &&
+        Configuration::updateValue('SMAILY_OPTIN_ENABLED', 0) &&
         Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', '') &&
         $object->registerHook('actionCustomerAccountAdd'));
 }
