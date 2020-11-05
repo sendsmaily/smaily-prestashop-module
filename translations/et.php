@@ -43,9 +43,9 @@ $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_d0970ede0a15189ccf60
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_bb7b3c6261b41de1bd1fefa377a75f43'] = 'Identifikaator on vajalik turvalisuse tagamiseks. Kasuta automaatselt loodud identifikaatorit või asenda enda valitud väärtusega. ';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_5588ea18ef47155105d7d11abcb7e4e1'] = 'Croni URL';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_9cc2022eb76bc383c713c406b6ae96f2'] = 'Et aktiveerida automaatne kontaktide sünkroniseerimine seadistage Cron oma teenusepakkuja juures.';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_daf2a96781f203ddd0e0c8ba8fa25a2f'] = 'Käivita opt-in kasutaja registreerimisel.';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_dc7361b8c5d6e2b9f95b8968533d7b14'] = 'Opt-in käivitatakse ainult siis, kui kasutaja loob konto ja liitub uudiskirjaga. Muutused uudiskirja sätetele adminpaneelis ei käivita opt-in\'i.';
-$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_f31fe73b24620e23d03fd55013e1bf87'] = 'Kasutaja registreerimisel käivitatav automaatika.';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_daf2a96781f203ddd0e0c8ba8fa25a2f'] = 'Käivita opt-in kasutaja registreerimisel';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_dc7361b8c5d6e2b9f95b8968533d7b14'] = 'Opt-in käivitatakse ainult siis, kui kasutaja loob konto ja liitub uudiskirjaga. Muutused uudiskirja sätetele adminpaneelis ei käivita opt-in\'i';
+$_MODULE['<{smailyforprestashop}prestashop>smaily_configure_f31fe73b24620e23d03fd55013e1bf87'] = 'Kasutaja registreerimisel käivitatav automaatika';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_faa5e8094afca015fa4b4a702ed57645'] = 'Käivita mõni automaatika.';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_c9cc8cce247e49bae79f15173ce97354'] = 'Salvesta';
 $_MODULE['<{smailyforprestashop}prestashop>smaily_configure_a27d20b558af715c91592bcee1019dee'] = 'Aktiveeri Unustatud Ostukorvi Meeldetuletus';
