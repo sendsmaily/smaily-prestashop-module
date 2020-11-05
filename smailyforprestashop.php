@@ -481,25 +481,18 @@ class SmailyForPrestashop extends Module
             $response['result']['code'] === 101) {
                 return true; // All good.
         } else {
-            // Supply query values to $response variable and save log of unsuccesful operation.
-            $response['query'] = $query;
-            $this->logTofile('smaily-customer-join.txt', Tools::jsonEncode($response));
+            // Supply query values and save log of unsuccesful operation.
+            $logmessage = sprintf(
+                '[SMAILY] Failed to opt-in new customer with email:%s using autoresponder ID:%s. ' .
+                'Smaily response code:%s, message:%s.',
+                $query['addresses'][0]['email'],
+                $query['autoresponder'],
+                $response['result']['code'],
+                $response['result']['message']
+            );
+            PrestaShopLogger::addLog($logmessage, 3);
             return false;
         }
-    }
-
-    /**
-     * Log API response to text-file.
-     *
-     * @param string $filename  Name of the file created.
-     * @param string $msg       Text response from api.
-     * @return void
-     */
-    public function logToFile($filename, $response)
-    {
-        $logger = new FileLogger(1);
-        $logger->setFilename(_PS_MODULE_DIR_. $this->name ."/" . $filename);
-        $logger->logInfo('Response from API - ' . $response);
     }
 
     /**
