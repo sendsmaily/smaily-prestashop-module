@@ -482,17 +482,37 @@ class SmailyForPrestashop extends Module
                 return true; // All good.
         } else {
             // Supply query values and save log of unsuccesful operation.
-            $logmessage = sprintf(
-                '[SMAILY] Failed to opt-in new customer with email:%s using autoresponder ID:%s. ' .
-                'Smaily response code:%s, message:%s.',
+            $this->logErrorWithFormatting(
+                "Failed to opt-in new customer with email: %s using autoresponder ID: %s. Smaily response code: %s, message: %s.",
                 $query['addresses'][0]['email'],
                 $query['autoresponder'],
                 $response['result']['code'],
                 $response['result']['message']
             );
-            PrestaShopLogger::addLog($logmessage, 3);
             return false;
         }
+    }
+
+    /**
+     * Add error (severity 3) to Prestashop log.
+     *
+     * @param string $message
+     * @return void
+     */
+    public function logErrorWithFormatting() {
+        $args = func_get_args();
+        $message = call_user_func_array('sprintf', $args);
+        PrestaShopLogger::addLog("[SMAILY] " . $message, 3);
+    }
+
+    /**
+     * Add run-time notice (severity 1) information to Prestashop log.
+     *
+     * @param string $message
+     * @return void
+     */
+    public function logInfo() {
+        PrestaShopLogger::addLog("[SMAILY] " . $message, 1);
     }
 
     /**

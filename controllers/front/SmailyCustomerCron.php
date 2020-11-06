@@ -65,14 +65,14 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     {
         $unsubscribers_synchronized = $this->removeUnsubscribers(self::UNSUBSCRIBERS_BATCH_LIMIT);
         if (!$unsubscribers_synchronized) {
-            PrestaShopLogger::addLog('[SMAILY] Customer sync failed - unsubscribers are not removed', 1);
+            $this->module->logInfo("Customer sync failed - unsubscribers are not removed");
             return false;
         }
 
         // Don't sync customers if failed to remove unsubscribers.
         $subscribers_synchronized = $this->sendSubscribersToSmaily(self::SUBSCRIBERS_BATCH_LIMIT);
         if (!$subscribers_synchronized) {
-            PrestaShopLogger::addLog('[SMAILY] Customer sync failed - failed to send subscribers to Smaily', 1);
+            $this->module->logInfo("Customer sync failed - failed to send subscribers to Smaily");
             return false;
         }
 
@@ -126,12 +126,11 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
 
             // Stop if error.
             if (!isset($unsubscribers['success'])) {
-                $logmessage = sprintf(
-                    '[SMAILY] Failed fetching unsubscribers. Smaily response code:%s, message:%s',
+                $this->module->logErrorWithFormatting(
+                    "Failed fetching unsubscribers. Smaily response code: %s, message: %s",
                     $unsubscribers['result']['code'],
                     $unsubscribers['result']['message']
                 );
-                PrestaShopLogger::addLog($logmessage, 3);
                 return false;
             }
             // Stop if no more subscribers.
@@ -153,12 +152,11 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $query_result = Db::getInstance()->execute($query);
             // Stop if query fails.
             if ($query_result === false) {
-                $logmessage = sprintf(
-                    '[SMAILY] Failed removing subscribed status for unsubscribers. Query result:%s, query:%s',
+                $this->module->logErrorWithFormatting(
+                    "Failed removing subscribed status for unsubscribers. Query result: %s, query: %s",
                     $query_result,
                     $query
                 );
-                PrestaShopLogger::addLog($logmessage, 3);
                 return false;
             }
 
@@ -190,11 +188,10 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $customers = Db::getInstance()->executeS($sql);
             // Stop if query fails.
             if ($customers === false) {
-                $logmessage = sprintf(
-                    '[SMAILY] Failed retrieving newsletter subscribers from DB. Query result:%s',
-                    $customers
+                $this->module->logErrorWithFormatting(
+                    "Failed retrieving newsletter subscribers from DB. Query result: %s",
+                    $customers,
                 );
-                PrestaShopLogger::addLog($logmessage, 3);
                 return false;
             }
             // Stop if no more qustomers.
@@ -212,12 +209,11 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $response = $this->module->callApi('contact', $update_data, 'POST');
             // Stop if not successful update.
             if (isset($response['result']['code']) && $response['result']['code'] !== 101) {
-                $logmessage = sprintf(
-                    '[SMAILY] Failed sending subscribers to Smaily. Smaily respsonse code:%s, message:%s',
+                $this->module->logErrorWithFormatting(
+                    "Failed sending subscribers to Smaily. Smaily response code: %s, message: %s",
                     $response['result']['code'],
                     $response['result']['message']
                 );
-                PrestaShopLogger::addLog($logmessage, 3);
                 return false;
             }
 

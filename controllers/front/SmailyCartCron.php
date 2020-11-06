@@ -156,17 +156,13 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                 $response['result']['code'] === 101) {
                     $this->updateSentStatus($id_customer, $id_cart);
             } else {
-                $logmessage = sprintf(
-                    '[SMAILY] Failed sending out abandoned cart email for email:%s, cart_id:%s, ' .
-                    'customer_id:%s, using autoresponder_id:%s. Smaily response code:%s, message:%s',
+                $this->module->logErrorWithFormatting(
+                    "Failed sending out abandoned cart email for email: %s, cart_id: %s. Smaily response code: %s, message: %s.",
                     $abandoned_cart['email'],
                     $abandoned_cart['id_cart'],
-                    $abandoned_cart['id_customer'],
-                    $autoresponder_id,
                     $response['result']['code'],
                     $response['result']['message']
                 );
-                PrestaShopLogger::addLog($logmessage, 3);
             }
         }
         echo('Abandoned carts emails sent!');
