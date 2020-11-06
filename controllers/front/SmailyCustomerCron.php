@@ -65,14 +65,14 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
     {
         $unsubscribers_synchronized = $this->removeUnsubscribers(self::UNSUBSCRIBERS_BATCH_LIMIT);
         if (!$unsubscribers_synchronized) {
-            $this->module->logInfo("Customer sync failed - unsubscribers are not removed");
+            $this->module->logMessageWithSeverity("Customer sync failed - unsubscribers are not removed", 1);
             return false;
         }
 
         // Don't sync customers if failed to remove unsubscribers.
         $subscribers_synchronized = $this->sendSubscribersToSmaily(self::SUBSCRIBERS_BATCH_LIMIT);
         if (!$subscribers_synchronized) {
-            $this->module->logInfo("Customer sync failed - failed to send subscribers to Smaily");
+            $this->module->logMessageWithSeverity("Customer sync failed - failed to send subscribers to Smaily", 1);
             return false;
         }
 
@@ -126,11 +126,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
 
             // Stop if error.
             if (!isset($unsubscribers['success'])) {
-                $this->module->logErrorWithFormatting(
-                    "Failed fetching unsubscribers. Smaily response code: %s, message: %s",
-                    $unsubscribers['result']['code'],
-                    $unsubscribers['result']['message']
-                );
+                $this->module->logMessageWithSeverity("Failed fetching unsubscribers.", 3);
                 return false;
             }
             // Stop if no more subscribers.
@@ -152,11 +148,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $query_result = Db::getInstance()->execute($query);
             // Stop if query fails.
             if ($query_result === false) {
-                $this->module->logErrorWithFormatting(
-                    "Failed removing subscribed status for unsubscribers. Query result: %s, query: %s",
-                    $query_result,
-                    $query
-                );
+                $this->module->logMessageWithSeverity("Failed removing subscribed status for unsubscribers.", 3);
                 return false;
             }
 
@@ -188,10 +180,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $customers = Db::getInstance()->executeS($sql);
             // Stop if query fails.
             if ($customers === false) {
-                $this->module->logErrorWithFormatting(
-                    "Failed retrieving newsletter subscribers from DB. Query result: %s",
-                    $customers,
-                );
+                $this->module->logMessageWithSeverity("Failed retrieving newsletter subscribers from DB.", 3);
                 return false;
             }
             // Stop if no more qustomers.

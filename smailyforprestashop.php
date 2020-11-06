@@ -494,7 +494,7 @@ class SmailyForPrestashop extends Module
     }
 
     /**
-     * Add error (severity 3) to Prestashop log.
+     * Add error (severity 3) to Prestashop log with formatted arguments.
      *
      * @param string $message
      * @return void
@@ -506,13 +506,14 @@ class SmailyForPrestashop extends Module
     }
 
     /**
-     * Add run-time notice (severity 1) information to Prestashop log.
+     * Add information to Prestashop log.
      *
      * @param string $message
+     * @param int $severity (1 is informative, 3 error)
      * @return void
      */
-    public function logInfo() {
-        PrestaShopLogger::addLog("[SMAILY] " . $message, 1);
+    public function logMessageWithSeverity($message, $severity) {
+        PrestaShopLogger::addLog("[SMAILY] " . $message, $severity);
     }
 
     /**
