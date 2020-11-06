@@ -481,25 +481,39 @@ class SmailyForPrestashop extends Module
             $response['result']['code'] === 101) {
                 return true; // All good.
         } else {
-            // Supply query values to $response variable and save log of unsuccesful operation.
-            $response['query'] = $query;
-            $this->logTofile('smaily-customer-join.txt', Tools::jsonEncode($response));
+            // Supply query values and save log of unsuccesful operation.
+            $this->logErrorWithFormatting(
+                "Failed to opt-in new customer with email: %s using autoresponder ID: %s. Smaily response code: %s, message: %s.",
+                $query['addresses'][0]['email'],
+                $query['autoresponder'],
+                $response['result']['code'],
+                $response['result']['message']
+            );
             return false;
         }
     }
 
     /**
-     * Log API response to text-file.
+     * Add error (severity 3) to Prestashop log with formatted arguments.
      *
-     * @param string $filename  Name of the file created.
-     * @param string $msg       Text response from api.
+     * @param string $message
      * @return void
      */
-    public function logToFile($filename, $response)
-    {
-        $logger = new FileLogger(1);
-        $logger->setFilename(_PS_MODULE_DIR_. $this->name ."/" . $filename);
-        $logger->logInfo('Response from API - ' . $response);
+    public function logErrorWithFormatting() {
+        $args = func_get_args();
+        $message = call_user_func_array('sprintf', $args);
+        PrestaShopLogger::addLog("[SMAILY] " . $message, 3);
+    }
+
+    /**
+     * Add information to Prestashop log.
+     *
+     * @param string $message
+     * @param int $severity (1 is informative, 3 error)
+     * @return void
+     */
+    public function logMessageWithSeverity($message, $severity) {
+        PrestaShopLogger::addLog("[SMAILY] " . $message, $severity);
     }
 
     /**
