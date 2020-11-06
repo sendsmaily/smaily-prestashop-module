@@ -126,7 +126,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
 
             // Stop if error.
             if (!isset($unsubscribers['success'])) {
-                $this->module->logMessageWithSeverity("Failed fetching unsubscribers.", 3);
+                $this->module->logErrorWithFormatting("Failed fetching unsubscribers.");
                 return false;
             }
             // Stop if no more subscribers.
@@ -148,7 +148,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $query_result = Db::getInstance()->execute($query);
             // Stop if query fails.
             if ($query_result === false) {
-                $this->module->logMessageWithSeverity("Failed removing subscribed status for unsubscribers.", 3);
+                $this->module->logErrorWithFormatting("Failed removing subscribed status for unsubscribers.");
                 return false;
             }
 
@@ -180,7 +180,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             $customers = Db::getInstance()->executeS($sql);
             // Stop if query fails.
             if ($customers === false) {
-                $this->module->logMessageWithSeverity("Failed retrieving newsletter subscribers from DB.", 3);
+                $this->module->logErrorWithFormatting("Failed retrieving newsletter subscribers from DB.");
                 return false;
             }
             // Stop if no more qustomers.
