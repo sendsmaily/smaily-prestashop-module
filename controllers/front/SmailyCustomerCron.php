@@ -43,7 +43,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
             echo('Access denied!');
             die(1);
         }
-    
+
         if ((int) Configuration::get('SMAILY_ENABLE_CRON') !== 1) {
             echo('User synchronization disabled!');
             die(1);
