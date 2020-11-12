@@ -48,7 +48,8 @@ Registered customers, who have opted for the newsletter will be added to Smaily'
 1. Enable automatic customer synchronization feature under **Customer synchronization** section.
 2. There is an option to import **additional fields** available from the store into Smaily to personalize newsletter emails.
 3. The synchronization can be automated using the cron URL. Recommended synchronization interval is once a day or less.
-
+4. New customers who sign up with newsletter enabled can be added to Smaily, by enabling trigger opt-in on customer signup.
+5. An autoresponder can be selected for new customers who sign up with newsletter, the autoresponder won't work if the setting is disabled.
 ![Customer synchronization section](assets/CustomerSync.png)
 
 ## Abandoned cart emails

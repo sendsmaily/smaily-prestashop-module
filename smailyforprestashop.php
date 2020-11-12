@@ -32,7 +32,7 @@ class SmailyForPrestashop extends Module
     {
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
-        $this->version = '1.4.0';
+        $this->version = '1.5.0';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(

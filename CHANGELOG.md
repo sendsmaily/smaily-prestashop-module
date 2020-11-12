@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.5.0
+
+- New feature to trigger opt-in if new customer joins with newsletter enabled.
+- Fix missing template variables.
+- Use PrestashopLogger for logs created by module.
+
 ### 1.4.0
 
 - Added RSS settings tab.

@@ -53,14 +53,16 @@ All development for Smaily for Prestashop is [handled via GitHub](https://github
 2. Insert your Smaily API authentication information and click **Validate** to get started.
 3. Under **Customer Synchronization** tab select if you want to enable customer synchronization.
 4. Select additional fields you want to synchronize (email is automatic), change cron token if you like your own.
-5. Click **Save** to save customer synchronization settings.
-6. Under **Abandoned Cart** tab select if you want to enable abandoned cart synchronization.
-7. Select autoresponder for abandoned cart.
-8. Select additional fields to send to abandoned cart template. Firstname, lastname and store-url are always added.
-9. Add delay time when cart is considered abandoned. Minimum time 15 minutes. Change cron token if you like your own.
-10. Click **Save** to save abandoned cart settings.
-11. Cron is set up to synchronize contacts when CRON-url is visited. Use host Cpanel, PrestaShop Cron tasks manager or external cron service to automate process.
-12. That's it, your PrestaShop store is now integrated with Smaily Plugin!
+5. New customers who sign up with newsletter enabled can be added to Smaily by enabling trigger opt-in on customer signup.
+6. An autoresponder can be selected for "opt-in on customer sign-up", this will only be triggered if the previous option is enabled.
+7. Click **Save** to save customer synchronization settings.
+8. Under **Abandoned Cart** tab select if you want to enable abandoned cart synchronization.
+9. Select autoresponder for abandoned cart.
+10. Select additional fields to send to abandoned cart template. Firstname, lastname and store-url are always added.
+11. Add delay time when cart is considered abandoned. Minimum time 15 minutes. Change cron token if you like your own.
+12. Click **Save** to save abandoned cart settings.
+13. Cron is set up to synchronize contacts when CRON-url is visited. Use host Cpanel, PrestaShop Cron tasks manager or external cron service to automate process.
+14. That's it, your PrestaShop store is now integrated with Smaily Plugin!
 
 ## Using Newsletter Subscription form
 
