@@ -51,8 +51,7 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
         }
 
         // Settings.
-        $autoresponder = unserialize(Configuration::get('SMAILY_CART_AUTORESPONDER'));
-        $autoresponder_id = pSQL($autoresponder['id']);
+        $autoresponder_id = pSQL(Configuration::get('SMAILY_CART_AUTORESPONDER'));
         $delay = pSQL(Configuration::get('SMAILY_ABANDONED_CART_TIME'));
         $sync_fields = unserialize(Configuration::get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
 
@@ -157,7 +156,13 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                 $response['result']['code'] === 101) {
                     $this->updateSentStatus($id_customer, $id_cart);
             } else {
-                $this->module->logTofile('smaily-cart.txt', Tools::jsonEncode($response));
+                $this->module->logErrorWithFormatting(
+                    "Failed sending out abandoned cart email for email: %s, cart_id: %s. Smaily response code: %s, message: %s.",
+                    $abandoned_cart['email'],
+                    $abandoned_cart['id_cart'],
+                    $response['result']['code'],
+                    $response['result']['message']
+                );
             }
         }
         echo('Abandoned carts emails sent!');

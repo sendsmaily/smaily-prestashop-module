@@ -181,6 +181,35 @@
               </p>
             </div>
           </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2">
+              {l s="Trigger opt-in on customer sign-up" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <span class="switch prestashop-switch fixed-width-lg">
+                <input type="radio" name="SMAILY_OPTIN_ENABLED" id="Enable" value="1" {($smaily_optin_enabled == 1) ? 'checked' :'' }>
+                <label for="Enable">{l s="Yes" mod='smailyforprestashop'}</label>
+                <input type="radio" name="SMAILY_OPTIN_ENABLED" id="Disable" value="0" {($smaily_optin_enabled == 0) ? 'checked' :'' }>
+                <label for="Disable">{l s="No" mod='smailyforprestashop'}</label>
+                <a class="slide-button btn"></a>
+              </span>
+              <p class="help-block">
+                {l s="Opt-in will only be triggered when customer creates an account & signs-up for newsletter. Changes to newsletter subscription in admin won't trigger an opt-in." mod='smailyforprestashop'}
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-lg-2">
+              {l s="Automation to trigger on customer sign-up" mod='smailyforprestashop'}
+            </label>
+            <div class="col-lg-10">
+              <select name="SMAILY_OPTIN_AUTORESPONDER" id="SMAILY_OPTIN_AUTORESPONDER" data-selected-id={$smaily_optin_autoresponder}>
+                <option value="">
+                  {l s="Trigger any opt-in autoresponder" mod='smailyforprestashop'}
+                </option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="panel-footer">
           <button type="submit" name="smaily_submit_configuration" class="btn btn-default pull-right" >
@@ -213,14 +242,10 @@
               {l s="Autoresponder" mod='smailyforprestashop'}
             </label>
             <div class="col-lg-10">
-              <select name="SMAILY_CART_AUTORESPONDER" id="SMAILY_CART_AUTORESPONDER">
+              <select name="SMAILY_CART_AUTORESPONDER" id="SMAILY_CART_AUTORESPONDER" data-selected-id={$smaily_cart_autoresponder}>
                 {if empty($smaily_cart_autoresponder)}
                 <option value="">
                   {l s="Select Autoresponder" mod='smailyforprestashop'}
-                </option>
-                {else}
-                <option value='{$smaily_cart_autoresponder|json_encode}'>
-                  {$smaily_cart_autoresponder['name']} {l s="(selected)" mod='smailyforprestashop'}
                 </option>
                 {/if}
               </select>
