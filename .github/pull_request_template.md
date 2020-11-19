@@ -13,6 +13,7 @@ A list of changes regarding the next version release:
 - [ ] Updated README.md
 - [ ] Updated CHANGELOG.md
 - [ ] Updated USERGUIDE.md
+- [ ] Updated CONTRIBUTING.md
 - [ ] Updated plugin version number
 - [ ] Updated screenshots in assets folder
 - [ ] Updated translations
@@ -20,5 +21,5 @@ A list of changes regarding the next version release:
 **After PR merge**
 
 - [ ] Released new version in GitHub
-- [ ] Updated plugin on the Prestashop marketplace
+- [ ] Updated plugin on the Prestashop Addons Marketplace
 - [ ] Pinged code owners to inform marketing about new version
