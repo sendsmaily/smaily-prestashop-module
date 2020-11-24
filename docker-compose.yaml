@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+  prestashop:
+    container_name: prestashop
+    image: sendsmaily/prestashop
+    build:
+      context: ./
+    ports:
+    - 8080:80
+    environment:
+    - PS_DEV_MODE=1
+    - PS_DOMAIN=localhost:8080
+    - DB_SERVER=db
+    - DB_USER=root
+    - DB_PASSWD=root
+    - DB_NAME=prestashop
+    volumes:
+    - prestashop-data:/var/www/html
+    - ./src:/var/www/html/modules/smailyforprestashop
+    depends_on:
+    - db
+
+  db:
+    container_name: prestashop_db
+    image: mysql:5.7
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=prestashop
+    volumes:
+    - prestashop-db-data:/var/lib/mysql
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+    - 8888:80
+    environment:
+    - PMA_HOST=db
+    - PMA_USER=root
+    - PMA_PASSWORD=root
+    depends_on:
+    - db
+
+volumes:
+  prestashop-data:
+  prestashop-db-data:

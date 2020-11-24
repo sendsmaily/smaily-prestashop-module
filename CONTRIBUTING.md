@@ -1,36 +1,74 @@
-# Setting up development environment
+First off, thanks for taking the time to contribute!
 
-## Tools
 
-This workflow uses [Tusk](https://rliebz.github.io/tusk/) - YAML-based task runner - to run tasks.
-To see all available commands run:
-```
-tusk -h
-```
+# Table of contents
 
-## Building
+- [Getting started](#getting-started)
+- [Internals](#internals))
+    - [Structure of the repository](#structure-of-the-repository)
+- [Deveopment](#development)
+    - [Starting the environement](#starting-the-environment)
+    - [Stopping the environment](#stopping-the-environment)
+    - [Resetting the environment](#resetting-the-environment)
 
-To mirror local user to container you need to build the image first. Tusk file manages local user information. To mirror a different user you can modify default option values(`tusk build -h`).
-```
-tusk build
-```
 
-## Starting containers
+# Getting started
 
-Starting and stopping containers have a shortcut Tusk commands available so that you can start and stop containers from this folder.
+The development environment requires [Docker](https://docs.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) to run. Please refer to the official documentation for step-by-step installation guide.
 
-To start the containers run:
-```
-tusk up
-```
-And to stop the containers run:
-```
-tusk down
-```
+Clone the repository:
 
-## After installation script
+    $ git clone git@github.com:sendsmaily/smaily-prestashop-module.git
 
-To access admin section after install you need to delete the `install` directory and rename `admin` directory. This script will do it for you. You can access admin section from `localhost:8080\admin1`.
-```
-tusk post-install
-```
+Next, change your working directory to the local repository:
+
+    $ cd smaily-prestashop-module
+
+And run the environment:
+
+    $ docker-compose up
+
+When running the enviroment for the first time, PrestaShop installation will automatically run, and it can take a while.
+
+Once installation has finished and web server is ready to accept requests, you can access PrestaShop store from `http://localhost:8080` and administration interface from `http://localhost:8080/admin1` URL.
+
+> Administrator user is `admin@smaily.sandbox` and password `smailydev1`.
+
+
+# Internals
+
+## Structure of the repository
+
+The repository is split into multiple parts:
+
+- `.github` - GitHub issue and pull request templates, and release workflow;
+- `.sandbox` - files needed for running the development environment;
+- `assets` - images for the user guide;
+- `src` - module files;
+
+Source files must follow standard PrestaShop module structure. Learn more about it from the [Modules Folder structure](https://devdocs.prestashop.com/1.7/modules/creation/module-file-structure/) chapter in the official documentation.
+
+
+# Development
+
+All written code must follow PrestaShop's [coding standards](https://devdocs.prestashop.com/1.7/development/coding-standards/) and [naming conventions](https://devdocs.prestashop.com/1.7/development/naming-conventions/).
+
+## Starting the environment
+
+You can run the environment by executing:
+
+    $ docker-compose up
+
+> **Note!** Make sure you do not have any other process(es) listening on ports 8080 and 8888.
+
+## Stopping the environment
+
+Environment can be stopped by executing:
+
+    $ docker-compose down
+
+## Resetting the environment
+
+If you need to reset the installation, just simply delete environment's Docker volumes. Easiest way to achieve this is by running:
+
+    $ docker-compose down -v
