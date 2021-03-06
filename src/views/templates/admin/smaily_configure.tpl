@@ -132,13 +132,13 @@
             <div class="col-lg-10">
               <div class="checkbox">
                 <label for="SMAILY_SYNCRONIZE_ADDITIONAL">
-                    <input type="checkbox" name="SMAILY_SYNCRONIZE_ADDITIONAL[]" value="firstname" {if 'firstname'|in_array:$smaily_syncronize_additional} checked {/if}>
+                    <input type="checkbox" name="SMAILY_SYNCRONIZE_ADDITIONAL[]" value="first_name" {if 'first_name'|in_array:$smaily_syncronize_additional} checked {/if}>
                     {l s="Firstname" mod='smailyforprestashop'}
                 </label>
               </div>
               <div class="checkbox">
                 <label for="SMAILY_SYNCRONIZE_ADDITIONAL">
-                  <input type="checkbox" name="SMAILY_SYNCRONIZE_ADDITIONAL[]" value="lastname" {if 'lastname'|in_array:$smaily_syncronize_additional} checked {/if}>
+                  <input type="checkbox" name="SMAILY_SYNCRONIZE_ADDITIONAL[]" value="last_name" {if 'last_name'|in_array:$smaily_syncronize_additional} checked {/if}>
                     {l s="Lastname" mod='smailyforprestashop'}
                 </label>
               </div>
