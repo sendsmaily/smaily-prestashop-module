@@ -14,7 +14,7 @@ jobs:
           ref: master
 
       - name: Rename src directory
-        run: mv smaily-prestashop-module/src smaily-prestashop-module/smailyforprestashop
+        run: mv /src /smailyforprestashop
 
       - name: Compress ZIP
         uses: TheDoctor0/zip-release@v0.3.0
