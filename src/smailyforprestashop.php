@@ -28,11 +28,13 @@ if (!defined('_PS_VERSION_')) {
 
 class SmailyForPrestashop extends Module
 {
+    public static $allowed_sort_by_values = array('date_add', 'date_upd', 'name', 'price', 'id_product');
+
     public function __construct()
     {
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
-        $this->version = '1.5.0';
+        $this->version = '1.6.0';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(
@@ -42,6 +44,7 @@ class SmailyForPrestashop extends Module
         $this->bootstrap = true;
 
         parent::__construct();
+
         $this->controllerAdmin = 'AdminSmailyForPrestashopAjax';
 
         $this->displayName = $this->l('Smaily for Prestashop');
@@ -49,8 +52,6 @@ class SmailyForPrestashop extends Module
 
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
     }
-
-    public static $allowed_sort_by_values = array('date_add', 'date_upd', 'name', 'price', 'id_product');
 
     public function install()
     {

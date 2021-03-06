@@ -1,10 +1,14 @@
 # Changelog
 
+### 1.6.0
+
+- Align customer synchronization first and last name with abandoned cart [[#42](https://github.com/sendsmaily/smaily-prestashop-module/pull/42)]
+
 ### 1.5.0
 
-- New feature to trigger opt-in if new customer joins with newsletter enabled. [issue #32](https://github.com/sendsmaily/smaily-prestashop-module/issues/32)
-- Fix missing template variables. [issue #33](https://github.com/sendsmaily/smaily-prestashop-module/issues/33)
-- Use PrestashopLogger for logs created by module. [issue #36](https://github.com/sendsmaily/smaily-prestashop-module/issues/36)
+- New feature to trigger opt-in if new customer joins with newsletter enabled [[#32](https://github.com/sendsmaily/smaily-prestashop-module/issues/32)]
+- Fix missing template variables [[#33](https://github.com/sendsmaily/smaily-prestashop-module/issues/33)]
+- Use PrestashopLogger for logs created by module [[#36](https://github.com/sendsmaily/smaily-prestashop-module/issues/36)]
 
 ### 1.4.0
 
@@ -24,12 +28,7 @@
 
 ### 1.2.2
 
-New feature:
-
 - Data batching for newsletter subscribers synchronization
-
-Bugfix:
-
 - Validating credentials ajax call failing due to wrong post url
 
 ### 1.2.1
@@ -37,8 +36,6 @@ Bugfix:
 - Support for PHP 5.6
 
 ### 1.2.0
-
-New feature:
 
 - Changes due to Smaily workflows automation
 - Subdomain field parsed when full url entered
@@ -49,9 +46,6 @@ New feature:
 - Estonian language translations
 - You can now remove validated credentials from admin page
 - Subscribe newsletter form sends user language
-
-Bugfix:
-
 - Abandoned cart didn't erase email fields that were previously sent
 - Customer cron did't get new state of unsubscribed customers before synchronizing with Smaily
 - Rss-feed did't show discount and price correctly with taxes
