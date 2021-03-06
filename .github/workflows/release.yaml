@@ -21,7 +21,6 @@ jobs:
         with:
           filename: release.zip
           path: smailyforprestashop
-          directory: smaily-prestashop-module
 
       - name: Get release
         id: get_release_url
