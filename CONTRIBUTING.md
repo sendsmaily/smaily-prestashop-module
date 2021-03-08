@@ -72,3 +72,8 @@ Environment can be stopped by executing:
 If you need to reset the installation, just simply delete environment's Docker volumes. Easiest way to achieve this is by running:
 
     $ docker-compose down -v
+
+
+# Publishing to PrestaShop Addons Marketplace
+
+#
