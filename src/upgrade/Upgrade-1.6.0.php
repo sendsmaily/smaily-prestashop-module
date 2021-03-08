@@ -26,7 +26,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-function upgrade_module_1_6_0($object)
+function upgrade_module_1_6_0()
 {
     $customer_sync_fields = unserialize(Configuration::get('SMAILY_SYNCRONIZE_ADDITIONAL'));
 

@@ -198,7 +198,7 @@ class SmailyForPrestashop extends Module
             $syncronize_additional = Tools::getValue('SMAILY_SYNCRONIZE_ADDITIONAL');
             $escaped_sync_additional = array();
             if (!empty($syncronize_additional)) {
-                foreach ($syncronize_additional as $key => $value) {
+                foreach ($syncronize_additional as $value) {
                     $escaped_sync_additional[] = pSQL($value);
                 }
             }
@@ -239,7 +239,7 @@ class SmailyForPrestashop extends Module
             $cart_syncronize_additional = Tools::getValue('SMAILY_CART_SYNCRONIZE_ADDITIONAL');
             $cart_escaped_sync_additional = array();
             if (!empty($cart_syncronize_additional)) {
-                foreach ($cart_syncronize_additional as $key => $value) {
+                foreach ($cart_syncronize_additional as $value) {
                     $cart_escaped_sync_additional[] = pSQL($value);
                 }
             }
@@ -366,7 +366,7 @@ class SmailyForPrestashop extends Module
     private function recursivelyNormalizeCategoriesForTemplate($categories)
     {
         $normalized = array();
-        foreach ( $categories as $category ) {
+        foreach ($categories as $category) {
             $normalized[$category['id_category']] = $category['name'];
             if (isset($category['children']) && is_array($category['children'])) {
                 $normalized += $this->recursivelyNormalizeCategoriesForTemplate($category['children']);
@@ -379,7 +379,6 @@ class SmailyForPrestashop extends Module
      * Make RSS URL with query parameters.
      *
      * @return string $url
-     * e.g example.com/en/module/smailyforprestashop/SmailyRssFeed?limit=50&sort_by=date_upd&sort_order=desc&category_id=2
      */
     private function buildRssUrlFromSettings()
     {
@@ -434,10 +433,11 @@ class SmailyForPrestashop extends Module
             $this->context->controller->addJquery();
             $this->context->controller->addJS(array($this->_path.'views/js/smaily_module.js'));
             // Add variables for js.
+            $rss_url = Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed');
             Media::addJsDef(
                 array(
                     'controller_url' => $this->context->link->getAdminLink($this->controllerAdmin),
-                    'smaily_rss_url' => Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
+                    'smaily_rss_url' => $rss_url,
                     'smailymessages' => array(
                         'no_autoresponders' => $this->l('No autoresponders created in Smaily!'),
                         'no_connection' => $this->l('There seems to be some problem with connecting to Smaily!'),
@@ -476,7 +476,6 @@ class SmailyForPrestashop extends Module
             'addresses' => [['email' => $email]]
         );
         $response = $this->callApi('autoresponder', $query, 'POST');
-        $opt_in_successful = array_key_exists('success', $response) && isset($response['result']['code']) && $response['result']['code'] === 101;
         if (array_key_exists('success', $response) &&
             isset($response['result']['code']) &&
             $response['result']['code'] === 101) {
@@ -484,7 +483,8 @@ class SmailyForPrestashop extends Module
         } else {
             // Supply query values and save log of unsuccesful operation.
             $this->logErrorWithFormatting(
-                "Failed to opt-in new customer with email: %s using autoresponder ID: %s. Smaily response code: %s, message: %s.",
+                "Failed to opt-in new customer with email: %s using autoresponder ID: %s. " .
+                "Smaily response code: %s, message: %s.",
                 $query['addresses'][0]['email'],
                 $query['autoresponder'],
                 $response['result']['code'],
@@ -500,7 +500,8 @@ class SmailyForPrestashop extends Module
      * @param string $message
      * @return void
      */
-    public function logErrorWithFormatting() {
+    public function logErrorWithFormatting()
+    {
         $args = func_get_args();
         $message = call_user_func_array('sprintf', $args);
         PrestaShopLogger::addLog("[SMAILY] " . $message, 3);
@@ -513,7 +514,8 @@ class SmailyForPrestashop extends Module
      * @param int $severity (1 is informative, 3 error)
      * @return void
      */
-    public function logMessageWithSeverity($message, $severity) {
+    public function logMessageWithSeverity($message, $severity)
+    {
         PrestaShopLogger::addLog("[SMAILY] " . $message, $severity);
     }
 
