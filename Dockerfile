@@ -1,4 +1,4 @@
-FROM prestashop/prestashop:1.7-7.2-apache
+FROM prestashop/prestashop:1.7.6
 
 # Install PHP CodeSniffer.
 RUN curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar > /tmp/phpcs.phar \
