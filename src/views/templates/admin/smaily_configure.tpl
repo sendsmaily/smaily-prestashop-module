@@ -82,7 +82,7 @@
             <div class="col-lg-10">
               <input type="password" name="SMAILY_PASSWORD" id="SMAILY_PASSWORD" value="{$smaily_password}" required="required">
               <p class="help-block">
-                  <a href="http://help.smaily.com/en/support/solutions/articles/16000062943-create-api-user" target="_blank"> {l s="How to create API credentials?" mod='smailyforprestashop'}</a>
+                  <a href="https://smaily.com/help/api/general/create-api-user/" target="_blank"> {l s="How to create API credentials?" mod='smailyforprestashop'}</a>
               </p>
             </div>
           </div>
