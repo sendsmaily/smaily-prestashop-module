@@ -35,7 +35,7 @@ class SmailyForPrestashop extends Module
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
         $this->module_key = 'bcea90ce4da2594c0d0179852db9a1e3';
-        $this->version = '1.6.0';
+        $this->version = '1.6.1';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(

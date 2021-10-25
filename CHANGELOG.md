@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.6.1
+
+- Update user manual links [[#51](https://github.com/sendsmaily/smaily-prestashop-module/pull/51)]
+
 ### 1.6.0
 
 - Align customer synchronization first and last name with abandoned cart [[#42](https://github.com/sendsmaily/smaily-prestashop-module/pull/42)]
