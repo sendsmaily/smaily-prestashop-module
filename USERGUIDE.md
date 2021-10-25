@@ -20,7 +20,7 @@ This guide will help you set up and configure Smaily for Prestashop module.
 ![Module configuration path](assets/Install2.png)
 
 2. You will be presented with a configuration page for entering your Smaily API credentials - **subdomain, username, and password**.
-You can follow our [API user creation guide](http://help.smaily.com/en/support/solutions/articles/16000062943-create-api-user).
+You can follow our [API user creation guide](https://smaily.com/help/api/general/create-api-user/).
 
 3. Copy your API user credentials to the appropriate fields in the module configuration page.
 
@@ -56,7 +56,7 @@ Registered customers, who have opted for the newsletter will be added to Smaily'
 
 1. Enable abandoned cart emails feature under **Abandoned Cart** section to send cart reminder emails to store customers.
 
-2. You need to create *form submitted* workflow in Smaily prior to activating this feature. You can follow our [creating automation workflows tutorial](http://help.smaily.com/en/support/solutions/articles/16000092458-creating-automation-workflows).
+2. You need to create *form submitted* workflow in Smaily prior to activating this feature. You can follow our [creating automation workflows tutorial](https://smaily.com/help/user-manual/automations/automation-workflows/).
 
 3. After creating an automation in Smaily you can find this automation under **Autoresponder**.
 
@@ -76,4 +76,4 @@ The module provides several options for generating an RSS feed link.
 3. **Order by**: sorting order of the products in the RSS feed. Possible options are: date added, date updated, name, price, product ID.
 4. **Order direction**: in which direction will the module order products.
 
-The generated RSS feed link can be copied to your template editor's RSS block to display products directly in your newsletter. For this, you can follow our [RSS feed manual](http://help.smaily.com/en/support/solutions/articles/16000077027-rss-feed).
+The generated RSS feed link can be copied to your template editor's RSS block to display products directly in your newsletter. For this, you can follow our [RSS feed manual](https://smaily.com/help/user-manual/templates/adding-rss-feed-to-template/).
