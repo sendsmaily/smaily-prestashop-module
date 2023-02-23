@@ -29,6 +29,11 @@ services:
     - MYSQL_DATABASE=prestashop
     volumes:
     - prestashop-db-data:/var/lib/mysql
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 26677
+        hard: 46677
 
   phpmyadmin:
     container_name: phpmyadmin
