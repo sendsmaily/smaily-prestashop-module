@@ -2,7 +2,7 @@
 
 # Wait for MySQL to start.
 mysql_ready() {
-    mysqladmin ping --host=$DB_SERVER --user=$DB_USER --password=$DB_PASSWD
+    mysqladmin ping --host=$DB_SERVER --user=$DB_USER --password=$DB_PASSWD > /dev/null 2>&1
 }
 while !(mysql_ready); do
     sleep 1
