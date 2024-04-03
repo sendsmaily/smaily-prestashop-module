@@ -21,6 +21,8 @@
  * @copyright 2018 Smaily
  * @license   GPL3
  */
+declare(strict_types=1);
+
 class AdminSmailyforprestashopAjaxController extends ModuleAdminController
 {
     public function initContent()

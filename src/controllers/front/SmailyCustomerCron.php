@@ -21,17 +21,19 @@
  * @copyright 2018 Smaily
  * @license   GPL3
  */
+declare(strict_types=1);
+
 class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleFrontController
 {
     /**
      * Limit unsubscribers request batch size.
      */
-    const UNSUBSCRIBERS_BATCH_LIMIT = 1000;
+    public const UNSUBSCRIBERS_BATCH_LIMIT = 1000;
 
     /**
      * Limit subscribers query batch size.
      */
-    const SUBSCRIBERS_BATCH_LIMIT = 1000;
+    public const SUBSCRIBERS_BATCH_LIMIT = 1000;
 
     public function init()
     {

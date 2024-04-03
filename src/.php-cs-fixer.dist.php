@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $config = new PrestaShop\CodingStandards\CsFixer\Config();
 
 /** @var \Symfony\Component\Finder\Finder $finder */
