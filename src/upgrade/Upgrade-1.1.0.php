@@ -21,22 +21,20 @@
  * @copyright 2018 Smaily
  * @license   GPL3
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
 
 /**
  * Upgrades database with smaily abandoned cart table.
- *
  */
 function upgrade_module_1_1_0()
 {
     return Db::getInstance()->execute(
-        'CREATE TABLE IF NOT EXISTS '._DB_PREFIX_.'smaily_cart (
+        'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'smaily_cart (
             `id_smaily_cart` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             `id_customer` INT UNSIGNED NULL ,
             `id_cart` INT UNSIGNED NULL ,
-            `date_sent` DATETIME NOT NULL) ENGINE='._MYSQL_ENGINE_
+            `date_sent` DATETIME NOT NULL) ENGINE=' . _MYSQL_ENGINE_
     );
 }

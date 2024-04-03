@@ -1,7 +1,7 @@
 <?php
 
 global $_MODULE;
-$_MODULE = array();
+$_MODULE = [];
 $_MODULE['<{smailyforprestashop}prestashop>smailyforprestashop_d51392bec6ce4585c3b03031b2197109'] = 'Smaily Moodul Prestashopile';
 $_MODULE['<{smailyforprestashop}prestashop>smailyforprestashop_3e614e6ed6a76b403e9cc5ce027ac0a9'] = 'Smaily E-turunduse ja kontaktide automaatse sünkrooniseerimise moodul Prestashopile';
 $_MODULE['<{smailyforprestashop}prestashop>smailyforprestashop_876f23178c29dc2552c0b48bf23cd9bd'] = 'Kas oled kindel, et tahad moodulit eemaldada?';

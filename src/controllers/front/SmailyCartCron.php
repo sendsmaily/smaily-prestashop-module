@@ -21,20 +21,18 @@
  * @copyright 2018 Smaily
  * @license   GPL3
  */
-
 class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFrontController
 {
-
     public function init()
     {
         parent::init();
         header('Content-Type: text/plain');
         if (Tools::getValue('token') == Configuration::get('SMAILY_CART_CRON_TOKEN')) {
             $this->abandonedCart();
-            die();
+            exit;
         } else {
-            echo('Access denied!');
-            die(1);
+            echo 'Access denied!';
+            exit(1);
         }
     }
 
@@ -45,9 +43,9 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
      */
     private function abandonedCart()
     {
-        if (Configuration::get('SMAILY_ENABLE_ABANDONED_CART') !== "1") {
-            echo('Abandoned cart disabled!');
-            die(1);
+        if (Configuration::get('SMAILY_ENABLE_ABANDONED_CART') !== '1') {
+            echo 'Abandoned cart disabled!';
+            exit(1);
         }
 
         // Settings.
@@ -78,9 +76,9 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
             }
 
             // Initialize Smaily query.
-            $adresses = array(
+            $adresses = [
                 'email' => $abandoned_cart['email'],
-            );
+            ];
 
             if (in_array('first_name', $sync_fields)) {
                 $adresses['first_name'] = $abandoned_cart['firstname'];
@@ -91,16 +89,16 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
             }
 
             // Populate abandoned cart with empty values for legacy api.
-            $fields_available = array(
+            $fields_available = [
                 'name',
                 'description',
                 'sku',
                 'price',
                 'quantity',
                 'base_price',
-            );
+            ];
             foreach ($fields_available as $field) {
-                for ($i=1; $i<=10; $i++) {
+                for ($i = 1; $i <= 10; ++$i) {
                     $adresses['product_' . $field . '_' . $i] = '';
                 }
             }
@@ -136,29 +134,29 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                             );
                             break;
                         default:
-                            $adresses['product_' . $sync_field .'_' . $count] = $product[$sync_field];
+                            $adresses['product_' . $sync_field . '_' . $count] = $product[$sync_field];
                             break;
                     }
                 }
-                $count++;
+                ++$count;
             }
 
             // Smaily api query.
-            $query = array(
+            $query = [
                 'autoresponder' => $autoresponder_id,
-                'addresses' => array($adresses)
-            );
+                'addresses' => [$adresses],
+            ];
             // Send cart data to smaily api.
             $response = $this->module->callApi('autoresponder', $query, 'POST');
             // If email sent successfully update sent status in database.
-            if (array_key_exists('success', $response) &&
-                isset($response['result']['code']) &&
-                $response['result']['code'] === 101) {
-                    $this->updateSentStatus($id_customer, $id_cart);
+            if (array_key_exists('success', $response)
+                && isset($response['result']['code'])
+                && $response['result']['code'] === 101) {
+                $this->updateSentStatus($id_customer, $id_cart);
             } else {
                 $this->module->logErrorWithFormatting(
-                    "Failed sending out abandoned cart email for email: %s, cart_id: %s. " .
-                    "Smaily response code: %s, message: %s.",
+                    'Failed sending out abandoned cart email for email: %s, cart_id: %s. ' .
+                    'Smaily response code: %s, message: %s.',
                     $abandoned_cart['email'],
                     $abandoned_cart['id_cart'],
                     $response['result']['code'],
@@ -166,7 +164,7 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
                 );
             }
         }
-        echo('Abandoned carts emails sent!');
+        echo 'Abandoned carts emails sent!';
     }
 
     /**
@@ -204,8 +202,9 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
     /**
      * Updates Sent email status in smaily cart table.
      *
-     * @param integer $id_customer  Customer ID
-     * @param integer $id_cart      Cart ID
+     * @param int $id_customer Customer ID
+     * @param int $id_cart Cart ID
+     *
      * @return void
      */
     private function updateSentStatus($id_customer, $id_cart)

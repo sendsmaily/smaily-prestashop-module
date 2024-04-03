@@ -21,7 +21,6 @@
  * @copyright 2018 Smaily
  * @license   GPL3
  */
-
 class AdminSmailyforprestashopAjaxController extends ModuleAdminController
 {
     public function initContent()
@@ -40,26 +39,26 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
     {
         $response = null;
         // Validate token and if request is ajax call.
-        if (Tools::getValue('ajax') &&
-            Tools::getValue('token') === Tools::getAdminTokenLite('AdminSmailyforprestashopAjax')
-            ) {
+        if (Tools::getValue('ajax')
+            && Tools::getValue('token') === Tools::getAdminTokenLite('AdminSmailyforprestashopAjax')
+        ) {
             // If no subdomain entered display error message.
-            if (!Tools::getValue('subdomain') ||
-                empty(trim(Tools::getValue('subdomain')))) {
-                    $response = array('error' => $this->l('Please enter subdomain!'));
-                    die(Tools::jsonEncode($response));
+            if (!Tools::getValue('subdomain')
+                || empty(trim(Tools::getValue('subdomain')))) {
+                $response = ['error' => $this->l('Please enter subdomain!')];
+                exit(Tools::jsonEncode($response));
             }
             // If no username entered display error message.
-            if (!Tools::getValue('username') ||
-                empty(trim(Tools::getValue('subdomain')))) {
-                    $response = array('error' => $this->l('Please enter username!'));
-                    die(Tools::jsonEncode($response));
+            if (!Tools::getValue('username')
+                || empty(trim(Tools::getValue('subdomain')))) {
+                $response = ['error' => $this->l('Please enter username!')];
+                exit(Tools::jsonEncode($response));
             }
             // If no pasword entered display error message.
-            if (!Tools::getValue('password') ||
-                empty(trim(Tools::getValue('password')))) {
-                    $response = array('error' => $this->l('Please enter password!'));
-                    die(Tools::jsonEncode($response));
+            if (!Tools::getValue('password')
+                || empty(trim(Tools::getValue('password')))) {
+                $response = ['error' => $this->l('Please enter password!')];
+                exit(Tools::jsonEncode($response));
             }
 
             $subdomain = Tools::getValue('subdomain');
@@ -75,7 +74,7 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
                 $subdomain = $parts[0];
             }
             $subdomain = preg_replace('/[^a-zA-Z0-9]+/', '', $subdomain);
-            
+
             // Clean user entered subdomain.
             $subdomain = pSQL($subdomain);
             // Clean user entered username
@@ -90,14 +89,14 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
                 $subdomain,
                 $username,
                 $password,
-                array(
-                    'trigger_type' => 'form_submitted'
-                )
+                [
+                    'trigger_type' => 'form_submitted',
+                ]
             );
             // Failsafe for empty response.
             if (!$response) {
-                $response = array('error' => $this->l('Invalid login details!'));
-                die(Tools::jsonEncode($response));
+                $response = ['error' => $this->l('Invalid login details!')];
+                exit(Tools::jsonEncode($response));
             }
             // Add credentials to DB if successfully validated.
             if (array_key_exists('success', $response)) {
@@ -105,17 +104,17 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
                 Configuration::updateValue('SMAILY_USERNAME', $username);
                 Configuration::updateValue('SMAILY_PASSWORD', $password);
             }
-            die(Tools::jsonEncode($response));
+            exit(Tools::jsonEncode($response));
         }
     }
 
     public function ajaxProcessGetAutoresponders()
     {
-        $response = array();
+        $response = [];
         // Validate token and if request is ajax call.
-        if (Tools::getValue('ajax') &&
-            Tools::getValue('token') === Tools::getAdminTokenLite('AdminSmailyforprestashopAjax')
-            ) {
+        if (Tools::getValue('ajax')
+            && Tools::getValue('token') === Tools::getAdminTokenLite('AdminSmailyforprestashopAjax')
+        ) {
             // Get credentials from db.
             $subdomain = pSQL(Configuration::get('SMAILY_SUBDOMAIN'));
             $username = pSQL(Configuration::get('SMAILY_USERNAME'));
@@ -126,29 +125,29 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
                 $subdomain,
                 $username,
                 $password,
-                array(
-                    'trigger_type' => 'form_submitted'
-                )
+                [
+                    'trigger_type' => 'form_submitted',
+                ]
             );
-            die(Tools::jsonEncode($response));
+            exit(Tools::jsonEncode($response));
         }
     }
 
     /**
      * Makes API call to Smaily api
      *
-     * @param string $endpoint  Smaily API endpoint without .php
+     * @param string $endpoint Smaily API endpoint without .php
      * @param string $subdomain Smaily account subdomain
-     * @param string $username  Smaily username
-     * @param string $password  Smaily password
-     * @param array $data       Data to be sent to Smaily
-     * @param string $method    GET or POST method
+     * @param string $username Smaily username
+     * @param string $password Smaily password
+     * @param array $data Data to be sent to Smaily
+     * @param string $method GET or POST method
+     *
      * @return array $result    Response from Smaily
      */
-    public function callApi($endpoint, $subdomain, $username, $password, $data = array(), $method = 'GET')
+    public function callApi($endpoint, $subdomain, $username, $password, $data = [], $method = 'GET')
     {
-
-        $apiUrl = "https://" . $subdomain . ".sendsmaily.net/api/" . trim($endpoint, '/') . ".php";
+        $apiUrl = 'https://' . $subdomain . '.sendsmaily.net/api/' . trim($endpoint, '/') . '.php';
         $data = http_build_query($data);
         if ($method == 'GET') {
             $apiUrl = $apiUrl . '?' . $data;
@@ -171,16 +170,16 @@ class AdminSmailyforprestashopAjaxController extends ModuleAdminController
         if (!curl_errno($ch)) {
             switch ((int) $http_status) {
                 case 200:
-                    return array('success' => true, 'autoresponders' => $result);
+                    return ['success' => true, 'autoresponders' => $result];
                 case 401:
-                    return $result = array('error' => $this->l('Check credentials, unauthorized!'));
+                    return $result = ['error' => $this->l('Check credentials, unauthorized!')];
                 case 404:
-                    return $result = array('error' => $this->l('Check subdomain, unauthorized!'));
+                    return $result = ['error' => $this->l('Check subdomain, unauthorized!')];
                 default:
-                    return $result = array('error' => $this->l('Something went wrong with request to Smaily!'));
+                    return $result = ['error' => $this->l('Something went wrong with request to Smaily!')];
             }
         } else {
-            return $result = array("error" => $this->l(curl_error($ch)));
+            return $result = ['error' => $this->l(curl_error($ch))];
         }
         curl_close($ch);
     }

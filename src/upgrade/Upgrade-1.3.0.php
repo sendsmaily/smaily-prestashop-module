@@ -21,7 +21,6 @@
  * @copyright 2018 Smaily
  * @license   GPL3
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -32,7 +31,7 @@ if (!defined('_PS_VERSION_')) {
 function upgrade_module_1_3_0()
 {
     $sync_fields = unserialize(Configuration::get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
-    
+
     // Replace description_short->description.
     $description_short = array_search('description_short', $sync_fields);
     if ($description_short !== false) {
@@ -42,7 +41,7 @@ function upgrade_module_1_3_0()
         }
     }
 
-    $cartEnabled = Configuration::get('SMAILY_ENABLE_ABANDONED_CART') === "1" ? true :false;
+    $cartEnabled = Configuration::get('SMAILY_ENABLE_ABANDONED_CART') === '1' ? true : false;
     // Add the previous default fields to sync array.
     if ($cartEnabled) {
         array_push($sync_fields, 'first_name', 'last_name');

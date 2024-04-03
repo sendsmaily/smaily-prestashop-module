@@ -21,7 +21,6 @@
  * @copyright 2018 Smaily
  * @license   GPL3
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -36,8 +35,9 @@ function upgrade_module_1_5_0($object)
     $cart_autoresponder = str_replace('\"', '"', $cart_autoresponder);
     $cart_autoresponder = unserialize($cart_autoresponder);
     $autoresponder_id = isset($cart_autoresponder['id']) ? $cart_autoresponder['id'] : '';
-    return (Configuration::updateValue('SMAILY_CART_AUTORESPONDER', $autoresponder_id) &&
-        Configuration::updateValue('SMAILY_OPTIN_ENABLED', 0) &&
-        Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', '') &&
-        $object->registerHook('actionCustomerAccountAdd'));
+
+    return Configuration::updateValue('SMAILY_CART_AUTORESPONDER', $autoresponder_id)
+        && Configuration::updateValue('SMAILY_OPTIN_ENABLED', 0)
+        && Configuration::updateValue('SMAILY_OPTIN_AUTORESPONDER', '')
+        && $object->registerHook('actionCustomerAccountAdd');
 }

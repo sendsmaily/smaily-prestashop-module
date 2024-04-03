@@ -21,7 +21,6 @@
  * @copyright 2021 Smaily
  * @license   GPL3
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -31,7 +30,7 @@ function upgrade_module_1_6_0()
     $customer_sync_fields = unserialize(Configuration::get('SMAILY_SYNCRONIZE_ADDITIONAL'));
 
     // Update firstname and lastname fields names.
-    $fields = array();
+    $fields = [];
     foreach ($customer_sync_fields as $field) {
         if ($field === 'firstname') {
             $fields[] = 'first_name';
