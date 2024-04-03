@@ -3,49 +3,63 @@ version: '3.7'
 services:
   prestashop:
     container_name: prestashop
-    image: sendsmaily/prestashop
-    build:
-      context: ./
+    image: prestashop/prestashop-flashlight:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+    - PS_DOMAIN=localhost:8080
+    - DEBUG_MODE=true
     ports:
     - 8080:80
-    environment:
-    - PS_DEV_MODE=1
-    - PS_DOMAIN=localhost:8080
-    - DB_SERVER=db
-    - DB_USER=root
-    - DB_PASSWD=root
-    - DB_NAME=prestashop
     volumes:
     - prestashop-data:/var/www/html
     - ./src:/var/www/html/modules/smailyforprestashop
-    depends_on:
-    - db
 
-  db:
+  mysql:
     container_name: prestashop_db
     image: mysql:5.7
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "--host=localhost",
+          "--user=root",
+          "--password=prestashop",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
     environment:
-    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_HOST=mysql
+    - MYSQL_USER=prestashop
+    - MYSQL_PASSWORD=prestashop
+    - MYSQL_ROOT_PASSWORD=prestashop
+    - MYSQL_PORT=3306
     - MYSQL_DATABASE=prestashop
-    volumes:
-    - prestashop-db-data:/var/lib/mysql
     ulimits:
       nproc: 65535
       nofile:
         soft: 26677
         hard: 46677
+    volumes:
+    - prestashop-db-data:/var/lib/mysql
 
   phpmyadmin:
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin
+    depends_on:
+    - mysql
+    environment:
+    - PMA_HOST=mysql
+    - PMA_PORT=3306
+    - PMA_USER=prestashop
+    - PMA_PASSWORD=prestashop
+    - MYSQL_ROOT_PASSWORD=prestashop
     ports:
     - 8888:80
-    environment:
-    - PMA_HOST=db
-    - PMA_USER=root
-    - PMA_PASSWORD=root
-    depends_on:
-    - db
 
 volumes:
   prestashop-data:

@@ -4,7 +4,7 @@ First off, thanks for taking the time to contribute!
 # Table of contents
 
 - [Getting started](#getting-started)
-- [Internals](#internals))
+- [Internals](#internals)
     - [Structure of the repository](#structure-of-the-repository)
 - [Deveopment](#development)
     - [Starting the environement](#starting-the-environment)
@@ -26,13 +26,11 @@ Next, change your working directory to the local repository:
 
 And run the environment:
 
-    $ docker-compose up
+    $ docker compose up
 
-When running the enviroment for the first time, PrestaShop installation will automatically run, and it can take a while.
+You can access PrestaShop store from `http://localhost:8080` and administration interface from `http://localhost:8080/admin-dev` URL.
 
-Once installation has finished and web server is ready to accept requests, you can access PrestaShop store from `http://localhost:8080` and administration interface from `http://localhost:8080/admin1` URL.
-
-> Administrator user is `admin@smaily.sandbox` and password `smailydev1`.
+> Administrator user is `admin@prestashop.com` and password `prestashop`.
 
 
 # Internals
@@ -42,22 +40,21 @@ Once installation has finished and web server is ready to accept requests, you c
 The repository is split into multiple parts:
 
 - `.github` - GitHub issue and pull request templates, and release workflow;
-- `.sandbox` - files needed for running the development environment;
 - `assets` - images for the user guide;
 - `src` - module files;
 
-Source files must follow standard PrestaShop module structure. Learn more about it from the [Modules Folder structure](https://devdocs.prestashop.com/1.7/modules/creation/module-file-structure/) chapter in the official documentation.
+Source files must follow standard PrestaShop module structure. Learn more about it from the [Modules Folder structure](https://devdocs.prestashop-project.org/8/modules/creation/module-file-structure/) chapter in the official documentation.
 
 
 # Development
 
-All written code must follow PrestaShop's [coding standards](https://devdocs.prestashop.com/1.7/development/coding-standards/) and [naming conventions](https://devdocs.prestashop.com/1.7/development/naming-conventions/).
+All written code must follow PrestaShop's [coding standards](https://devdocs.prestashop-project.org/8/development/coding-standards/) and [naming conventions](https://devdocs.prestashop-project.org/8/development/naming-conventions/).
 
 ## Starting the environment
 
 You can run the environment by executing:
 
-    $ docker-compose up
+    $ docker compose up -d
 
 > **Note!** Make sure you do not have any other process(es) listening on ports 8080 and 8888.
 
@@ -65,10 +62,10 @@ You can run the environment by executing:
 
 Environment can be stopped by executing:
 
-    $ docker-compose down
+    $ docker compose down
 
 ## Resetting the environment
 
 If you need to reset the installation, just simply delete environment's Docker volumes. Easiest way to achieve this is by running:
 
-    $ docker-compose down -v
+    $ docker compose down -v
