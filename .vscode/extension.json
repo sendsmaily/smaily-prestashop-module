@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "junstyle.php-cs-fixer",
+        "devsense.phptools-vscode"
+    ]
+}

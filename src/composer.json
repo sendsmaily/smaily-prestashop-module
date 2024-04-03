@@ -1,0 +1,10 @@
+{
+    "require-dev": {
+        "prestashop/php-dev-tools": "^4.3"
+    },
+    "scripts": {
+        "lint": "php-cs-fixer fix --dry-run",
+        "fix": "php-cs-fixer fix",
+        "phpstan": "_PS_ROOT_DIR_=/var/www/html phpstan analyse ."
+    }
+}
