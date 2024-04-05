@@ -1,5 +1,7 @@
 {
     "recommendations": [
+        "aswinkumar863.smarty-template-support",
+        "mblode.twig-language-2",
         "junstyle.php-cs-fixer",
         "devsense.phptools-vscode"
     ]
