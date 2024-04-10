@@ -1,0 +1,92 @@
+services:
+  _defaults:
+    public: true
+
+  # Choice providers
+  prestashop.module.smailyforprestashop.choice_provider.autoresponders:
+    class: 'PrestaShop\Module\SmailyForPrestashop\Form\ChoiceProvider\Autoresponder'
+    arguments: 
+    - '@translator'
+    - '@prestashop.adapter.legacy.configuration'
+
+  # Account credentials form.
+  prestashop.module.smailyforprestashop.form.type.account_credentials:
+    class: 'PrestaShop\Module\SmailyForPrestashop\Form\AccountConfigurationFormType'
+    parent: 'form.type.translatable.aware'
+    public: true
+    tags:
+      - { name: form.type }
+
+  prestashop.module.smailyforprestashop.form.account_credentials_data_configuration:
+    class: PrestaShop\Module\SmailyForPrestashop\Form\AccountConfigurationDataConfiguration
+    arguments: ['@prestashop.adapter.legacy.configuration']
+
+  prestashop.module.smailyforprestashop.form.account_credentials_form_data_provider:
+    class: PrestaShop\Module\SmailyForPrestashop\Form\AccountConfigurationFormDataProvider
+    arguments:
+    - '@prestashop.module.smailyforprestashop.form.account_credentials_data_configuration'
+
+  prestashop.module.smailyforprestashop.form.account_credentials_form_handler:
+    class: PrestaShop\PrestaShop\Core\Form\Handler
+    arguments:
+    - '@form.factory'
+    - '@prestashop.core.hook.dispatcher'
+    - '@prestashop.module.smailyforprestashop.form.account_credentials_form_data_provider'
+    - PrestaShop\Module\SmailyForPrestashop\Form\AccountConfigurationFormType
+    - AccountConfiguration
+
+  # Customer sync form
+  prestashop.module.smailyforprestashop.form.type.cystomer_sync:
+    class: 'PrestaShop\Module\SmailyForPrestashop\Form\CustomerSyncFormType'
+    parent: 'form.type.translatable.aware'
+    public: true
+    arguments:
+    - $autoresponderChoices: '@=service("prestashop.module.smailyforprestashop.choice_provider.autoresponders").getChoices()'
+    tags:
+    - { name: form.type }
+
+  prestashop.module.smailyforprestashop.form.cystomer_sync_form_data_configuration:
+    class: PrestaShop\Module\SmailyForPrestashop\Form\CustomerSyncFormDataConfiguration
+    arguments: ['@prestashop.adapter.legacy.configuration']
+
+  prestashop.module.smailyforprestashop.form.customer_sync_form_data_provider:
+    class: PrestaShop\Module\SmailyForPrestashop\Form\CustomerSyncFormDataProvider
+    arguments:
+    - '@prestashop.module.smailyforprestashop.form.cystomer_sync_form_data_configuration'
+
+  prestashop.module.smailyforprestashop.form.customer_sync_form_handler:
+    class: PrestaShop\PrestaShop\Core\Form\Handler
+    arguments:
+    - '@form.factory'
+    - '@prestashop.core.hook.dispatcher'
+    - '@prestashop.module.smailyforprestashop.form.customer_sync_form_data_provider'
+    - PrestaShop\Module\SmailyForPrestashop\Form\CustomerSyncFormType
+    - CustomerSyncConfiguration
+  
+  # Abandoned cart form
+  prestashop.module.smailyforprestashop.form.type.abandoned_cart:
+    class: 'PrestaShop\Module\SmailyForPrestashop\Form\AbandonedCartFormType'
+    parent: 'form.type.translatable.aware'
+    public: true
+    arguments:
+    - $autoresponderChoices: '@=service("prestashop.module.smailyforprestashop.choice_provider.autoresponders").getChoices()'
+    tags:
+      - { name: form.type }
+
+  prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_configuration:
+    class: PrestaShop\Module\SmailyForPrestashop\Form\AbandonedCartFormDataConfiguration
+    arguments: ['@prestashop.adapter.legacy.configuration']
+
+  prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_provider:
+    class: PrestaShop\Module\SmailyForPrestashop\Form\AbandonedCartFormDataProvider
+    arguments:
+    - '@prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_configuration'
+
+  prestashop.module.smailyforprestashop.form.abandoned_cart_form_handler:
+    class: PrestaShop\PrestaShop\Core\Form\Handler
+    arguments:
+    - '@form.factory'
+    - '@prestashop.core.hook.dispatcher'
+    - '@prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_provider'
+    - PrestaShop\Module\SmailyForPrestashop\Form\AbandonedCartFormType
+    - AbandonedCartConfiguration

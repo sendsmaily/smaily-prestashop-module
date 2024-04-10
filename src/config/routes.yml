@@ -1,0 +1,7 @@
+smailyforprestashop_module_configuration:
+  path: /smailyforprestashop/configuration
+  methods: [GET, POST]
+  defaults:
+    _controller: PrestaShop\Module\SmailyForPrestashop\Controller\ModuleConfigurationController::index
+    _legacy_controller: SmailyForPrestashopConfiguration
+    _legacy_link: SmailyForPrestashopConfiguration
