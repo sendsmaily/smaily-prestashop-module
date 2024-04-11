@@ -87,10 +87,33 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
             $this->flashErrors($errors);
         }
 
+        // Rss feed
+        $rssFeedFormDataHandler = $this->get('prestashop.module.smailyforprestashop.form.rss_feed_form_handler');
+        $rssFeedForm = $rssFeedFormDataHandler->getForm();
+        $rssFeedForm->handleRequest($request);
+        $rssFeedFormClicked = $rssFeedForm->get('submit')->isClicked();
+
+        if ($rssFeedFormClicked) {
+            $tab = 'rss';
+        }
+
+        if ($rssFeedFormClicked && $rssFeedForm->isValid()) {
+            $errors = $rssFeedFormDataHandler->save($rssFeedForm->getData());
+
+            if (empty($errors)) {
+                $this->addFlash('success', $this->trans('RSS-feed URL updated.', 'Modules.Smailyforprestashop.Admin'));
+
+                return $this->redirectToRoute('smailyforprestashop_module_configuration', ['tab' => $tab]);
+            }
+
+            $this->flashErrors($errors);
+        }
+
         return $this->render('@Modules/smailyforprestashop/views/templates/admin/configuration.html.twig', [
             'accountConfigurationForm' => $accountForm->createView(),
             'customerSyncForm' => $customerSyncForm->createView(),
             'abandonedCartForm' => $abandonedCartForm->createView(),
+            'rssFeedForm' => $rssFeedForm->createView(),
             'accountConnected' => true,
             'tab' => $tab,
         ]);

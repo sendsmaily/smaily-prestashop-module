@@ -3,6 +3,11 @@
 
 
 {% block content %}
+	{% if app.request.query.get('tab') %}
+		{% set tab = app.request.query.get('tab') %}
+	{% endif %}
+
+
 	<div class="card">
 		<ul class="nav nav-tabs" id="configuration" role="tablist">
 			<li {% if tab == 'account' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
@@ -15,6 +20,9 @@
 				<li {% if tab == 'cart' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
 					<a {% if tab == 'cart' %} class="nav-link active" {% else %} class="nav-link" {% endif %} id="cart-tab" data-toggle="tab" href="#cart" role="tab" aria-controls="cart" aria-expanded="true">{{ 'Abandoned Cart'|trans }}</a>
 				</li>
+				<li {% if tab == 'rss' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+					<a {% if tab == 'rss' %} class="nav-link active" {% else %} class="nav-link" {% endif %} id="rss-tab" data-toggle="tab" href="#rss" role="tab" aria-controls="cart" aria-expanded="true">{{ 'RSS Feed'|trans }}</a>
+				</li>
 			{% endif %}
 		</ul>
 		<div class="tab-content" id="tabContent">
@@ -26,6 +34,9 @@
 				</div>
 				<div {% if tab == 'cart' %} class="tab-pane fade show active" {% else %} class="tab-pane fade show" {% endif %} id="cart" role="tabpanel" aria-labelledby="cart-tab">
 					{% include '@Modules/smailyforprestashop/views/templates/admin/abandonedCartConfiguration.html.twig' %}
+				</div>
+				<div {% if tab == 'rss' %} class="tab-pane fade show active" {% else %} class="tab-pane fade show" {% endif %} id="rss" role="tabpanel" aria-labelledby="rss-tab">
+					{% include '@Modules/smailyforprestashop/views/templates/admin/rssFeedConfiguration.html.twig' %}
 				</div>
 			{% endif %}
 		</div>

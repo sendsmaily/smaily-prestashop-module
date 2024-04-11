@@ -29,11 +29,6 @@ if (!defined('_PS_VERSION_')) {
 
 class SmailyForPrestaShop extends Module
 {
-    /**
-     * @var string[] list of allowed sort by values
-     */
-    public static $allowed_sort_by_values = ['date_add', 'date_upd', 'name', 'price', 'id_product'];
-
     public function __construct()
     {
         $this->name = 'smailyforprestashop';
@@ -346,49 +341,6 @@ class SmailyForPrestaShop extends Module
         // // Display settings form.
         // return $output .= $this->display(__FILE__, 'views/templates/admin/smaily_configure.tpl');
     }
-
-    // /**
-    //  * Recursively go through categories in array and normalize for template.
-    //  *
-    //  * @param array $categories enabled categories in Prestashop catalog
-    //  *
-    //  * @return array categories in format: array(category id => category name)
-    //  */
-    // private function recursivelyNormalizeCategoriesForTemplate($categories)
-    // {
-    //     $normalized = [];
-    //     foreach ($categories as $category) {
-    //         $normalized[$category['id_category']] = $category['name'];
-    //         if (isset($category['children']) && is_array($category['children'])) {
-    //             $normalized += $this->recursivelyNormalizeCategoriesForTemplate($category['children']);
-    //         }
-    //     }
-
-    //     return $normalized;
-    // }
-
-    // /**
-    //  * Make RSS URL with query parameters.
-    //  *
-    //  * @return string $url
-    //  */
-    // private function buildRssUrlFromSettings()
-    // {
-    //     $query_arguments = [
-    //         'limit' => Configuration::get('SMAILY_RSS_LIMIT'),
-    //         'sort_by' => Configuration::get('SMAILY_RSS_SORT_BY'),
-    //         'sort_order' => Configuration::get('SMAILY_RSS_SORT_ORDER'),
-    //     ];
-    //     if (Configuration::get('SMAILY_RSS_CATEGORY_ID') !== '') {
-    //         $query_arguments['category_id'] = Configuration::get('SMAILY_RSS_CATEGORY_ID');
-    //     }
-
-    //     return Context::getContext()->link->getModuleLink(
-    //         'smailyforprestashop',
-    //         'SmailyRssFeed',
-    //         $query_arguments
-    //     );
-    // }
 
     // // Display Block Newsletter in footer.
     // public function hookDisplayFooterBefore($params)

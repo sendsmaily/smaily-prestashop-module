@@ -9,6 +9,12 @@ services:
     - '@translator'
     - '@prestashop.adapter.legacy.configuration'
 
+  prestashop.module.smailyforprestashop.choice_provider.product_categories:
+    class: 'PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider\ProductCategory'
+    arguments: 
+    - '@translator'
+    - '@prestashop.adapter.data_provider.category'
+
   # Account credentials form.
   prestashop.module.smailyforprestashop.form.type.account_credentials:
     class: 'PrestaShop\Module\SmailyForPrestaShop\Form\AccountConfigurationFormType'
@@ -90,3 +96,31 @@ services:
     - '@prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_provider'
     - PrestaShop\Module\SmailyForPrestaShop\Form\AbandonedCartFormType
     - AbandonedCartConfiguration
+
+  # RSS feed form
+  prestashop.module.smailyforprestashop.form.type.rss_feed:
+    class: 'PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormType'
+    parent: 'form.type.translatable.aware'
+    public: true
+    arguments:
+      - $productCategoryChoices: '@=service("prestashop.module.smailyforprestashop.choice_provider.product_categories").getChoices()'
+    tags:
+      - { name: form.type }
+
+  prestashop.module.smailyforprestashop.form.rss_feed_form_data_configuration:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormDataConfiguration
+    arguments: ['@prestashop.adapter.legacy.configuration']
+
+  prestashop.module.smailyforprestashop.form.rss_feed_form_data_provider:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormDataProvider
+    arguments:
+    - '@prestashop.module.smailyforprestashop.form.rss_feed_form_data_configuration'
+
+  prestashop.module.smailyforprestashop.form.rss_feed_form_handler:
+    class: PrestaShop\PrestaShop\Core\Form\Handler
+    arguments:
+    - '@form.factory'
+    - '@prestashop.core.hook.dispatcher'
+    - '@prestashop.module.smailyforprestashop.form.rss_feed_form_data_provider'
+    - PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormType
+    - RssFeedConfiguration
