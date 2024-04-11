@@ -27,7 +27,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class SmailyForPrestashop extends Module
+class SmailyForPrestaShop extends Module
 {
     /**
      * @var string[] list of allowed sort by values
@@ -488,33 +488,6 @@ class SmailyForPrestashop extends Module
 
     //         return false;
     //     }
-    // }
-
-    // /**
-    //  * Add error (severity 3) to Prestashop log with formatted arguments.
-    //  *
-    //  * @param string $message
-    //  *
-    //  * @return void
-    //  */
-    // public function logErrorWithFormatting()
-    // {
-    //     $args = func_get_args();
-    //     $message = call_user_func_array('sprintf', $args);
-    //     PrestaShopLogger::addLog('[SMAILY] ' . $message, 3);
-    // }
-
-    // /**
-    //  * Add information to Prestashop log.
-    //  *
-    //  * @param string $message
-    //  * @param int $severity (1 is informative, 3 error)
-    //  *
-    //  * @return void
-    //  */
-    // public function logMessageWithSeverity($message, $severity)
-    // {
-    //     PrestaShopLogger::addLog('[SMAILY] ' . $message, $severity);
     // }
 
     // public function installTab($parent_class, $class_name, $name): bool

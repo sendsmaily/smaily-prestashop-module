@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\Module\SmailyForPrestashop\Form;
+namespace PrestaShop\Module\SmailyForPrestaShop\Form;
 
-use PrestaShop\Module\SmailyForPrestashop\Lib\Api;
+use PrestaShop\Module\SmailyForPrestaShop\Lib\Api;
 use PrestaShop\PrestaShop\Core\Configuration\DataConfigurationInterface;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
 

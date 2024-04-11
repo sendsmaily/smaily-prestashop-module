@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\Module\SmailyForPrestashop\Form;
+namespace PrestaShop\Module\SmailyForPrestaShop\Form;
 
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;

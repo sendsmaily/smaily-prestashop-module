@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\Module\SmailyForPrestashop\Form;
+namespace PrestaShop\Module\SmailyForPrestaShop\Form;
 
 use PrestaShop\PrestaShop\Core\Configuration\DataConfigurationInterface;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
@@ -85,8 +85,10 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
             ->link
             ->getModuleLink(
                 'smailyforprestashop',
-                'CustomerSync',
-                ['token' => $token]
+                'SmailyCustomerCron',
+                [
+                    'token' => $token,
+                ]
             );
     }
 }

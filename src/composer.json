@@ -10,8 +10,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "PrestaShop\\Module\\SmailyForPrestashop\\": "src/",
-            "PrestaShop\\Module\\SmailyForPrestashop\\Lib\\": "lib/"
+            "PrestaShop\\Module\\SmailyForPrestaShop\\": "src/",
+            "PrestaShop\\Module\\SmailyForPrestaShop\\Lib\\": "lib/"
         }
     },
     "require": {

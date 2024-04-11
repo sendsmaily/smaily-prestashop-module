@@ -1,8 +1,8 @@
 <?php
 
-namespace PrestaShop\Module\SmailyForPrestashop\Form\ChoiceProvider;
+namespace PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider;
 
-use PrestaShop\Module\SmailyForPrestashop\Lib\Api;
+use PrestaShop\Module\SmailyForPrestaShop\Lib\Api;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
 use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

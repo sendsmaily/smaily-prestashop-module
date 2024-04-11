@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\Module\SmailyForPrestashop\Controller;
+namespace PrestaShop\Module\SmailyForPrestaShop\Controller;
 
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
