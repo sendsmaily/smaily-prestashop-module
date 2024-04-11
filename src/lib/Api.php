@@ -25,7 +25,7 @@ class Api
 
     public function listAutoresponders(int $limit = 100): ResponseInterface
     {
-        return $this->client->request('GET', 'api/autoresponder.php', [
+        return $this->client->get('api/autoresponder.php', [
             'query' => [
                 'limit' => $limit,
             ],
@@ -50,6 +50,18 @@ class Api
                 'Content-Type' => 'application/json',
             ],
             'body' => json_encode($data),
+        ]);
+    }
+
+    public function triggerAutomation(string $autoresponder, array $addresses): ResponseInterface
+    {
+        return $this->client->post('/api/autoresponder.php', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => [
+                'addresses' => json_encode($addresses),
+            ],
         ]);
     }
 }
