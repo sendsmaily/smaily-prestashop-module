@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\Module\SmailyForPrestashop\Lib;
+namespace PrestaShop\Module\SmailyForPrestaShop\Lib;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
@@ -10,33 +10,15 @@ use Psr\Http\Message\ResponseInterface;
 class Api
 {
     /**
-     * @var string
-     */
-    private $subdomain;
-
-    /**
-     * @var string
-     */
-    private $username;
-
-    /**
-     * @var string
-     */
-    private $password;
-
-    /**
      * @var \GuzzleHttp\Client
      */
     private $client;
 
     public function __construct(string $subdomain, string $username, string $password)
     {
-        $this->subdomain = $subdomain;
-        $this->username = $username;
-        $this->password = $password;
-
         $this->client = new Client([
             'base_uri' => 'https://' . $subdomain . '.sendsmaily.net/',
+            'auth' => [$username, $password],
             'http_errors' => false,
         ]);
     }
@@ -44,10 +26,30 @@ class Api
     public function listAutoresponders(int $limit = 100): ResponseInterface
     {
         return $this->client->request('GET', 'api/autoresponder.php', [
-            'auth' => [$this->username, $this->password],
             'query' => [
                 'limit' => $limit,
             ],
+        ]);
+    }
+
+    public function listUnsubscribers(int $limit = 100, $offset = 0): ResponseInterface
+    {
+        return $this->client->get('api/contact.php', [
+            'query' => [
+                'list' => 2,
+                'limit' => $limit,
+                'offset' => $offset,
+            ],
+        ]);
+    }
+
+    public function createSubscribers(array $data): ResponseInterface
+    {
+        return $this->client->post('api/contact.php', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($data),
         ]);
     }
 }
