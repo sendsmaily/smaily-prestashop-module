@@ -1,0 +1,31 @@
+{% trans_default_domain 'Modules.Smailyforprestashop.Admin' %}
+
+{% block account_configuration_content %}
+	{{ form_start(accountConfigurationForm) }}
+	<div class="card">
+		<h3 class="card-header">
+			<i class="material-icons">settings</i>
+			{{ 'Smaily Account Settings'|trans }}
+		</h3>
+		<div class="card-body">
+			<div class="form-wrapper">
+				{{ form_row(accountConfigurationForm.subdomain)}}
+				{{ form_row(accountConfigurationForm.username)}}
+				{{ form_row(accountConfigurationForm.password)}}
+				<p class="text-right">
+					<a href="https://smaily.com/help/api/general/create-api-user/" target="_blank">{{ 'How to create API credentials?'| trans }}</a>
+				</p>
+			</div>
+		</div>
+		<div class="card-footer">
+			<div class="d-flex justify-content-end">
+				{% if accountConnected %}
+					{{ form_row(accountConfigurationForm.submit, {'label': 'Reconnect' | trans}) }}
+				{% else %}
+					{{ form_row(accountConfigurationForm.submit) }}
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	{{ form_end(accountConfigurationForm) }}
+{% endblock %}

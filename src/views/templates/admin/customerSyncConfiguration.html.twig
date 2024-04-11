@@ -1,0 +1,30 @@
+{% trans_default_domain 'Modules.Smailyforprestashop.Admin' %}
+
+{% block customer_sync_configuration %}
+	{{ form_start(customerSyncForm) }}
+	<div class="card">
+		<h3 class="card-header">
+			<i class="material-icons">settings</i>
+			{{ 'Customer Synchronization' | trans }}
+		</h3>
+		<div class="card-body">
+			<div class="form-wrapper">
+				{{ form_row(customerSyncForm.enabled) }}
+				{{ form_row(customerSyncForm.sync_additional) }}
+				{{ form_row(customerSyncForm.cron_token) }}
+				{{ form_row(customerSyncForm.cron_url) }}
+				{{ form_row(customerSyncForm.optin_enabled) }}
+				{{ form_row(customerSyncForm.autoresponder) }}
+				<p class="text-right">
+					<a href="https://smaily.com/help/user-manual/automations/welcome-email-automation-workflow/" target="_blank">{{ 'How to create an automation trigger?' | trans }}</a>
+				</p>
+			</div>
+		</div>
+		<div class="card-footer">
+			<div class="d-flex justify-content-end">
+				{{ form_row(customerSyncForm.submit) }}
+			</div>
+		</div>
+	</div>
+	{{ form_end(customerSyncForm) }}
+{% endblock %}
