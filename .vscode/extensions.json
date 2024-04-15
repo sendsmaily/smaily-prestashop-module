@@ -3,6 +3,7 @@
         "aswinkumar863.smarty-template-support",
         "mblode.twig-language-2",
         "junstyle.php-cs-fixer",
-        "devsense.phptools-vscode"
+        "devsense.phptools-vscode",
+        "streetsidesoftware.code-spell-checker"
     ]
 }
