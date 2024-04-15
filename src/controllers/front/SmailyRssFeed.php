@@ -23,43 +23,44 @@
  */
 declare(strict_types=1);
 
-class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontController
+class SmailyForPrestaShopSmailyRssFeedModuleFrontController extends ModuleFrontController
 {
+    public const ALLOWED_SORT_BY_VALUES = ['date_add', 'date_upd', 'name', 'price', 'id_product'];
+
     public function initContent()
     {
         parent::initContent();
-        $this->generateRssFeed();
-    }
 
-    public function generateRssFeed()
-    {
         $limit = (int) Tools::getValue('limit');
         $limit = $limit >= 1 && $limit <= 250 ? $limit : 50;
 
-        $sort_by = Tools::getValue('sort_by');
-        $sort_by = in_array($sort_by, SmailyForPrestashop::$allowed_sort_by_values, true) ? $sort_by : 'date_upd';
+        $sortBy = Tools::getValue('sort_by');
+        $sortBy = in_array($sortBy, $this::ALLOWED_SORT_BY_VALUES, true) ? $sortBy : 'date_upd';
 
-        $sort_order = Tools::getValue('sort_order');
-        $sort_order = in_array($sort_order, ['asc', 'desc'], true) ? $sort_order : 'desc';
+        $sortOrder = Tools::getValue('sort_order');
+        $sortOrder = in_array($sortOrder, ['asc', 'desc'], true) ? $sortOrder : 'desc';
 
-        $category_id = (int) Tools::getValue('category_id');
-        $category_id = $category_id <= 0 ? false : $category_id;
+        $categoryId = (int) Tools::getValue('category_id');
+        $categoryId = $categoryId <= 0 ? false : $categoryId;
 
-        $products = Product::getProducts(
-            $this->context->language->id,
-            0, // start number
-            $limit, // hardcoded 50 in < 1.4.0
-            $sort_by, // hardcoded date_upd in < 1.4.0
-            $sort_order, // hardcoded desc in < 1.4.0
-            $category_id, // hardcoded false in < 1.4.0
-            true // only active products
-        );
+        header('Content-Type: application/xml');
+        echo $this->generateRssFeed($categoryId, $limit, $sortBy, $sortOrder);
+        exit; // Stop to render XML instead of twig template.
+    }
+
+    public function generateRssFeed($categoryId, $limit, $sortBy, $sortOrder): string
+    {
+        /** @var \PrestaShop\Module\SmailyForPrestaShop\Repository\RssFeedProductsRepository $repository */
+        $repository = $this->get('prestashop.module.smailyforprestashop.front.rss_feed_product_repository');
+
         $baseUrl = Tools::getHttpHost(true) . __PS_BASE_URI__;
         $rss = '<?xml version="1.0" encoding="utf-8"?>' .
             '<rss xmlns:smly="https://sendsmaily.net/schema/editor/rss.xsd" version="2.0">' .
             '<channel><title>Store</title><link>' .
             htmlspecialchars($baseUrl) . '</link><description>Product Feed</description><lastBuildDate>' .
             date('D, d M Y H:i:s') . '</lastBuildDate>';
+
+        $products = $repository->getProducts($categoryId, $limit, $sortBy, $sortOrder);
         foreach ($products as $product) {
             // Product data by id.
             $prod = new Product($product['id_product']);
@@ -85,10 +86,10 @@ class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontC
             if ($full_price > $price && $price > 0) {
                 $discount = ceil(($full_price - $price) / $full_price * 100);
             }
-            // Addcurrency symbol.
-            $currencysymbol = Currency::getDefaultCurrency()->sign;
-            $price = number_format($price, 2, '.', ',') . $currencysymbol;
-            $full_price = number_format($full_price, 2, '.', ',') . $currencysymbol;
+            // Add currency symbol.
+            $currencySymbol = Currency::getDefaultCurrency()->sign;
+            $price = number_format($price, 2, '.', ',') . $currencySymbol;
+            $full_price = number_format($full_price, 2, '.', ',') . $currencySymbol;
             $price_fields = '';
             if ($discount > 0) {
                 $price_fields = '<smly:old_price>' . $full_price . '</smly:old_price><smly:discount>-' .
@@ -106,8 +107,7 @@ class SmailyforprestashopSmailyRssFeedModuleFrontController extends ModuleFrontC
             </item>';
         }
         $rss .= '</channel></rss>';
-        header('Content-Type: application/xml');
-        echo $rss;
-        exit;
+
+        return $rss;
     }
 }
