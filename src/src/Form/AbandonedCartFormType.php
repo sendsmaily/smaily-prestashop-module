@@ -9,9 +9,9 @@ use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
 use Symfony\Component\Form\Extension\Core\Type as FormType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -159,7 +159,7 @@ class AbandonedCartFormType extends TranslatorAwareType
                         'value' => 15,
                         'message' => $this->trans(
                             'This value should be greater than %value%',
-                            'Admin.Notifications.Error',
+                            'Modules.Smailyforprestashop.Admin',
                             [
                                 '%value%' => 15,
                             ]
@@ -179,15 +179,7 @@ class AbandonedCartFormType extends TranslatorAwareType
                     ]),
                 ],
             ])
-            // TODO: Nice clickable URL.
-            ->add('cron_url', TextareaType::class, [
-                'label' => $this->trans('Cron URL', 'Modules.Smailyforprestashop.Admin'),
-                'help' => $this->trans('To schedule automatic sync, set up CRON in your hosting and use this URL.', 'Modules.Smailyforprestashop.Admin'),
-                'attr' => [
-                    'readonly class' => 'form-control-plaintext',
-                    'disabled' => true,
-                ],
-            ])
+            ->add('cron_url', HiddenType::class)
             ->add('submit', SubmitType::class, [
                 'label' => $this->trans('Save', 'Admin.Actions'),
                 'attr' => [

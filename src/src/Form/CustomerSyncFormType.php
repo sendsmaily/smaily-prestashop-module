@@ -10,8 +10,8 @@ use PrestaShopBundle\Translation\TranslatorInterface;
 use Symfony\Component\Form\Extension\Core\Type as FormType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -120,15 +120,7 @@ class CustomerSyncFormType extends TranslatorAwareType
                     ]),
                 ],
             ])
-            // TODO: Nice clickable URL.
-            ->add('cron_url', TextareaType::class, [
-                'label' => $this->trans('Cron URL', 'Modules.Smailyforprestashop.Admin'),
-                'help' => $this->trans('To schedule automatic sync, set up CRON in your hosting and use this URL.', 'Modules.Smailyforprestashop.Admin'),
-                'attr' => [
-                    'readonly class' => 'form-control-plaintext',
-                    'disabled' => true,
-                ],
-            ])
+            ->add('cron_url', HiddenType::class)
             ->add('optin_enabled', SwitchType::class, [
                 'label' => $this->trans('Trigger opt-in on customer sign-up', 'Modules.Smailyforprestashop.Admin'),
                 'required' => false,

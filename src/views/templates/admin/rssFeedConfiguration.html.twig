@@ -19,12 +19,11 @@
 						<div class="input-group">
 							<textarea class="form-control-plaintext" readonly aria-label="With textarea" id="rss-feed-url">{{rssFeedForm.rss_url.vars.value}}</textarea>
 							<div class="input-group-append">
-								<button class="btn btn-outline-info btn-sm" title="{{"Copy to clipboard" | trans }}" data-toggle="tooltip" id="copy-rss-url-button">
+								<button onclick='copyURL(event, "#rss #rss-feed-url")' class="btn btn-outline-info btn-sm" title="{{"Copy to clipboard" | trans }}" data-toggle="tooltip">
 									<i class="material-icons">content_copy</i>
 								</button>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>

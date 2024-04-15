@@ -12,7 +12,22 @@
 				{{ form_row(customerSyncForm.enabled) }}
 				{{ form_row(customerSyncForm.sync_additional) }}
 				{{ form_row(customerSyncForm.cron_token) }}
-				{{ form_row(customerSyncForm.cron_url) }}
+				<div class="form-group row">
+					<label class="form-control-label" for="form_cron_url">{{ "Cron URL" | trans}}</label>
+					<div class="col-sm text-monospace">
+						<div class="input-group">
+							<textarea class="form-control-plaintext" readonly aria-label="With textarea" id="sync-cron-url">{{customerSyncForm.cron_url.vars.value}}</textarea>
+							<div class="input-group-append">
+								<button onclick='copyURL(event, "#sync #sync-cron-url")' class="btn btn-outline-info btn-sm" title="{{"Copy to clipboard" | trans }}" data-toggle="tooltip">
+									<i class="material-icons">content_copy</i>
+								</button>
+							</div>
+							<small class="form-text">
+								{{ "To schedule automatic sync, set up CRON in your hosting and use this URL." | trans }}
+							</small>
+						</div>
+					</div>
+				</div>
 				{{ form_row(customerSyncForm.optin_enabled) }}
 				{{ form_row(customerSyncForm.autoresponder) }}
 				<p class="text-right">

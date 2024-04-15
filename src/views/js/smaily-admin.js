@@ -1,12 +1,6 @@
 const { rssBaseURL } = jsVariables;
 
 $(() => {
-    $("#copy-rss-url-button").click(function (e) {
-        e.preventDefault();
-        var url = $("#rss #rss-feed-url").text();
-        navigator.clipboard.writeText(url);
-    });
-
     // Generate RSS product feed URL if options change.
     $(".smaily-rss-options").change(function (event) {
         var rss_url_base = rssBaseURL + '?';
@@ -35,3 +29,9 @@ $(() => {
         $('#rss-feed-url').html(rss_url_base + $.param(url_parameters));
     });
 });
+
+function copyURL(e, selector) {
+    e.preventDefault();
+    var url = $(selector).text();
+    navigator.clipboard.writeText(url);
+}
