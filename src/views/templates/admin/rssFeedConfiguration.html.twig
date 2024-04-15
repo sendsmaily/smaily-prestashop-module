@@ -13,7 +13,20 @@
 				{{ form_row(rssFeedForm.product_limit) }}
 				{{ form_row(rssFeedForm.sort_by) }}
 				{{ form_row(rssFeedForm.sort_order) }}
-				{{ form_row(rssFeedForm.rss_url) }}
+				<div class="form-group row">
+					<label class="form-control-label" for="form_rss_url">{{ "RSS-feed URL" | trans}}</label>
+					<div class="col-sm text-monospace">
+						<div class="input-group">
+							<textarea class="form-control-plaintext" readonly aria-label="With textarea" id="rss-feed-url">{{rssFeedForm.rss_url.vars.value}}</textarea>
+							<div class="input-group-append">
+								<button class="btn btn-outline-info btn-sm" title="{{"Copy to clipboard" | trans }}" data-toggle="tooltip" id="copy-rss-url-button">
+									<i class="material-icons">content_copy</i>
+								</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="card-footer">

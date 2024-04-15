@@ -116,6 +116,9 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
             'rssFeedForm' => $rssFeedForm->createView(),
             'accountConnected' => true,
             'tab' => $tab,
+            'jsVariables' => [
+                'rssBaseURL' => \Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
+            ],
         ]);
     }
 }

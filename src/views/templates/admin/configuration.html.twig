@@ -42,3 +42,10 @@
 		</div>
 	</div>
 {% endblock %}
+
+{% block javascripts %}
+	<script>
+		var jsVariables = {{ jsVariables|json_encode|raw }}
+	</script>
+	<script src="{{ asset('../modules/smailyforprestashop/views/js/smaily-admin.js') }}"></script>
+{% endblock %}

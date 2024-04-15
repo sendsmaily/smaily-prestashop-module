@@ -6,10 +6,11 @@ namespace PrestaShop\Module\SmailyForPrestaShop\Form;
 
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -50,12 +51,28 @@ class RssFeedFormType extends TranslatorAwareType
                 'label' => $this->trans('Product category', 'Modules.Smailyforprestashop.Admin'),
                 'help' => $this->trans('Show products only from this category.', 'Modules.Smailyforprestashop.Admin'),
                 'choices' => $this->productCategoryChoices,
+                'attr' => [
+                    'class' => 'smaily-rss-options',
+                ],
             ])
             ->add('product_limit', NumberType::class, [
                 'label' => $this->trans('Product limit', 'Modules.Smailyforprestashop.Admin'),
                 'help' => $this->trans('Limit how many products you will add to your feed. Maximum 250.', 'Modules.Smailyforprestashop.Admin'),
                 'html5' => true,
+                'attr' => [
+                    'class' => 'smaily-rss-options',
+                ],
                 'constraints' => [
+                    new GreaterThan([
+                        'value' => 0,
+                        'message' => $this->trans(
+                            'This value should be greater than %value%',
+                            'Modules.Smailyforprestashop.Admin',
+                            [
+                                '%value%' => 0,
+                            ]
+                        ),
+                    ]),
                     new LessThanOrEqual([
                         'value' => 250,
                         'message' => $this->trans(
@@ -70,6 +87,9 @@ class RssFeedFormType extends TranslatorAwareType
             ])
             ->add('sort_by', ChoiceType::class, [
                 'label' => $this->trans('Sort by', 'Modules.Smailyforprestashop.Admin'),
+                'attr' => [
+                    'class' => 'smaily-rss-options',
+                ],
                 'choices' => [
                     $this->trans('Date added', 'Modules.Smailyforprestashop.Admin') => 'date_add',
                     $this->trans('Date updated', 'Modules.Smailyforprestashop.Admin') => 'date_upd',
@@ -80,22 +100,17 @@ class RssFeedFormType extends TranslatorAwareType
             ])
             ->add('sort_order', ChoiceType::class, [
                 'label' => $this->trans('Sort order', 'Modules.Smailyforprestashop.Admin'),
+                'attr' => [
+                    'class' => 'smaily-rss-options',
+                ],
                 'choices' => [
                     $this->trans('Descending', 'Modules.Smailyforprestashop.Admin') => 'desc',
                     $this->trans('Ascending', 'Modules.Smailyforprestashop.Admin') => 'asc',
                 ],
             ])
-            // TODO: Nice clickable URL.
-            ->add('rss_url', TextareaType::class, [
-                'label' => $this->trans('RSS-feed URL', 'Modules.Smailyforprestashop.Admin'),
-                'help' => $this->trans("Copy this URL into your template editor's RSS block", 'Modules.Smailyforprestashop.Admin'),
-                'attr' => [
-                    'readonly class' => 'form-control-plaintext',
-                    'disabled' => true,
-                ],
-            ])
+            ->add('rss_url', HiddenType::class)
             ->add('submit', SubmitType::class, [
-                'label' => $this->trans('Generate', 'Admin.Actions'),
+                'label' => $this->trans('Save', 'Admin.Actions'),
                 'attr' => [
                     'class' => 'btn-primary',
                 ],
