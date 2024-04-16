@@ -28,7 +28,7 @@ services:
     arguments: ['@prestashop.adapter.legacy.configuration']
 
   prestashop.module.smailyforprestashop.form.account_credentials_form_data_provider:
-    class: PrestaShop\Module\SmailyForPrestaShop\Form\AccountConfigurationFormDataProvider
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\FormDataProvider
     arguments:
     - '@prestashop.module.smailyforprestashop.form.account_credentials_data_configuration'
 
@@ -56,7 +56,7 @@ services:
     arguments: ['@prestashop.adapter.legacy.configuration']
 
   prestashop.module.smailyforprestashop.form.customer_sync_form_data_provider:
-    class: PrestaShop\Module\SmailyForPrestaShop\Form\CustomerSyncFormDataProvider
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\FormDataProvider
     arguments:
     - '@prestashop.module.smailyforprestashop.form.cystomer_sync_form_data_configuration'
 
@@ -84,7 +84,7 @@ services:
     arguments: ['@prestashop.adapter.legacy.configuration']
 
   prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_provider:
-    class: PrestaShop\Module\SmailyForPrestaShop\Form\AbandonedCartFormDataProvider
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\FormDataProvider
     arguments:
     - '@prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_configuration'
 
@@ -112,7 +112,7 @@ services:
     arguments: ['@prestashop.adapter.legacy.configuration']
 
   prestashop.module.smailyforprestashop.form.rss_feed_form_data_provider:
-    class: PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormDataProvider
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\FormDataProvider
     arguments:
     - '@prestashop.module.smailyforprestashop.form.rss_feed_form_data_configuration'
 

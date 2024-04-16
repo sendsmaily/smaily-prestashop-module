@@ -7,7 +7,7 @@ namespace PrestaShop\Module\SmailyForPrestaShop\Form;
 use PrestaShop\PrestaShop\Core\Configuration\DataConfigurationInterface;
 use PrestaShop\PrestaShop\Core\Form\FormDataProviderInterface;
 
-class AccountConfigurationFormDataProvider implements FormDataProviderInterface
+class FormDataProvider implements FormDataProviderInterface
 {
     /**
      * @var DataConfigurationInterface
