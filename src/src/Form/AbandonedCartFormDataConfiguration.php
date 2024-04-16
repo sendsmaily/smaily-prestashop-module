@@ -79,12 +79,11 @@ final class AbandonedCartFormDataConfiguration implements DataConfigurationInter
      */
     private function buildCronURL(string $token): string
     {
-        // TODO: Handler and correct link
         return \Context::getContext()
             ->link
             ->getModuleLink(
                 'smailyforprestashop',
-                'AbandonedCart',
+                'SmailyCartCron',
                 ['token' => $token]
             );
     }
