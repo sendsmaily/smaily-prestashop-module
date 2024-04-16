@@ -39,7 +39,8 @@ services:
     - '@prestashop.core.hook.dispatcher'
     - '@prestashop.module.smailyforprestashop.form.account_credentials_form_data_provider'
     - PrestaShop\Module\SmailyForPrestaShop\Form\AccountConfigurationFormType
-    - AccountConfiguration
+    - SmailyForPrestaShopAccountConfiguration
+    - account
 
   # Customer sync form
   prestashop.module.smailyforprestashop.form.type.cystomer_sync:
@@ -67,7 +68,8 @@ services:
     - '@prestashop.core.hook.dispatcher'
     - '@prestashop.module.smailyforprestashop.form.customer_sync_form_data_provider'
     - PrestaShop\Module\SmailyForPrestaShop\Form\CustomerSyncFormType
-    - CustomerSyncConfiguration
+    - SmailyForPrestaShopCustomerSyncConfiguration
+    - customer
   
   # Abandoned cart form
   prestashop.module.smailyforprestashop.form.type.abandoned_cart:
@@ -95,7 +97,8 @@ services:
     - '@prestashop.core.hook.dispatcher'
     - '@prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_provider'
     - PrestaShop\Module\SmailyForPrestaShop\Form\AbandonedCartFormType
-    - AbandonedCartConfiguration
+    - SmailyForPrestaShopAbandonedCartConfiguration
+    - cart
 
   # RSS feed form
   prestashop.module.smailyforprestashop.form.type.rss_feed:
@@ -123,4 +126,5 @@ services:
     - '@prestashop.core.hook.dispatcher'
     - '@prestashop.module.smailyforprestashop.form.rss_feed_form_data_provider'
     - PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormType
-    - RssFeedConfiguration
+    - SmailyForPrestaShopRssFeedConfiguration
+    - rss
