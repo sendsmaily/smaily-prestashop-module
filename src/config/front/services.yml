@@ -1,6 +1,6 @@
 services:
   _defaults:
-      public: true
+    public: true
 
   prestashop.module.smailyforprestashop.front.rss_feed_product_repository:
     class: PrestaShop\Module\SmailyForPrestaShop\Repository\RssFeedProductsRepository
