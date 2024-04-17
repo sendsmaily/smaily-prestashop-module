@@ -128,6 +128,14 @@ class SmailyForPrestaShop extends Module
 
     private function registerHooks(): bool
     {
+        if (
+            !$this->registerHook('actionCustomerAccountAdd')
+        ) {
+            return false;
+        }
+
+        return true;
+
         // Check that the module can be attached to the header hook.
         // || !$this->registerHook('backOfficeHeader')
         // || !$this->registerHook('footerBefore')
@@ -135,8 +143,7 @@ class SmailyForPrestaShop extends Module
         // || !$this->registerHook('rightColumn')
         // Add Newsletter subscription form.
         // User has option to trigger opt-in when customer joins store & newsletter through sign-up.
-        // || !$this->registerHook('actionCustomerAccountAdd')
-        return true;
+        // ||
     }
 
     private function addDefaultConfiguration(): bool
@@ -237,53 +244,25 @@ class SmailyForPrestaShop extends Module
     //     }
     // }
 
-    // /**
-    //  * Trigger Smaily Opt-in if customer joins with newsletter subscription.
-    //  *
-    //  * @param array $params array of parameters being passed to the hook function
-    //  *
-    //  * @return bool success of the operation
-    //  */
-    // public function hookActionCustomerAccountAdd($params)
-    // {
-    //     if (empty($params['newCustomer'])) {
-    //         return false;
-    //     }
-    //     $email = $params['newCustomer']->email;
-    //     if (!Validate::isEmail($email)) {
-    //         return false;
-    //     }
-    //     $is_newsletter_checked = $params['newCustomer']->newsletter === '1';
-    //     $is_subscription_optin_enabled = Configuration::get('SMAILY_OPTIN_ENABLED') === '1';
-    //     if (!$is_newsletter_checked || !$is_subscription_optin_enabled) {
-    //         return false;
-    //     }
+    /**
+     * Trigger Smaily Opt-in if customer joins with newsletter subscription.
+     *
+     * @param array $params array of parameters being passed to the hook function
+     *
+     * @return bool success of the operation
+     */
+    public function hookActionCustomerAccountAdd($params)
+    {
+        if (empty($params['newCustomer'])) {
+            return false;
+        }
 
-    //     $autoresponder = Configuration::get('SMAILY_OPTIN_AUTORESPONDER');
-    //     $autoresponder_id = empty($autoresponder) ? '' : (int) $autoresponder;
-    //     $query = [
-    //         'autoresponder' => $autoresponder_id,
-    //         'addresses' => [['email' => $email]],
-    //     ];
-    //     $response = $this->callApi('autoresponder', $query, 'POST');
-    //     if (array_key_exists('success', $response)
-    //         && isset($response['result']['code'])
-    //         && $response['result']['code'] === 101) {
-    //         return true; // All good.
-    //     } else {
-    //         // Supply query values and save log of unsuccesful operation.
-    //         $this->logErrorWithFormatting(
-    //             'Failed to opt-in new customer with email: %s using autoresponder ID: %s. ' .
-    //             'Smaily response code: %s, message: %s.',
-    //             $query['addresses'][0]['email'],
-    //             $query['autoresponder'],
-    //             $response['result']['code'],
-    //             $response['result']['message']
-    //         );
+        $customer = $params['newCustomer'];
 
-    //         return false;
-    //     }
-    // }
+        $controller = $this->get('prestashop.module.smailyforprestashop.controller.opt_in_controller');
+
+        return $controller->optInCustomer($customer);
+    }
 
     // public function installTab($parent_class, $class_name, $name): bool
     // {

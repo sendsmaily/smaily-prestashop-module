@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PrestaShop\Module\SmailyForPrestaShop\Lib;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 
 class Api
@@ -56,11 +57,9 @@ class Api
     public function triggerAutomation(string $autoresponder, array $addresses): ResponseInterface
     {
         return $this->client->post('/api/autoresponder.php', [
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'body' => [
-                'addresses' => json_encode($addresses),
+            RequestOptions::JSON => [
+                'autoresponder' => $autoresponder,
+                'addresses' => $addresses,
             ],
         ]);
     }
