@@ -39,6 +39,7 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
                 'accountConfigurationForm' => $accountForm->createView(),
                 'accountConnected' => false,
                 'tab' => $tab,
+                'jsVariables' => [],
             ]);
         }
 
