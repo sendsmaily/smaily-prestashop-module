@@ -31,7 +31,7 @@ class Autoresponder implements FormChoiceProviderInterface
     public function getChoices(): array
     {
         $noAutoresponders = [
-            $this->translator->trans('No autoresponders available', [], 'Module.Smailyforprestashop.Admin') => null,
+            $this->translator->trans('No automation workflows available', [], 'Module.Smailyforprestashop.Admin') => null,
         ];
 
         $subdomain = $this->configuration->get('SMAILY_SUBDOMAIN');
@@ -54,7 +54,9 @@ class Autoresponder implements FormChoiceProviderInterface
             return $noAutoresponders;
         }
 
-        $choices = [];
+        $choices = [
+            $this->translator->trans('Select an automation workflow', [], 'Module.Smailyforprestashop.Admin') => null,
+        ];
         foreach ($autoresponders as $autoresponder) {
             $choices[$autoresponder['name']] = $autoresponder['id'];
         }
