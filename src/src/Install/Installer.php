@@ -75,9 +75,8 @@ class Installer
     {
         $hooks = [
             'actionCustomerAccountAdd',
-            'displayFooterBefore',
-            'displayLeftColumn',
-            'displayRightColumn',
+            'actionNewsletterRegistrationAfter',
+            'actionEmailSendBefore',
         ];
 
         return (bool) $module->registerHook($hooks);

@@ -29,6 +29,7 @@ if (!defined('_PS_VERSION_')) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use PrestaShop\Module\SmailyForPrestaShop\Controller\OptInController;
 use PrestaShop\Module\SmailyForPrestaShop\Install\Installer;
 
 class SmailyForPrestaShop extends Module
@@ -43,7 +44,7 @@ class SmailyForPrestaShop extends Module
         $this->need_instance = 0;
         $this->ps_versions_compliancy = [
             'min' => '8.0.0',
-            'max' => '8.99.99',
+            'max' => '9.99.99',
         ];
         $this->bootstrap = true;
 
@@ -83,29 +84,21 @@ class SmailyForPrestaShop extends Module
         Tools::redirectAdmin($route);
     }
 
-    // Display Block Newsletter in footer.
-    public function hookDisplayFooterBefore($params)
+    public function hookActionNewsletterRegistrationAfter($params)
     {
-        return $this->renderBlockNewsLetter();
+        if (isset($params['email'], $params['module']) && $params['module'] === 'ps_emailsubscription') {
+            /** @var OptInController */
+            $controller = $this->get('prestashop.module.smailyforprestashop.controller.opt_in_controller');
+            $controller->optInSubscriber($params['email']);
+        }
     }
 
-    // Display Block Newsletter in left column.
-    public function hookDisplayLeftColumn($params)
+    public function hookActionEmailSendBefore($params)
     {
-        return $this->renderBlockNewsLetter();
-    }
-
-    // Display Block Newsletter in right column.
-    public function hookDisplayRightColumn($params)
-    {
-        return $this->renderBlockNewsLetter();
-    }
-
-    public function renderBlockNewsLetter()
-    {
-        $controller = $this->get('prestashop.module.smailyforprestashop.controller.block_newsletter_controller');
-
-        return $controller->render();
+        // TODO: Disable mail sending on
+        // - newsletter_conf
+        // - newsletter_verif
+        // Return null to cancel sending email.
     }
 
     /**
@@ -115,7 +108,7 @@ class SmailyForPrestaShop extends Module
      *
      * @return bool success of the operation
      */
-    public function hookActionCustomerAccountAdd($params)
+    public function hookActionCustomerAccountAdd($params): bool
     {
         if (empty($params['newCustomer'])) {
             return false;
@@ -123,6 +116,7 @@ class SmailyForPrestaShop extends Module
 
         $customer = $params['newCustomer'];
 
+        /** @var OptInController */
         $controller = $this->get('prestashop.module.smailyforprestashop.controller.opt_in_controller');
 
         return $controller->optInCustomer($customer);

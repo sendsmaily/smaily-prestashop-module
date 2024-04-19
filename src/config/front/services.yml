@@ -3,8 +3,8 @@ services:
     public: true
 
   prestashop.module.smailyforprestashop.front.rss_feed_product_repository:
-    class: 'PrestaShop\Module\SmailyForPrestaShop\Repository\RssFeedProductsRepository'
+    class: PrestaShop\Module\SmailyForPrestaShop\Repository\RssFeedProductsRepository
 
   prestashop.module.smailyforprestashop.controller.opt_in_controller:
-    class: 'PrestaShop\Module\SmailyForPrestaShop\Controller\OptInController'
-    arguments: ['@prestashop.adapter.legacy.configuration']
+    class: PrestaShop\Module\SmailyForPrestaShop\Controller\OptInController
+    arguments: ["@prestashop.adapter.legacy.configuration"]

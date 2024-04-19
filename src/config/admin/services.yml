@@ -5,13 +5,13 @@ services:
   # Choice providers
   prestashop.module.smailyforprestashop.choice_provider.autoresponders:
     class: 'PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider\Autoresponder'
-    arguments: 
+    arguments:
     - '@translator'
     - '@prestashop.adapter.legacy.configuration'
 
   prestashop.module.smailyforprestashop.choice_provider.product_categories:
     class: 'PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider\ProductCategory'
-    arguments: 
+    arguments:
     - '@translator'
     - '@prestashop.adapter.data_provider.category'
 

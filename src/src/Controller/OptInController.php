@@ -72,4 +72,40 @@ class OptInController
             return false;
         }
     }
+
+    public function optInSubscriber(string $email): bool
+    {
+        if (!$this->configuration->getBoolean('SMAILY_OPTIN_ENABLED')) {
+            return false;
+        }
+
+        $autoresponder = $this->configuration->get('SMAILY_OPTIN_AUTORESPONDER');
+        if (empty($this->api) || empty($autoresponder)) {
+            return false;
+        }
+
+        $response = $this->api->triggerAutomation($autoresponder, [
+            ['email' => $email],
+        ]);
+
+        if ($response->getStatusCode() !== 200) {
+            return false;
+        }
+
+        $body = json_decode($response->getBody()->getContents(), true);
+
+        if (isset($body['code']) && $body['code'] === 101) {
+            return true;
+        } else {
+            Logger::logErrorWithFormatting('Failed to opt-in new customer with email: %s using autoresponder ID: %s. ' .
+            'Smaily response code: %s, message: %s.',
+                $email,
+                $autoresponder,
+                $body['code'],
+                $body['message']
+            );
+
+            return false;
+        }
+    }
 }
