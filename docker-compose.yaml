@@ -3,13 +3,14 @@ version: '3.7'
 services:
   prestashop:
     container_name: prestashop
-    image: prestashop/prestashop-flashlight:latest
+    image: prestashop/prestashop-flashlight:nightly
     depends_on:
       mysql:
         condition: service_healthy
     environment:
     - PS_DOMAIN=localhost:8080
     - DEBUG_MODE=true
+    - XDEBUG_ENABLED=true
     ports:
     - 8080:80
     volumes:
