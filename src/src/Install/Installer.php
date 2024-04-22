@@ -35,6 +35,7 @@ class Installer
         if (!$this->createTables()
             || !$this->addDefaultConfiguration()
             || !$this->registerHooks($module)
+            || !$this->copyOverrides()
         ) {
             return false;
         }
@@ -46,6 +47,7 @@ class Installer
     {
         if (!$this->removeTables()
             || !$this->removeConfiguration()
+            || !$this->deleteOverrides()
         ) {
             return false;
         }
@@ -122,6 +124,41 @@ class Installer
             if (!\Configuration::deleteByName($key)) {
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    private function copyOverrides(): bool
+    {
+        $from = _PS_MODULE_DIR_ . join(DIRECTORY_SEPARATOR, ['smailyforprestashop', 'overrides', 'ps_emailsubscription.php']);
+        $to = _PS_OVERRIDE_DIR_ . join(DIRECTORY_SEPARATOR, ['modules', 'ps_emailsubscription', 'ps_emailsubscription.php']);
+
+        // We add only notice that is not critical for module operation.
+        // Skip overriding if other modules have already registered an override.
+        if (!file_exists($to)) {
+            $overrideModulesDir = _PS_OVERRIDE_DIR_ . join(DIRECTORY_SEPARATOR, ['modules']);
+            $overridePsEmailsubscriptionDir = _PS_OVERRIDE_DIR_ . join(DIRECTORY_SEPARATOR, ['modules', 'ps_emailsubscription']);
+            if (!file_exists($overrideModulesDir)) {
+                mkdir($overrideModulesDir, 0755);
+            }
+
+            if (!file_exists($overridePsEmailsubscriptionDir)) {
+                mkdir($overridePsEmailsubscriptionDir, 0755);
+            }
+
+            copy($from, $to);
+        }
+
+        return true;
+    }
+
+    private function deleteOverrides(): bool
+    {
+        $psEmailSubscriptionOverride = _PS_OVERRIDE_DIR_ . join(DIRECTORY_SEPARATOR, ['modules', 'ps_emailsubscription', 'ps_emailsubscription.php']);
+
+        if (file_exists($psEmailSubscriptionOverride)) {
+            unlink($psEmailSubscriptionOverride);
         }
 
         return true;
