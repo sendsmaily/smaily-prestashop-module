@@ -37,7 +37,13 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
     {
         $errors = [];
 
-        if (empty($formData['cron_token'])) {
+        $syncEnabled = $formData['enabled'];
+        $additionalFields = $formData['sync_additional'];
+        $optInEnabled = $formData['optin_enabled'];
+        $cronToken = $formData['cron_token'];
+        $autoresponder = $formData['autoresponder'];
+
+        if (empty($cronToken)) {
             $errors[] = [
                 'key' => 'Please provide a cron token for customer synchronization.',
                 'domain' => 'Modules.Smailyforprestashop.Admin',
@@ -45,7 +51,7 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
             ];
         }
 
-        if ($formData['optin_enabled'] && empty($formData['autoresponder'])) {
+        if ($optInEnabled && empty($autoresponder)) {
             $errors[] = [
                 'key' => 'Please select an automation workflow for customer Opt-In trigger.',
                 'domain' => 'Modules.Smailyforprestashop.Admin',
@@ -53,12 +59,26 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
             ];
         }
 
+        // Clear autoresponder when disabling customer sign-up;
+        if (!$optInEnabled) {
+            $autoresponder = null;
+        }
+
         if ($this->validateConfiguration($formData) && empty($errors)) {
-            $this->configuration->set('SMAILY_ENABLE_CUSTOMER_SYNC', $formData['enabled']);
-            $this->configuration->set('SMAILY_SYNCRONIZE_ADDITIONAL', serialize($formData['sync_additional']));
-            $this->configuration->set('SMAILY_CUSTOMER_CRON_TOKEN', $formData['cron_token']);
-            $this->configuration->set('SMAILY_OPTIN_ENABLED', $formData['optin_enabled']);
-            $this->configuration->set('SMAILY_OPTIN_AUTORESPONDER', $formData['autoresponder']);
+            $this->configuration->set('SMAILY_ENABLE_CUSTOMER_SYNC', $syncEnabled);
+            $this->configuration->set('SMAILY_SYNCRONIZE_ADDITIONAL', serialize($additionalFields));
+            $this->configuration->set('SMAILY_CUSTOMER_CRON_TOKEN', $cronToken);
+            $this->configuration->set('SMAILY_OPTIN_ENABLED', $optInEnabled);
+            $this->configuration->set('SMAILY_OPTIN_AUTORESPONDER', $autoresponder);
+
+            if ($optInEnabled) {
+                // We disable ps_emailsubscription plugin mail sending in order provide a place
+                // for sending opt-in emails and to avoid sending duplicate emails to customers.
+                // These emails can and should be implemented as a part of the automation workflow.
+                $this->configuration->set('NW_VERIFICATION_EMAIL', 0);
+                $this->configuration->set('NW_CONFIRMATION_EMAIL', 0);
+                $this->configuration->set('NW_VOUCHER_CODE', null);
+            }
         }
 
         return $errors;

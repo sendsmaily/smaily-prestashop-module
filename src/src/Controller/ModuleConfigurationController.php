@@ -55,10 +55,20 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
         }
 
         if ($customerSyncFormClicked && $customerSyncForm->isValid()) {
-            $errors = $customerSyncFormDataHandler->save($customerSyncForm->getData());
+            $formData = $customerSyncForm->getData();
+            $errors = $customerSyncFormDataHandler->save($formData);
 
             if (empty($errors)) {
                 $this->addFlash('success', $this->trans('Configuration saved.', 'Modules.Smailyforprestashop.Admin'));
+                if ($formData['optin_enabled']) {
+                    $this->addFlash(
+                        'success',
+                        $this->trans(
+                            'You have selected an automation to trigger opt-in email sending. We have disabled Newsletter Subscription plugins verification, confirmation and voucher email sending in order to avoid duplicate emails!',
+                            'Modules.Smailyforprestashop.Admin',
+                        )
+                    );
+                }
 
                 return $this->redirectToRoute('smailyforprestashop_module_configuration', ['tab' => $tab]);
             }

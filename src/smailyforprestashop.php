@@ -93,14 +93,6 @@ class SmailyForPrestaShop extends Module
         }
     }
 
-    public function hookActionEmailSendBefore($params)
-    {
-        // TODO: Disable mail sending on
-        // - newsletter_conf
-        // - newsletter_verif
-        // Return null to cancel sending email.
-    }
-
     /**
      * Trigger Smaily Opt-in if customer joins with newsletter subscription.
      *
