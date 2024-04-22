@@ -63,6 +63,12 @@ services:
     ports:
     - 8888:80
 
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+    - 8025:8025
+
 volumes:
   prestashop-data:
   prestashop-db-data:
