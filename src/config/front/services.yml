@@ -13,3 +13,8 @@ services:
    class: PrestaShop\Module\SmailyForPrestaShop\Controller\AbandonedCartController
    arguments:
    - '@prestashop.adapter.legacy.configuration'
+
+  prestashop.module.smailyforprestashop.controller.customer_sync_controller:
+    class: PrestaShop\Module\SmailyForPrestaShop\Controller\CustomerSyncController
+    arguments:
+    - '@prestashop.adapter.legacy.configuration'

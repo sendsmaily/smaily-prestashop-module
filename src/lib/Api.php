@@ -47,10 +47,7 @@ class Api
     public function createSubscribers(array $data): ResponseInterface
     {
         return $this->client->post('api/contact.php', [
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'body' => json_encode($data),
+            RequestOptions::JSON => $data,
         ]);
     }
 

@@ -91,7 +91,6 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
             $configuration['sync_additional'],
             $configuration['cron_token'],
             $configuration['optin_enabled'],
-            $configuration['autoresponder']
         );
     }
 

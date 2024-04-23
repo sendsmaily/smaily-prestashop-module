@@ -42,7 +42,6 @@ class CustomerSyncFormType extends TranslatorAwareType
     ) {
         parent::__construct($translator, $locales);
         $this->translator = $translator;
-        // TODO: Why there is extra key?
         $this->autoresponderChoices = $autoresponderChoices['$autoresponderChoices'];
     }
 
