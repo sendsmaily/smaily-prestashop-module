@@ -61,6 +61,7 @@ class Installer
             `id_smaily_cart` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             `id_customer` INT UNSIGNED NULL ,
             `id_cart` INT UNSIGNED NULL ,
+            `date_add` DATETIME NOT NULL,
             `date_upd` DATETIME NOT NULL) ENGINE=' . _MYSQL_ENGINE_;
 
         return \Db::getInstance()->execute($sql);

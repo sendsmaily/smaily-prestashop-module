@@ -22,6 +22,11 @@ class SentCart extends \ObjectModel
     public $id_cart;
 
     /**
+     * @var string;
+     */
+    public $date_add;
+
+    /**
      * @var string
      */
     public $date_upd;
@@ -33,6 +38,7 @@ class SentCart extends \ObjectModel
         'fields' => [
             'id_customer' => ['type' => self::TYPE_INT],
             'id_cart' => ['type' => self::TYPE_INT],
+            'date_add' => ['type' => self::TYPE_DATE, 'shop' => true, 'validate' => 'isDate'],
             'date_upd' => ['type' => self::TYPE_DATE, 'shop' => true, 'validate' => 'isDate'],
         ],
     ];
