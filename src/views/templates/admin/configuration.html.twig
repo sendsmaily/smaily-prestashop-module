@@ -1,13 +1,13 @@
 {% extends '@PrestaShop/Admin/layout.html.twig' %}
 {% trans_default_domain 'Modules.Smailyforprestashop.Admin' %}
 
+{% set layoutTitle = "Smaily for Prestashop" | trans %}
+
+{% if app.request.query.get('tab') %}
+	{% set tab = app.request.query.get('tab') %}
+{% endif %}
 
 {% block content %}
-	{% if app.request.query.get('tab') %}
-		{% set tab = app.request.query.get('tab') %}
-	{% endif %}
-
-
 	<div class="card">
 		<ul class="nav nav-tabs" id="configuration" role="tablist">
 			<li {% if tab == 'account' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
