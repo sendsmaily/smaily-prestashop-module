@@ -1,6 +1,6 @@
 <?php
 /**
- * 2018 Smaily
+ * 2024 Smaily
  *
  * NOTICE OF LICENSE
  *
@@ -18,7 +18,7 @@
  * along with Smaily for PrestaShop. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    Smaily <info@smaily.com>
- * @copyright 2018 Smaily
+ * @copyright 2024 Smaily
  * @license   GPL3
  */
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
