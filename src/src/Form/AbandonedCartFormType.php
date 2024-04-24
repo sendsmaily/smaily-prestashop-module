@@ -44,7 +44,6 @@ class AbandonedCartFormType extends TranslatorAwareType
     ) {
         parent::__construct($translator, $locales);
         $this->translator = $translator;
-        // TODO: Why there is extra key?
         $this->autoresponderChoices = $autoresponderChoices['$autoresponderChoices'];
     }
 
@@ -66,7 +65,7 @@ class AbandonedCartFormType extends TranslatorAwareType
                     [
                         'required' => false,
                         'label' => $this->trans('Synchronize Additional', 'Modules.Smailyforprestashop.Admin'),
-                        'help' => $this->trans('Select additional fields to syncronize', 'Modules.Smailyforprestashop.Admin'),
+                        'help' => $this->trans('Select additional fields to send to abandoned cart template.', 'Modules.Smailyforprestashop.Admin'),
                     ]
                 )->add(
                     'first_name',
@@ -137,13 +136,11 @@ class AbandonedCartFormType extends TranslatorAwareType
                         'attr' => [
                             'material_design' => true,
                         ],
-                        'help' => $this->trans('Select additional fields to send to abandoned cart template.', 'Modules.Smailyforprestashop.Admin'),
                     ]
                 )
             )
             ->add('sync_interval', NumberType::class, [
                 'label' => $this->trans('Abandoned Cart Delay', 'Modules.Smailyforprestashop.Admin'),
-                // TODO: Help displays double??
                 'html5' => true,
                 'attr' => [
                     'step' => 1,

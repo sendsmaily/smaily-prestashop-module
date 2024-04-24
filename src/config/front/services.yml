@@ -2,9 +2,6 @@ services:
   _defaults:
     public: true
 
-  prestashop.module.smailyforprestashop.front.rss_feed_product_repository:
-    class: PrestaShop\Module\SmailyForPrestaShop\Repository\RssFeedProductsRepository
-
   prestashop.module.smailyforprestashop.controller.opt_in_controller:
     class: PrestaShop\Module\SmailyForPrestaShop\Controller\OptInController
     arguments: ["@prestashop.adapter.legacy.configuration"]
@@ -18,3 +15,6 @@ services:
     class: PrestaShop\Module\SmailyForPrestaShop\Controller\CustomerSyncController
     arguments:
     - '@prestashop.adapter.legacy.configuration'
+
+  prestashop.module.smailyforprestashop.controller.rss_feed_controller:
+    class: PrestaShop\Module\SmailyForPrestaShop\Controller\RssFeedController

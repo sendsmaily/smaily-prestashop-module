@@ -99,7 +99,6 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
      */
     private function buildCronURL(string $token): string
     {
-        // TODO: Handler and correct link
         return \Context::getContext()
             ->link
             ->getModuleLink(
