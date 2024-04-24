@@ -17,7 +17,7 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
         $tab = 'account';
 
         // Account
-        $accountFormDataHandler = $this->get('prestashop.module.smailyforprestashop.form.account_credentials_form_handler');
+        $accountFormDataHandler = $this->get('prestashop.module.smailyforprestashop.form.account_form_handler');
         $accountForm = $accountFormDataHandler->getForm();
         $accountForm->handleRequest($request);
 

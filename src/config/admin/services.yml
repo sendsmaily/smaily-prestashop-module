@@ -3,52 +3,52 @@ services:
     public: true
 
   # Choice providers
-  prestashop.module.smailyforprestashop.choice_provider.autoresponders:
+  prestashop.module.smailyforprestashop.form.choice_provider.autoresponder:
     class: 'PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider\Autoresponder'
     arguments:
     - '@translator'
     - '@prestashop.adapter.legacy.configuration'
 
-  prestashop.module.smailyforprestashop.choice_provider.product_categories:
+  prestashop.module.smailyforprestashop.form.choice_provider.product_category:
     class: 'PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider\ProductCategory'
     arguments:
     - '@translator'
     - '@prestashop.adapter.data_provider.category'
 
   # Account credentials form.
-  prestashop.module.smailyforprestashop.form.type.account_credentials:
+  prestashop.module.smailyforprestashop.form.account_configuration_form_type:
     class: 'PrestaShop\Module\SmailyForPrestaShop\Form\AccountConfigurationFormType'
     parent: 'form.type.translatable.aware'
     public: true
     tags:
       - { name: form.type }
 
-  prestashop.module.smailyforprestashop.form.account_credentials_data_configuration:
-    class: PrestaShop\Module\SmailyForPrestaShop\Form\AccountConfigurationDataConfiguration
+  prestashop.module.smailyforprestashop.form.account_form_data_configuration:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\AccountFormDataConfiguration
     arguments: ['@prestashop.adapter.legacy.configuration']
 
-  prestashop.module.smailyforprestashop.form.account_credentials_form_data_provider:
+  prestashop.module.smailyforprestashop.form.account_form_data_provider:
     class: PrestaShop\Module\SmailyForPrestaShop\Form\FormDataProvider
     arguments:
-    - '@prestashop.module.smailyforprestashop.form.account_credentials_data_configuration'
+    - '@prestashop.module.smailyforprestashop.form.account_form_data_configuration'
 
-  prestashop.module.smailyforprestashop.form.account_credentials_form_handler:
+  prestashop.module.smailyforprestashop.form.account_form_handler:
     class: PrestaShop\PrestaShop\Core\Form\Handler
     arguments:
     - '@form.factory'
     - '@prestashop.core.hook.dispatcher'
-    - '@prestashop.module.smailyforprestashop.form.account_credentials_form_data_provider'
+    - '@prestashop.module.smailyforprestashop.form.account_form_data_provider'
     - PrestaShop\Module\SmailyForPrestaShop\Form\AccountConfigurationFormType
     - SmailyForPrestaShopAccountConfiguration
     - account
 
   # Customer sync form
-  prestashop.module.smailyforprestashop.form.type.cystomer_sync:
+  prestashop.module.smailyforprestashop.form.customer_sync_form_type:
     class: 'PrestaShop\Module\SmailyForPrestaShop\Form\CustomerSyncFormType'
     parent: 'form.type.translatable.aware'
     public: true
     arguments:
-    - $autoresponderChoices: '@=service("prestashop.module.smailyforprestashop.choice_provider.autoresponders").getChoices()'
+    - $autoresponderChoices: '@=service("prestashop.module.smailyforprestashop.form.choice_provider.autoresponder").getChoices()'
     tags:
     - { name: form.type }
 
@@ -72,12 +72,12 @@ services:
     - customer
   
   # Abandoned cart form
-  prestashop.module.smailyforprestashop.form.type.abandoned_cart:
+  prestashop.module.smailyforprestashop.form.abandoned_cart_form_type:
     class: 'PrestaShop\Module\SmailyForPrestaShop\Form\AbandonedCartFormType'
     parent: 'form.type.translatable.aware'
     public: true
     arguments:
-    - $autoresponderChoices: '@=service("prestashop.module.smailyforprestashop.choice_provider.autoresponders").getChoices()'
+    - $autoresponderChoices: '@=service("prestashop.module.smailyforprestashop.form.choice_provider.autoresponder").getChoices()'
     tags:
       - { name: form.type }
 
@@ -101,12 +101,12 @@ services:
     - cart
 
   # RSS feed form
-  prestashop.module.smailyforprestashop.form.type.rss_feed:
+  prestashop.module.smailyforprestashop.form.rss_feed_form_type:
     class: 'PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormType'
     parent: 'form.type.translatable.aware'
     public: true
     arguments:
-      - $productCategoryChoices: '@=service("prestashop.module.smailyforprestashop.choice_provider.product_categories").getChoices()'
+      - $productCategoryChoices: '@=service("prestashop.module.smailyforprestashop.form.choice_provider.product_category").getChoices()'
     tags:
       - { name: form.type }
 

@@ -8,7 +8,7 @@ use PrestaShop\Module\SmailyForPrestaShop\Lib\Api;
 use PrestaShop\PrestaShop\Core\Configuration\DataConfigurationInterface;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
 
-final class AccountConfigurationDataConfiguration implements DataConfigurationInterface
+final class AccountFormDataConfiguration implements DataConfigurationInterface
 {
     /**
      * @var ConfigurationInterface
