@@ -1,9 +1,8 @@
-version: '3.7'
-
 services:
   prestashop:
     container_name: prestashop
-    image: prestashop/prestashop-flashlight:nightly
+    image: prestashop/prestashop-flashlight:8.1.5
+    # image: prestashop/prestashop-flashlight:nightly # Nightly build currently has XDEBUG support 
     depends_on:
       mysql:
         condition: service_healthy
