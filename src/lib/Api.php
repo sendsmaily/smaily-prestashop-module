@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 class Api
 {
     /**
-     * @var \GuzzleHttp\Client
+     * @var Client
      */
     private $client;
 

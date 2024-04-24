@@ -8,7 +8,6 @@ use PrestaShop\Module\SmailyForPrestaShop\Model\RssFeedProductsCollection;
 
 class RssFeedController
 {
-
     /**
      * @var RssFeedProductsCollection
      */
@@ -19,7 +18,7 @@ class RssFeedController
         $this->collection = new RssFeedProductsCollection();
     }
 
-    public function generateFeed(string $baseUrl,mixed $categoryId,int $limit,string $sortBy,string $sortOrder): string
+    public function generateFeed(string $baseUrl, mixed $categoryId, int $limit, string $sortBy, string $sortOrder): string
     {
         $rss = '<?xml version="1.0" encoding="utf-8"?>' .
             '<rss xmlns:smly="https://sendsmaily.net/schema/editor/rss.xsd" version="2.0">' .
