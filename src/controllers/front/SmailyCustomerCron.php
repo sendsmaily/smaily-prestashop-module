@@ -23,8 +23,6 @@
  */
 declare(strict_types=1);
 
-require_once _PS_MODULE_DIR_ . 'smailyforprestashop/lib/Api.php';
-
 class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleFrontController
 {
     public function __construct()

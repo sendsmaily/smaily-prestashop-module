@@ -23,8 +23,6 @@
  */
 declare(strict_types=1);
 
-require_once _PS_MODULE_DIR_ . join(DIRECTORY_SEPARATOR, ['smailyforprestashop', 'vendor', 'autoload.php']);
-
 class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFrontController
 {
     public function __construct()

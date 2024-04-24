@@ -23,10 +23,6 @@
  */
 declare(strict_types=1);
 
-require_once _PS_MODULE_DIR_ . join(DIRECTORY_SEPARATOR, ['smailyforprestashop', 'vendor', 'autoload.php']);
-
-use PrestaShop\Module\SmailyForPrestaShop\Controller\RssFeedController;
-
 class SmailyForPrestaShopSmailyRssFeedModuleFrontController extends ModuleFrontController
 {
     public const ALLOWED_SORT_BY_VALUES = ['date_add', 'date_upd', 'name', 'price', 'id_product'];
@@ -48,7 +44,6 @@ class SmailyForPrestaShopSmailyRssFeedModuleFrontController extends ModuleFrontC
         $categoryId = (int) Tools::getValue('category_id');
         $categoryId = $categoryId <= 0 ? false : $categoryId;
 
-        /** @var RssFeedController */
         $controller = $this->get('prestashop.module.smailyforprestashop.controller.rss_feed_controller');
 
         header('Content-Type: application/xml');
