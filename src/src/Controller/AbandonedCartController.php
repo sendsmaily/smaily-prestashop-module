@@ -86,8 +86,8 @@ class AbandonedCartController
             // Notice!
             // When running cron job in the same browser the session is shared
             // and the abandoned cart `date_upd` time is renewed on each request.
-            // This doesn't allow the check to pass. I recommend running in the cron job
-            // in private window to avoid this.
+            // This doesn't allow the check to pass. I recommend running the cron job
+            // in a private window to avoid this.
             if (!$this->isDelayTimePassed($cart)) {
                 break;
             }
