@@ -69,3 +69,9 @@ Environment can be stopped by executing:
 If you need to reset the installation, just simply delete environment's Docker volumes. Easiest way to achieve this is by running:
 
     $ docker compose down --remove-orphans -v
+
+## Weird behavior in different versions
+
+### php-cs-fixer not working
+
+You may notice that `php-cs-fixer` might not work for some PrestaShop image versions. `php-cs-fixer` output provides a hint that the `/var/www/html/tests` directory does not exist. This is due to the `tests` folder being included in the [PrestaShop repo](https://github.com/PrestaShop/PrestaShop) but not in the docker image. Adding an empty `/var/www/heml/tests` folder enables the `php-cs-fixer`.
