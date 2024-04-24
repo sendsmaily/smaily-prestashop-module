@@ -145,6 +145,7 @@ class AbandonedCartFormType extends TranslatorAwareType
                 'attr' => [
                     'step' => 1,
                 ],
+                'help' => $this->trans('Time after cart is considered abandoned after last cart edit from customer. Minimum 15 minutes.', 'Modules.Smailyforprestashop.Admin'),
                 'constraints' => [
                     new NotBlank([
                         'message' => $this->trans(
