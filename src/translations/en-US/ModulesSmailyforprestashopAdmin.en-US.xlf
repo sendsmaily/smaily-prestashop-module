@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="admin-dev" source-language="en-US" target-language="en-US" datatype="plaintext">
+    <body>
+      <trans-unit id="69ee5ac8ca2a57a68b3bca7b38e0f3f6">
+        <source>Smaily for PrestaShop</source>
+        <target>Smaily for PrestaShop</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="3e614e6ed6a76b403e9cc5ce027ac0a9">
+        <source>Smaily email marketing and automation module for PrestaShop.</source>
+        <target>Smaily email marketing and automation module for PrestaShop.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="876f23178c29dc2552c0b48bf23cd9bd">
+        <source>Are you sure you want to uninstall?</source>
+        <target>Are you sure you want to uninstall?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="7a0a2da351db3b4ed04a4ceab8f77f8d">
+        <source>Smaily for PrestaShop modules opt-in automation trigger is active. Set up verification, confirmation and voucher sending in Smaily to avoid sending double emails.</source>
+        <target>Smaily for PrestaShop modules opt-in automation trigger is active. Set up verification, confirmation and voucher sending in Smaily to avoid sending double emails.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="7ff94ed6c294b41659d8d27748dc30b6">
+        <source>How to set up automation flow?</source>
+        <target>How to set up automation flow?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="79929b1b78edef941b1ce2d1f5bafb73">
+        <source>Connected with Smaily account.</source>
+        <target>Connected with Smaily account.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="558b49eb972c3c62a1a4e5b6d91420ae">
+        <source>Configuration saved.</source>
+        <target>Configuration saved.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="af02f4ac81dd95260003deb604806d8b">
+        <source>You have selected an automation to trigger opt-in email sending. We have disabled Newsletter Subscription plugins verification, confirmation and voucher email sending in order to avoid duplicate emails!</source>
+        <target>You have selected an automation to trigger opt-in email sending. We have disabled Newsletter Subscription plugins verification, confirmation and voucher email sending in order to avoid duplicate emails!</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="c43aa8bdf96a8a299fdd2b74d1110780">
+        <source>RSS-feed URL updated.</source>
+        <target>RSS-feed URL updated.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="bebcc3d6d6dcff77333dd785ef92ecb2">
+        <source>Maximum number or products is %value%</source>
+        <target>Maximum number or products is %value%</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="3625cdf19abd4ec330b3db80a9d03c50">
+        <source>Product category</source>
+        <target>Product category</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="7f9e6d9931f9be51b9684d397eebd595">
+        <source>Show products only from this category.</source>
+        <target>Show products only from this category.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="c1983ca83a423f06a8fa9d48b504d661">
+        <source>Product limit</source>
+        <target>Product limit</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="1aaf8fdbe2c4146c0f428a8c2bce3cf9">
+        <source>Limit how many products you will add to your feed. Maximum 250.</source>
+        <target>Limit how many products you will add to your feed. Maximum 250.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="a5d028cb6593937f07a5b50b210fc78d">
+        <source>This value should be greater than %value%</source>
+        <target>This value should be greater than %value%</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="c7be4b57af6fdc08680d2accc61f1f79">
+        <source>This value should be less than %value%</source>
+        <target>This value should be less than %value%</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="33d8042bd735c559cc3206f4bc99aedc">
+        <source>Sort by</source>
+        <target>Sort by</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="85de9a3fcc45082345f6cfe7c8c98e0f">
+        <source>Date added</source>
+        <target>Date added</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="bb23d3382c99eb4d7b31c56dbd1220a0">
+        <source>Date updated</source>
+        <target>Date updated</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="df644ae155e79abf54175bd15d75f363">
+        <source>Product name</source>
+        <target>Product name</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="290b7c47045d269e2ccfa69e6477acfe">
+        <source>Product price</source>
+        <target>Product price</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="97f08a40f22a625d0cbfe03db3349108">
+        <source>Product ID</source>
+        <target>Product ID</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="06f1ac65b0a6a548339a38b348e64d79">
+        <source>Sort order</source>
+        <target>Sort order</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="e3cf5ac19407b1a62c6fccaff675a53b">
+        <source>Descending</source>
+        <target>Descending</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="cf3fb1ff52ea1eed3347ac5401ee7f0c">
+        <source>Ascending</source>
+        <target>Ascending</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="a69d72ba4abe9915e183bcd00d8fcc42">
+        <source>Enable Customer Synchronization</source>
+        <target>Enable Customer Synchronization</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="001ea4556e3b753a3c75268a62dda65e">
+        <source>Synchronize Additional</source>
+        <target>Synchronize Additional</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="700712b0f6c113d523b2194a96a2b278">
+        <source>Select additional fields to syncronize</source>
+        <target>Select additional fields to syncronize</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="20db0bfeecd8fe60533206a2b5e9891a">
+        <source>First name</source>
+        <target>First name</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="8d3f5eff9c40ee315d452392bed5309b">
+        <source>Last name</source>
+        <target>Last name</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="aac772216aecbeca0e86d06671fe985a">
+        <source>Birthday</source>
+        <target>Birthday</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="15bbb9d0bbf25e8d2978de1168c749dc">
+        <source>Website</source>
+        <target>Website</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="d0970ede0a15189ccf60baf5761f665f">
+        <source>Cron token</source>
+        <target>Cron token</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="bb7b3c6261b41de1bd1fefa377a75f43">
+        <source>Token is required for cron security. Use this auto generated one or replace with your own.</source>
+        <target>Token is required for cron security. Use this auto generated one or replace with your own.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="981067707ceaeacda5cb900c7c537a37">
+        <source>The field is required.</source>
+        <target>The field is required.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="daf2a96781f203ddd0e0c8ba8fa25a2f">
+        <source>Trigger opt-in on customer sign-up</source>
+        <target>Trigger opt-in on customer sign-up</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="f31fe73b24620e23d03fd55013e1bf87">
+        <source>Automation to trigger on customer sign-up</source>
+        <target>Automation to trigger on customer sign-up</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="beed05bccb8b6f21466910eb4a4f142b">
+        <source>Subdomain</source>
+        <target>Subdomain</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="4417ef7fb2a6471c9ae0edde722ce1c0">
+        <source>For example demo from https://demo.sendsmaily.net</source>
+        <target>For example demo from https://demo.sendsmaily.net</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="f6039d44b29456b20f8f373155ae4973">
+        <source>Username</source>
+        <target>Username</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="dc647eb65e6711e155375218212b3964">
+        <source>Password</source>
+        <target>Password</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="49ab28040dfa07f53544970c6d147e1e">
+        <source>Connect</source>
+        <target>Connect</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="26d0088a71d018fac454a0e2eb1b0dcb">
+        <source>Please enter subdomain</source>
+        <target>Please enter subdomain</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="355a4eefe4b16c01d657079eacc5e4de">
+        <source>Please enter username</source>
+        <target>Please enter username</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="c6f38d7ceb0f297af5806e41f61dd548">
+        <source>Please enter password</source>
+        <target>Please enter password</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="e4abb2193283c812ed4139ff4c528a71">
+        <source>Unauthorized, please check credentials.</source>
+        <target>Unauthorized, please check credentials.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="be371617863760abe1faad51af251533">
+        <source>Error validating credentials, please try again.</source>
+        <target>Error validating credentials, please try again.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="fa927486238640d97a307b607b725dcd">
+        <source>Enable Abandoed Cart</source>
+        <target>Enable Abandoed Cart</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="872bc575218e7dd2c749633da28c24ab">
+        <source>Autoresponder</source>
+        <target>Autoresponder</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="922f7a964e2f5dd5984c08ea9af64bbe">
+        <source>Select additional fields to send to abandoned cart template.</source>
+        <target>Select additional fields to send to abandoned cart template.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="40c7ac8183e41970cc6d0a0e9a3ca59a">
+        <source>Customers first name</source>
+        <target>Customers first name</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="d4d22c02897584b7d6d06a7415729af1">
+        <source>Customers last name</source>
+        <target>Customers last name</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="9d2680138cc4698f7fc3440496ffaa68">
+        <source>Product description</source>
+        <target>Product description</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="9bfc76bdee1be37683eb7cc245201b15">
+        <source>Product SKU</source>
+        <target>Product SKU</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="7b541de13ca0229406e134a373dd6382">
+        <source>Product quantity</source>
+        <target>Product quantity</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="361a2e0648660de5428f5dc6c8ea4e51">
+        <source>Abandoned Cart Delay</source>
+        <target>Abandoned Cart Delay</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="e553d7a992213a4c4421d425404d5b61">
+        <source>Time after cart is considered abandoned after last cart edit from customer. Minimum 15 minutes.</source>
+        <target>Time after cart is considered abandoned after last cart edit from customer. Minimum 15 minutes.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="2dd781c41a020174cc3face5b078ff5a">
+        <source>Please provide a cron token for customer synchronization.</source>
+        <target>Please provide a cron token for customer synchronization.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="810c2603ccde9604024f59669936288b">
+        <source>Please select an automation workflow for customer Opt-In trigger.</source>
+        <target>Please select an automation workflow for customer Opt-In trigger.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="b9d36c328a7bbdd251c3e4c16d901e08">
+        <source>Please provide a cron token for abandoned cart synchronization.</source>
+        <target>Please provide a cron token for abandoned cart synchronization.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="7b02e2dc3e9cead891aa9c8f2421cf5a">
+        <source>Abandoned Cart</source>
+        <target>Abandoned Cart</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="0ee80c26200aac48102c0225f716a262">
+        <source>Cron URL</source>
+        <target>Cron URL</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="a612782072a3b8f151c5e2120ef20efd">
+        <source>Copy to clipboard</source>
+        <target>Copy to clipboard</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="9cc2022eb76bc383c713c406b6ae96f2">
+        <source>To schedule automatic sync, set up CRON in your hosting and use this URL.</source>
+        <target>To schedule automatic sync, set up CRON in your hosting and use this URL.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="1432d6acb00f50b8e772285d3710fb6b">
+        <source>Smaily Account Settings</source>
+        <target>Smaily Account Settings</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="d40b78b04f3f55d880966542e877bb50">
+        <source>How to create API credentials?</source>
+        <target>How to create API credentials?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="880b8461cba2e295e1828be8d6eedb0a">
+        <source>Reconnect</source>
+        <target>Reconnect</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="7eca39de358415bfb69b727a9557cd1c">
+        <source>RSS Feed</source>
+        <target>RSS Feed</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="2a7277e129214ea0173396313126f206">
+        <source>RSS-feed URL</source>
+        <target>RSS-feed URL</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="fec6b1393cb5a616a7b19766d1c612c4">
+        <source>Customer Synchronization</source>
+        <target>Customer Synchronization</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="0607f4725916125124eaf60f0b37fded">
+        <source>How to create an automation trigger?</source>
+        <target>How to create an automation trigger?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="d51392bec6ce4585c3b03031b2197109">
+        <source>Smaily for Prestashop</source>
+        <target>Smaily for Prestashop</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="08bd40c7543007ad06e4fce31618f6ec">
+        <source>Account</source>
+        <target>Account</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="9f8766481ef18b89fd1850611bf34b10">
+        <source>Customer Sync</source>
+        <target>Customer Sync</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
