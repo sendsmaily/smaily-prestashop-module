@@ -25,11 +25,15 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Form;
 
+use PrestaShop\Module\SmailyForPrestaShop\Lib\Api;
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
+use Symfony\Component\Form\Event\PostSetDataEvent;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
 
 class AccountConfigurationFormType extends TranslatorAwareType
 {
@@ -51,6 +55,25 @@ class AccountConfigurationFormType extends TranslatorAwareType
                 'attr' => [
                     'class' => 'btn-primary',
                 ],
-            ]);
+            ])->addEventListener(
+                FormEvents::POST_SET_DATA,
+                [$this, 'connectionChecker']
+            );
+    }
+
+    public function connectionChecker(PostSetDataEvent $event): void
+    {
+        $form = $event->getForm();
+
+        $credentials = $event->getData();
+
+        if (!empty($credentials['subdomain'] && !empty($credentials['username']) && !empty($credentials['password']))) {
+            $api = new Api($credentials['subdomain'], $credentials['username'], $credentials['password']);
+
+            $resp = $api->listAutoresponders();
+            if ($resp->getStatusCode() !== 200) {
+                $form->get('password')->addError(new FormError($this->trans('Failed to establish connection with Smaily. Please check credentials and reconnect!', 'Modules.Smailyforprestashiop.Admin')));
+            }
+        }
     }
 }
