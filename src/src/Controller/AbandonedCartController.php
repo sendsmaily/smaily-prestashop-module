@@ -164,6 +164,7 @@ class AbandonedCartController
         $sentCart = new SentCart();
         $sentCart->id_customer = $cart->customerID;
         $sentCart->id_cart = $cart->cartID;
+        $sentCart->date_sent = date('Y-m-d H:i:s');
         $sentCart->save();
 
         return true;

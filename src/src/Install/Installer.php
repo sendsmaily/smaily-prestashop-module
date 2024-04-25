@@ -79,11 +79,10 @@ class Installer
     private function createTables(): bool
     {
         $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'smaily_cart (
-            `id_smaily_cart` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-            `id_customer` INT UNSIGNED NULL ,
-            `id_cart` INT UNSIGNED NULL ,
-            `date_add` DATETIME NOT NULL,
-            `date_upd` DATETIME NOT NULL) ENGINE=' . _MYSQL_ENGINE_;
+            `id_smaily_cart` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            `id_customer` INT UNSIGNED NULL,
+            `id_cart` INT UNSIGNED NULL,
+            `date_sent` DATETIME NOT NULL) ENGINE=' . _MYSQL_ENGINE_;
 
         return \Db::getInstance()->execute($sql);
     }
