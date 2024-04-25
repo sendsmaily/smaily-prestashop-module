@@ -1,6 +1,10 @@
-vendor
-
-!vendor/composer
-!vendor/autoload.php
-
 *.cache
+
+# Keep only autoload files
+vendor/*
+!vendor/autoload.php
+!vendor/composer
+vendor/composer/*
+!vendor/composer/autoload*
+!vendor/composer/ClassLoader.php
+!vendor/composer/platform_check.php
