@@ -25,36 +25,31 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Model;
 
-class AbandonedCart
+class AbandonedCartProduct
 {
     /**
-     * @var int
+     * @var string
      */
-    public $cartID;
+    public $name;
     /**
-     * @var int
+     * @var string
      */
-    public $customerID;
+    public $description;
 
     /**
      * @var string
      */
-    public $dateUpdated;
+    public $sku;
     /**
      * @var string
      */
-    public $firstName;
+    public $price;
     /**
      * @var string
      */
-    public $lastName;
+    public $quantity;
     /**
      * @var string
      */
-    public $email;
-
-    /**
-     * @var AbandonedCartProduct[];
-     */
-    public $products;
+    public $basePrice;
 }

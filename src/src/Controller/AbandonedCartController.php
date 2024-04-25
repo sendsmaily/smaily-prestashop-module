@@ -186,12 +186,12 @@ class AbandonedCartController
 
         // Populate abandoned cart with empty values for legacy api.
         $fields_available = [
-            'name',
+            'base_price',
             'description',
-            'sku',
+            'name',
             'price',
             'quantity',
-            'base_price',
+            'sku',
         ];
         foreach ($fields_available as $field) {
             for ($i = 1; $i <= 10; ++$i) {
@@ -215,26 +215,29 @@ class AbandonedCartController
                 switch ($sync_field) {
                     case 'base_price':
                         $payload['product_base_price_' . $count] = \Context::getContext()->currentLocale->formatPrice(
-                            $product['price_without_reduction'],
+                            $product->basePrice,
                             $currency
                         );
                         break;
+                    case 'description':
+                        $payload['product_description_' . $count] = $product->description;
+                        break;
+                    case 'name':
+                        $payload['product_name_' . $count] = $product->name;
+                        break;
                     case 'price':
                         $payload['product_price_' . $count] = \Context::getContext()->currentLocale->formatPrice(
-                            $product['price_with_reduction'],
+                            $product->price,
                             $currency
                         );
                         break;
                     case 'sku':
-                        $payload['product_sku_' . $count] = $product['reference'];
+                        $payload['product_sku_' . $count] = $product->sku;
                         break;
-                    case 'description':
-                        $payload['product_description_' . $count] = htmlspecialchars(
-                            $product['description_short']
-                        );
+                    case 'quantity':
+                        $payload['product_quantity_' . $count] = $product->quantity;
                         break;
                     default:
-                        $payload['product_' . $sync_field . '_' . $count] = $product[$sync_field];
                         break;
                 }
             }

@@ -149,6 +149,16 @@ class AbandonedCartFormType extends TranslatorAwareType
                         ],
                     ]
                 )->add(
+                    'base_price',
+                    CheckboxType::class,
+                    [
+                        'label' => $this->trans('Product base price', 'Modules.Smailyforprestashop.Admin'),
+                        'required' => false,
+                        'attr' => [
+                            'material_design' => true,
+                        ],
+                    ]
+                )->add(
                     'quantity',
                     CheckboxType::class,
                     [

@@ -65,8 +65,8 @@ class AbandonedCartCollection
         $carts = $this->db->executeS($sql);
 
         $result = [];
-        foreach ($carts as $abandoned_cart) {
-            $prestaCart = new \Cart($abandoned_cart['id_cart']);
+        foreach ($carts as $abandonedCart) {
+            $prestaCart = new \Cart($abandonedCart['id_cart']);
             $products = $prestaCart->getProducts();
             // Don't continue if no products in cart.
             if (empty($products)) {
@@ -74,13 +74,24 @@ class AbandonedCartCollection
             }
 
             $cart = new AbandonedCart();
-            $cart->cartID = (int) $abandoned_cart['id_cart'];
-            $cart->customerID = (int) $abandoned_cart['id_customer'];
-            $cart->dateUpdated = $abandoned_cart['date_upd'];
-            $cart->email = $abandoned_cart['email'];
-            $cart->firstName = $abandoned_cart['firstname'];
-            $cart->lastName = $abandoned_cart['lastname'];
-            $cart->products = $products;
+            $cart->cartID = (int) $abandonedCart['id_cart'];
+            $cart->customerID = (int) $abandonedCart['id_customer'];
+            $cart->dateUpdated = $abandonedCart['date_upd'];
+            $cart->email = $abandonedCart['email'];
+            $cart->firstName = $abandonedCart['firstname'];
+            $cart->lastName = $abandonedCart['lastname'];
+
+            foreach ($products as $product) {
+                $abandonedCartProduct = new AbandonedCartProduct();
+                $abandonedCartProduct->name = $product['name'];
+                $abandonedCartProduct->description = $product['description_short'];
+                $abandonedCartProduct->sku = $product['reference'];
+                $abandonedCartProduct->price = $product['price_with_reduction'];
+                $abandonedCartProduct->basePrice = $product['price_without_reduction'];
+                $abandonedCartProduct->quantity = $product['quantity'];
+
+                $cart->products[] = $abandonedCartProduct;
+            }
 
             $result[] = $cart;
         }
