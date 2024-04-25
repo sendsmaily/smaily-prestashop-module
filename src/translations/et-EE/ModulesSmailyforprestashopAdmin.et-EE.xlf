@@ -272,6 +272,11 @@
         <target>Tootekood</target>
         <note>Line: </note>
       </trans-unit>
+      <trans-unit id="08a5bb589f1cffc1e63ba5b85bf9762c">
+        <source>Product base price</source>
+        <target>Toote alghind</target>
+        <note>Line: </note>
+      </trans-unit>
       <trans-unit id="7b541de13ca0229406e134a373dd6382">
         <source>Product quantity</source>
         <target>Toote Kogus</target>
