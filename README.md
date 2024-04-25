@@ -72,10 +72,6 @@ All development for Smaily for Prestashop is [handled via GitHub](https://github
 
 ## Frequently Asked Questions
 
-### Where I can find the data log for Cron?
-
-The Cron update data log is stored in the root folder of the Smaily plugin, inside the "smaily-cron.txt" file.
-
 ### How can I access additional Abandoned cart parameters in the Smaily template editor?
 
 Here is a list of all the parameters available in the Smaily email templating engine:
