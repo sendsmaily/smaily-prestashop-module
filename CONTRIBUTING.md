@@ -70,7 +70,7 @@ If you need to reset the installation, just simply delete environment's Docker v
 
     $ docker compose down --remove-orphans -v
 
-## Weird behavior in different versions
+## Helpful notices for development
 
 ### php-cs-fixer not working
 
@@ -79,3 +79,7 @@ You may notice that `php-cs-fixer` might not work for some PrestaShop image vers
 ## cache invalidation
 
 There seems to be lot of issues related to cache being invalid. Sometimes the module routes are not found or services configuration is missing etc. Most of them can be fixed by pruning cache folder located in `/var/www/html/var/cache/dev`. Some versions use `admin-dev` folder.
+
+## catching shop sent emails
+
+The development environment is configured with mailhog that is accessible from `localhost:8025`. You need to configure the shop to use this SMTP server. Navigate from the side menu to `CONFIGURE` -> `Advanced Parameters` -> `E-mail`. Select `Set my own SMTP parameters (for advanced users ONLY)` and use `mailhog` as SMTP server and `1025` as the port. Sending a test email should result a test message arriving to the inbox of mailhog client on `localhost:8025`.
