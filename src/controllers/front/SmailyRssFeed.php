@@ -23,6 +23,10 @@
  */
 declare(strict_types=1);
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class SmailyForPrestaShopSmailyRssFeedModuleFrontController extends ModuleFrontController
 {
     public const ALLOWED_SORT_BY_VALUES = ['date_add', 'date_upd', 'name', 'price', 'id_product'];

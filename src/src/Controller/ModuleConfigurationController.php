@@ -25,6 +25,10 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Controller;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

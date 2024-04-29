@@ -25,6 +25,10 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Model;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class RssFeedProductsCollection
 {
     public function getProducts(false|int $categoryId, int $limit, string $sort_by, string $sort_order): array

@@ -25,6 +25,10 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShop\Module\SmailyForPrestaShop\Lib\Api;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
 use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;

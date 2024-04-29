@@ -25,6 +25,10 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShop\PrestaShop\Adapter\Category\CategoryDataProvider;
 use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

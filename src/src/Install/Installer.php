@@ -25,6 +25,10 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Install;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class Installer
 {
     private const CONFIGURATION_KEYS = [

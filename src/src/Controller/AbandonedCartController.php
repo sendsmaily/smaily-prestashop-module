@@ -25,6 +25,10 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Controller;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShop\Module\SmailyForPrestaShop\Lib\Api;
 use PrestaShop\Module\SmailyForPrestaShop\Lib\Logger;
 use PrestaShop\Module\SmailyForPrestaShop\Model\AbandonedCart;
