@@ -84,13 +84,15 @@ class SmailyForPrestaShop extends Module
         Tools::redirectAdmin($route);
     }
 
-    public function hookActionNewsletterRegistrationAfter($params)
+    public function hookActionNewsletterRegistrationAfter($params): bool
     {
         if (isset($params['email'], $params['module']) && $params['module'] === 'ps_emailsubscription') {
-            /** @var OptInController */
             $controller = new OptInController($this->get('prestashop.adapter.legacy.configuration'));
-            $controller->optInSubscriber($params['email']);
+
+            return $controller->optInSubscriber($params['email']);
         }
+
+        return false;
     }
 
     /**
@@ -107,9 +109,7 @@ class SmailyForPrestaShop extends Module
         }
 
         $customer = $params['newCustomer'];
-
-        /** @var OptInController */
-        $controller = $this->get('prestashop.module.smailyforprestashop.controller.opt_in_controller');
+        $controller = new OptInController($this->get('prestashop.adapter.legacy.configuration'));
 
         return $controller->optInCustomer($customer);
     }
