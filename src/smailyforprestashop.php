@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * 2024 Smaily
  *
  * NOTICE OF LICENSE
