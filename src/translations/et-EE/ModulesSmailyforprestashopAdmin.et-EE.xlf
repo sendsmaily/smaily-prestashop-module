@@ -232,6 +232,11 @@
         <target>Ühenda</target>
         <note>Line: </note>
       </trans-unit>
+      <trans-unit id="ac881a4f7f4306f59c612091d4c4dd88">
+        <source>Failed to establish connection with Smaily. Please check credentials and reconnect!</source>
+        <target>Ühendus Smaily kontoga on katkenud. Palun kontrollige kasutajatunnust ja parooli ning ühendage uuesti!</target>
+        <note>Line: </note>
+      </trans-unit>
       <trans-unit id="26d0088a71d018fac454a0e2eb1b0dcb">
         <source>Please enter subdomain</source>
         <target>Palun sisesta alamdomeen</target>

@@ -76,7 +76,7 @@ class AccountConfigurationFormType extends TranslatorAwareType
 
             $resp = $api->listAutoresponders();
             if ($resp->getStatusCode() !== 200) {
-                $form->get('password')->addError(new FormError($this->trans('Failed to establish connection with Smaily. Please check credentials and reconnect!', 'Modules.Smailyforprestashiop.Admin')));
+                $form->get('password')->addError(new FormError($this->trans('Failed to establish connection with Smaily. Please check credentials and reconnect!', 'Modules.Smailyforprestashop.Admin')));
             }
         }
     }
