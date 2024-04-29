@@ -88,7 +88,7 @@ class SmailyForPrestaShop extends Module
     {
         if (isset($params['email'], $params['module']) && $params['module'] === 'ps_emailsubscription') {
             /** @var OptInController */
-            $controller = $this->get('prestashop.module.smailyforprestashop.controller.opt_in_controller');
+            $controller = new OptInController($this->get('prestashop.adapter.legacy.configuration'));
             $controller->optInSubscriber($params['email']);
         }
     }

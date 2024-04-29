@@ -27,6 +27,8 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use PrestaShop\Module\SmailyForPrestaShop\Controller\CustomerSyncController;
+
 class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleFrontController
 {
     public function __construct()
@@ -39,8 +41,7 @@ class SmailyforprestashopSmailyCustomerCronModuleFrontController extends ModuleF
         parent::initContent();
         header('Content-Type: text/plain');
 
-        $controller = $this->get('prestashop.module.smailyforprestashop.controller.customer_sync_controller');
-
+        $controller = new CustomerSyncController($this->get('prestashop.adapter.legacy.configuration'));
         if (!$controller->sync(Tools::getValue('token'))) {
             exit(1);
         }

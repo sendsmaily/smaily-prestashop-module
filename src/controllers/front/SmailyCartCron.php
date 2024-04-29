@@ -27,6 +27,8 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use PrestaShop\Module\SmailyForPrestaShop\Controller\AbandonedCartController;
+
 class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFrontController
 {
     public function __construct()
@@ -39,8 +41,7 @@ class SmailyforprestashopSmailyCartCronModuleFrontController extends ModuleFront
         parent::initContent();
         header('Content-Type: text/plain');
 
-        $controller = $this->get('prestashop.module.smailyforprestashop.controller.abandoned_cart_controller');
-
+        $controller = new AbandonedCartController($this->get('prestashop.adapter.legacy.configuration'));
         if (!$controller->sync(Tools::getValue('token'))) {
             exit(1);
         }

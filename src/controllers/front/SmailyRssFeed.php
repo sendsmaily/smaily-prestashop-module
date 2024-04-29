@@ -27,6 +27,8 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use PrestaShop\Module\SmailyForPrestaShop\Controller\RssFeedController;
+
 class SmailyForPrestaShopSmailyRssFeedModuleFrontController extends ModuleFrontController
 {
     public const ALLOWED_SORT_BY_VALUES = ['date_add', 'date_upd', 'name', 'price', 'id_product'];
@@ -34,6 +36,8 @@ class SmailyForPrestaShopSmailyRssFeedModuleFrontController extends ModuleFrontC
     public function initContent()
     {
         parent::initContent();
+        header('Content-Type: application/xml');
+
         $baseUrl = Tools::getHttpHost(true) . __PS_BASE_URI__;
 
         $limit = (int) Tools::getValue('limit');
@@ -48,9 +52,7 @@ class SmailyForPrestaShopSmailyRssFeedModuleFrontController extends ModuleFrontC
         $categoryId = (int) Tools::getValue('category_id');
         $categoryId = $categoryId <= 0 ? false : $categoryId;
 
-        $controller = $this->get('prestashop.module.smailyforprestashop.controller.rss_feed_controller');
-
-        header('Content-Type: application/xml');
+        $controller = new RssFeedController();
         echo $controller->generateFeed($baseUrl, $categoryId, $limit, $sortBy, $sortOrder);
 
         exit; // Stop to render XML instead of twig template.
