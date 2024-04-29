@@ -182,9 +182,29 @@
         <target>Käivita opt-in kasutaja registreerimisel</target>
         <note>Line: </note>
       </trans-unit>
+      <trans-unit id="3615ae0f924d92e1ae95dcf164e8ab79">
+        <source>Opt-in will only be triggered when customer creates an account and signs-up for newsletter. Changes to newsletter subscription in the admin panel won't trigger an opt-in.</source>
+        <target>Opt-in töövoog käivitatakse ainult kui klient loob uue konto või liitub läbi uudiskirjavormi. Uudiskirja tellimise muudatused administraator paneelis ei käivita töövoogu.</target>
+        <note>Line: </note>
+      </trans-unit>
       <trans-unit id="f31fe73b24620e23d03fd55013e1bf87">
         <source>Automation to trigger on customer sign-up</source>
         <target>Kasutaja registreerimisel käivitatav automaatika</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="0bbc917bf2d0a8099480eeb533662854">
+        <source>No automation workflows available</source>
+        <target>Puuduvad automaatika töövood</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="0fcec9113db6e8aed24813e969b59476">
+        <source>Select an automation workflow</source>
+        <target>Vali automaatika töövoog</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="40dec546414c1ebdfde8d9858f0938c3">
+        <source>All products</source>
+        <target>Kõik tooted</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="beed05bccb8b6f21466910eb4a4f142b">

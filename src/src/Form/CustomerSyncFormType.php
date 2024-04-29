@@ -148,7 +148,7 @@ class CustomerSyncFormType extends TranslatorAwareType
             ->add('optin_enabled', SwitchType::class, [
                 'label' => $this->trans('Trigger opt-in on customer sign-up', 'Modules.Smailyforprestashop.Admin'),
                 'required' => false,
-                'help' => $this->trans("Opt-in will only be triggered when customer creates an account and signs-up for newsletter. Changes to newsletter subscription in the admin panel won't trigger an opt-in.", 'Module.Smailyforprestashop.Admin'),
+                'help' => $this->trans("Opt-in will only be triggered when customer creates an account and signs-up for newsletter. Changes to newsletter subscription in the admin panel won't trigger an opt-in.", 'Modules.Smailyforprestashop.Admin'),
             ])
             ->add('autoresponder', ChoiceType::class, [
                 'choices' => $this->autoresponderChoices,

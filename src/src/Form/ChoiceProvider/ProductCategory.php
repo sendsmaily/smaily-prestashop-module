@@ -57,7 +57,7 @@ class ProductCategory implements FormChoiceProviderInterface
     public function getChoices(): array
     {
         $choices = [
-            $this->translator->trans('All products', [], 'Module.Smailyforprestashop.Admin') => null,
+            $this->translator->trans('All products', [], 'Modules.Smailyforprestashop.Admin') => null,
         ];
 
         return array_merge(
