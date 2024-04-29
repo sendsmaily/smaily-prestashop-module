@@ -118,7 +118,7 @@ class Installer
             // Customer Sync
             'SMAILY_ENABLE_CUSTOMER_SYNC' => false,
             'SMAILY_CUSTOMER_CRON_TOKEN' => bin2hex(random_bytes(6)),
-            'SMAILY_SYNCRONIZE_ADDITIONAL' => serialize([]),
+            'SMAILY_SYNCRONIZE_ADDITIONAL' => json_encode([]),
             'SMAILY_OPTIN_ENABLED' => false,
             'SMAILY_OPTIN_AUTORESPONDER' => '',
             // Abandoned Cart
@@ -126,7 +126,7 @@ class Installer
             'SMAILY_CART_CRON_TOKEN' => bin2hex(random_bytes(6)),
             'SMAILY_CART_AUTORESPONDER' => '',
             'SMAILY_ABANDONED_CART_TIME' => 15,
-            'SMAILY_CART_SYNCRONIZE_ADDITIONAL' => serialize([]),
+            'SMAILY_CART_SYNCRONIZE_ADDITIONAL' => json_encode([]),
             // RSS
             'SMAILY_RSS_CATEGORY_ID' => '',
             'SMAILY_RSS_LIMIT' => 50,

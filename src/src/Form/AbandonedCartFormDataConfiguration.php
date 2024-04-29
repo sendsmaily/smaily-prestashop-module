@@ -50,7 +50,7 @@ final class AbandonedCartFormDataConfiguration implements DataConfigurationInter
 
         $return['enabled'] = $this->configuration->getBoolean('SMAILY_ENABLE_ABANDONED_CART');
         $return['autoresponder'] = $this->configuration->get('SMAILY_CART_AUTORESPONDER');
-        $return['sync_additional'] = unserialize($this->configuration->get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'));
+        $return['sync_additional'] = json_decode($this->configuration->get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'), true);
         $return['sync_interval'] = (int) $this->configuration->get('SMAILY_ABANDONED_CART_TIME') === 0 ? 15 : $this->configuration->get('SMAILY_ABANDONED_CART_TIME');
         $return['cron_token'] = $this->configuration->get('SMAILY_CART_CRON_TOKEN');
         $return['cron_url'] = $this->buildCronURL($return['cron_token']);
@@ -81,7 +81,7 @@ final class AbandonedCartFormDataConfiguration implements DataConfigurationInter
         if ($this->validateConfiguration($formData) && empty($errors)) {
             $this->configuration->set('SMAILY_ENABLE_ABANDONED_CART', $formData['enabled']);
             $this->configuration->set('SMAILY_CART_AUTORESPONDER', $formData['autoresponder']);
-            $this->configuration->set('SMAILY_CART_SYNCRONIZE_ADDITIONAL', serialize($formData['sync_additional']));
+            $this->configuration->set('SMAILY_CART_SYNCRONIZE_ADDITIONAL', json_encode($formData['sync_additional']));
             $this->configuration->set('SMAILY_ABANDONED_CART_TIME', $formData['sync_interval']);
             $this->configuration->set('SMAILY_CART_CRON_TOKEN', $formData['cron_token']);
         }

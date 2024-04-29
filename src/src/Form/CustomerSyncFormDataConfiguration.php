@@ -49,7 +49,7 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
         $return = [];
 
         $return['enabled'] = $this->configuration->getBoolean('SMAILY_ENABLE_CUSTOMER_SYNC');
-        $return['sync_additional'] = unserialize($this->configuration->get('SMAILY_SYNCRONIZE_ADDITIONAL'));
+        $return['sync_additional'] = json_decode($this->configuration->get('SMAILY_SYNCRONIZE_ADDITIONAL'), true);
         $return['cron_token'] = $this->configuration->get('SMAILY_CUSTOMER_CRON_TOKEN');
         $return['cron_url'] = $this->buildCronURL($return['cron_token']);
         $return['optin_enabled'] = $this->configuration->getBoolean('SMAILY_OPTIN_ENABLED');
@@ -91,7 +91,7 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
 
         if ($this->validateConfiguration($formData) && empty($errors)) {
             $this->configuration->set('SMAILY_ENABLE_CUSTOMER_SYNC', $syncEnabled);
-            $this->configuration->set('SMAILY_SYNCRONIZE_ADDITIONAL', serialize($additionalFields));
+            $this->configuration->set('SMAILY_SYNCRONIZE_ADDITIONAL', json_encode($additionalFields));
             $this->configuration->set('SMAILY_CUSTOMER_CRON_TOKEN', $cronToken);
             $this->configuration->set('SMAILY_OPTIN_ENABLED', $optInEnabled);
             $this->configuration->set('SMAILY_OPTIN_AUTORESPONDER', $autoresponder);

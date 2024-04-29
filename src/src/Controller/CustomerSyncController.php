@@ -179,7 +179,7 @@ class CustomerSyncController
         $offset = 0;
         $subscriberCollection = new SubscriberCollection();
 
-        $additionalFields = unserialize($this->configuration->get('SMAILY_SYNCRONIZE_ADDITIONAL'));
+        $additionalFields = json_decode($this->configuration->get('SMAILY_SYNCRONIZE_ADDITIONAL'), true);
         $selectedFields = array_keys(array_filter($additionalFields));
 
         while (true) {
