@@ -37,90 +37,99 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ModuleConfigurationController extends FrameworkBundleAdminController
 {
+    /**
+     * @var string
+     */
+    private $tab;
+
+    /**
+     * @var FormInterface
+     */
+    private $accountForm;
+
+    /**
+     * @var FormInterface
+     */
+    private $customerSyncForm;
+
+    /**
+     * @var FormInterface
+     */
+    private $abandonedCartForm;
+
+
+    /**
+     * @var FormInterface;
+     */
+    private $rssFeedForm;
+
     public function index(Request $request): Response
     {
-        $configurationService = $this->get('prestashop.adapter.legacy.configuration');
-        $isAccountConnected = $configurationService->get('SMAILY_SUBDOMAIN') !== '';
-        $tab = 'account';
+        $this->tab = 'account';
 
         // Account
         $accountFormDataHandler = $this->get('prestashop.module.smailyforprestashop.form.account_form_handler');
-        $accountForm = $accountFormDataHandler->getForm();
-        $accountForm->handleRequest($request);
+        $this->accountForm = $accountFormDataHandler->getForm();
+        $this->accountForm->handleRequest($request);
 
         // Customer Sync
         $customerSyncFormDataHandler = $this->get('prestashop.module.smailyforprestashop.form.customer_sync_form_handler');
-        $customerSyncForm = $customerSyncFormDataHandler->getForm();
-        $customerSyncForm->handleRequest($request);
+        $this->customerSyncForm = $customerSyncFormDataHandler->getForm();
+        $this->customerSyncForm->handleRequest($request);
 
         // Abandoned Cart
         $abandonedCartFormDataHandler = $this->get('prestashop.module.smailyforprestashop.form.abandoned_cart_form_handler');
-        $abandonedCartForm = $abandonedCartFormDataHandler->getForm();
-        $abandonedCartForm->handleRequest($request);
+        $this->abandonedCartForm = $abandonedCartFormDataHandler->getForm();
+        $this->abandonedCartForm->handleRequest($request);
 
         // RSS-feed
         $rssFeedFormDataHandler = $this->get('prestashop.module.smailyforprestashop.form.rss_feed_form_handler');
-        $rssFeedForm = $rssFeedFormDataHandler->getForm();
-        $rssFeedForm->handleRequest($request);
+        $this->rssFeedForm = $rssFeedFormDataHandler->getForm();
+        $this->rssFeedForm->handleRequest($request);
 
-        if ($accountForm->get('submit')->isClicked() && $accountForm->isValid()) {
-            $this->handleAccountFormSubmit($accountFormDataHandler, $accountForm);
+        if ($this->accountForm->get('submit')->isClicked() && $this->accountForm->isValid()) {
+            return $this->handleAccountFormSubmit($accountFormDataHandler);
         }
 
-        if ($customerSyncForm->get('submit')->isClicked() && $customerSyncForm->isValid()) {
-            $tab = 'sync';
-            $this->handleCustomerSyncFormSubmit($customerSyncFormDataHandler, $customerSyncForm);
+        if ($this->customerSyncForm->get('submit')->isClicked() && $this->customerSyncForm->isValid()) {
+            $this->tab = 'sync';
+
+            return $this->handleCustomerSyncFormSubmit($customerSyncFormDataHandler);
         }
 
-        if ($abandonedCartForm->get('submit')->isClicked() && $abandonedCartForm->isValid()) {
-            $tab = 'cart';
-            $this->handleAbandonedCartFormSubmit($abandonedCartFormDataHandler, $abandonedCartForm);
+        if ($this->abandonedCartForm->get('submit')->isClicked() && $this->abandonedCartForm->isValid()) {
+            $this->tab = 'cart';
+
+            return $this->handleAbandonedCartFormSubmit($abandonedCartFormDataHandler);
         }
 
-        if ($rssFeedForm->get('submit')->isClicked() && $rssFeedForm->isValid()) {
-            $tab = 'rss';
-            $this->handleRssFeedFormSubmit($rssFeedFormDataHandler, $rssFeedForm);
+        if ($this->rssFeedForm->get('submit')->isClicked() && $this->rssFeedForm->isValid()) {
+            $this->tab = 'rss';
+
+            return $this->handleRssFeedFormSubmit($rssFeedFormDataHandler);
         }
 
-        // Allow to access settings only if account is connected.
-        if (!$isAccountConnected) {
-            return $this->render('@Modules/smailyforprestashop/views/templates/admin/configuration.html.twig', [
-                'accountConfigurationForm' => $accountForm->createView(),
-                'accountConnected' => false,
-                'tab' => $tab,
-                'jsVariables' => [],
-            ]);
-        }
-
-        return $this->render('@Modules/smailyforprestashop/views/templates/admin/configuration.html.twig', [
-            'accountConfigurationForm' => $accountForm->createView(),
-            'customerSyncForm' => $customerSyncForm->createView(),
-            'abandonedCartForm' => $abandonedCartForm->createView(),
-            'rssFeedForm' => $rssFeedForm->createView(),
-            'accountConnected' => true,
-            'tab' => $tab,
-            'jsVariables' => [
-                'rssBaseURL' => \Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
-            ],
-        ]);
+        return $this->renderForms();
     }
 
-    private function handleAccountFormSubmit(FormHandlerInterface $formHandler, FormInterface $form)
+    private function handleAccountFormSubmit(FormHandlerInterface $formHandler): Response
     {
-        $errors = $formHandler->save($form->getData());
+        $errors = $formHandler->save($this->accountForm->getData());
 
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('Connected with Smaily account.', 'Modules.Smailyforprestashop.Admin'));
 
-            return $this->redirectToRoute('smailyforprestashop_module_configuration');
+            return $this->renderForms();
         }
 
         $this->flashErrors($errors);
+
+        return $this->renderForms();
     }
 
-    private function handleCustomerSyncFormSubmit(FormHandlerInterface $formHandler, FormInterface $form)
+    private function handleCustomerSyncFormSubmit(FormHandlerInterface $formHandler): Response
     {
-        $formData = $form->getData();
+        $formData = $this->customerSyncForm->getData();
         $errors = $formHandler->save($formData);
 
         if (empty($errors)) {
@@ -135,35 +144,69 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
                 );
             }
 
-            return $this->redirectToRoute('smailyforprestashop_module_configuration');
+            return $this->renderForms();
         }
 
         $this->flashErrors($errors);
+
+        return $this->renderForms();
     }
 
-    private function handleAbandonedCartFormSubmit(FormHandlerInterface $formHandler, FormInterface $form)
+    private function handleAbandonedCartFormSubmit(FormHandlerInterface $formHandler): Response
     {
-        $errors = $formHandler->save($form->getData());
+        $errors = $formHandler->save($this->abandonedCartForm->getData());
 
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('Configuration saved.', 'Modules.Smailyforprestashop.Admin'));
 
-            return $this->redirectToRoute('smailyforprestashop_module_configuration');
+            return $this->renderForms();
         }
 
         $this->flashErrors($errors);
+
+        return $this->renderForms();
     }
 
-    private function handleRssFeedFormSubmit(FormHandlerInterface $formHandler, FormInterface $form)
+    private function handleRssFeedFormSubmit(FormHandlerInterface $formHandler): Response
     {
-        $errors = $formHandler->save($form->getData());
+        $errors = $formHandler->save($this->rssFeedForm->getData());
 
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('RSS-feed URL updated.', 'Modules.Smailyforprestashop.Admin'));
 
-            return $this->redirectToRoute('smailyforprestashop_module_configuration');
+            return $this->renderForms();
         }
 
         $this->flashErrors($errors);
+
+        return $this->renderForms();
+    }
+
+    private function renderForms(): Response
+    {
+        $configurationService = $this->get('prestashop.adapter.legacy.configuration');
+        $isAccountConnected = $configurationService->get('SMAILY_SUBDOMAIN') !== '';
+
+        // Allow to access settings only if account is connected.
+        if (!$isAccountConnected) {
+            return $this->render('@Modules/smailyforprestashop/views/templates/admin/configuration.html.twig', [
+               'accountConfigurationForm' => $this->accountForm->createView(),
+               'accountConnected' => false,
+               'tab' => $this->tab,
+               'jsVariables' => [],
+            ]);
+        }
+
+        return $this->render('@Modules/smailyforprestashop/views/templates/admin/configuration.html.twig', [
+            'accountConfigurationForm' => $this->accountForm->createView(),
+            'customerSyncForm' => $this->customerSyncForm->createView(),
+            'abandonedCartForm' => $this->abandonedCartForm->createView(),
+            'rssFeedForm' => $this->rssFeedForm->createView(),
+            'accountConnected' => true,
+            'tab' => $this->tab,
+            'jsVariables' => [
+                'rssBaseURL' => \Context::getContext()->link->getModuleLink('smailyforprestashop', 'SmailyRssFeed'),
+            ],
+        ]);
     }
 }
