@@ -181,11 +181,11 @@ class AbandonedCartController
         ];
 
         $syncAdditional = json_decode($this->configuration->get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'), true);
-        if (in_array('first_name', $syncAdditional) && $syncAdditional['first_name'] === true) {
+        if (isset($syncAdditional['first_name']) && $syncAdditional['first_name'] === true) {
             $payload['first_name'] = $cart->firstName;
         }
 
-        if (in_array('last_name', $syncAdditional) && $syncAdditional['last_name'] === true) {
+        if (isset($syncAdditional['last_name']) && $syncAdditional['last_name'] === true) {
             $payload['last_name'] = $cart->lastName;
         }
 
