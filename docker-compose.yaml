@@ -13,7 +13,6 @@ services:
     ports:
     - 8080:80
     volumes:
-    - prestashop-data:/var/www/html
     - .vscode:/var/www/html/.vscode
     - ./src:/var/www/html/modules/smailyforprestashop
 
@@ -69,5 +68,4 @@ services:
     - 8025:8025
 
 volumes:
-  prestashop-data:
   prestashop-db-data:
