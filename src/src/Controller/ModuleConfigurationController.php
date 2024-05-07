@@ -119,7 +119,8 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('Connected with Smaily account.', 'Modules.Smailyforprestashop.Admin'));
 
-            return $this->renderForms();
+            // Need redirect to query fresh automation flows.
+            return $this->redirectToRoute('smailyforprestashop_module_configuration');
         }
 
         $this->flashErrors($errors);
