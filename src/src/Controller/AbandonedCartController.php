@@ -207,46 +207,40 @@ class AbandonedCartController
         $selected_fields = array_intersect($fields_available, array_keys(array_filter($syncAdditional)));
 
         // Collect products of abandoned cart.
-        $count = 1;
         $currency = \Context::getContext()->currency->iso_code;
-        foreach ($cart->products as $product) {
-            // Get only 10 products.
-            if ($count > 10) {
-                $payload['over_10_products'] = 'true';
-                break;
-            }
+        $payload['over_10_products'] = count($cart->products) > 10;
+        foreach (array_slice($cart->products, 0, 10) as $i => $product) {
             // Standardize template parameters across integrations.
             foreach ($selected_fields as $sync_field) {
                 switch ($sync_field) {
                     case 'base_price':
-                        $payload['product_base_price_' . $count] = \Context::getContext()->currentLocale->formatPrice(
+                        $payload['product_base_price_' . $i + 1] = \Context::getContext()->currentLocale->formatPrice(
                             $product->basePrice,
                             $currency
                         );
                         break;
                     case 'description':
-                        $payload['product_description_' . $count] = $product->description;
+                        $payload['product_description_' . $i + 1] = $product->description;
                         break;
                     case 'name':
-                        $payload['product_name_' . $count] = $product->name;
+                        $payload['product_name_' . $i + 1] = $product->name;
                         break;
                     case 'price':
-                        $payload['product_price_' . $count] = \Context::getContext()->currentLocale->formatPrice(
+                        $payload['product_price_' . $i + 1] = \Context::getContext()->currentLocale->formatPrice(
                             $product->price,
                             $currency
                         );
                         break;
                     case 'sku':
-                        $payload['product_sku_' . $count] = $product->sku;
+                        $payload['product_sku_' . $i + 1] = $product->sku;
                         break;
                     case 'quantity':
-                        $payload['product_quantity_' . $count] = $product->quantity;
+                        $payload['product_quantity_' . $i + 1] = $product->quantity;
                         break;
                     default:
                         break;
                 }
             }
-            ++$count;
         }
 
         return $payload;
