@@ -83,7 +83,6 @@ class AbandonedCartController
 
         $count = 0;
         $failCount = 0;
-        $success = true;
 
         $abandonedCartsCollection = new AbandonedCartCollection();
         foreach ($abandonedCartsCollection->carts as $cart) {
@@ -93,23 +92,20 @@ class AbandonedCartController
             // This doesn't allow the check to pass. I recommend running the cron job
             // in a private window to avoid this.
             if (!$this->isDelayTimePassed($cart)) {
-                break;
+                continue;
             }
 
-            if (!$this->send($cart)) {
-                ++$failCount;
-                $success = false;
-            }
+            $this->send($cart) || $failCount++;
 
             ++$count;
         }
 
         echo sprintf("%s abandoned cart email(s) sent!\r\n", $count);
-        if (!$success) {
+        if ($failCount > 0) {
             echo sprintf("%s failed cart(s), check logs!\r\n", $failCount);
         }
 
-        return $success;
+        return $failCount > 0;
     }
 
     private function isDelayTimePassed(AbandonedCart $cart): bool
@@ -119,12 +115,9 @@ class AbandonedCartController
 
         $reminder_time = strtotime('+' . $syncInterval . ' minutes', $cart_updated_time);
         $current_time = strtotime(date('Y-m-d H:i') . ':00');
-        // Don't continue if cart delay time has not passed.
-        if ($current_time < $reminder_time) {
-            return false;
-        }
 
-        return true;
+        // Don't continue if cart delay time has not passed.
+        return $current_time >= $reminder_time;
     }
 
     /**
