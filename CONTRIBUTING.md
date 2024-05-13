@@ -54,9 +54,9 @@ You can run the environment by executing:
 
 > **Note!** Make sure you do not have any other process(es) listening on ports 8080 and 8888.
 
-### Developing in VSCode Remote Container
+### Developing in VS Code Remote Container
 
-It is advised to develop the application inside VSCode remote container. This allows to get PHP intellisense on PrestaShop classes, includes, etc and provides an debugging option when using latest version of the `prestashop/prestashop-flashlight` image. Open `/var/www/html` directory of `prestashop` container as this provides context for IntelliSense.
+It is advised to develop the application inside VS Code remote container. This allows to get PHP IntelliSense on PrestaShop classes, includes, etc and provides an debugging option when using latest version of the `prestashop/prestashop-flashlight` image. Open `/var/www/html` directory of `prestashop` container as this provides context for IntelliSense.
 
 ## Stopping the environment
 
