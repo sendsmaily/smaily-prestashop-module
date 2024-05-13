@@ -79,7 +79,3 @@ You may notice that `php-cs-fixer` might not work for some PrestaShop image vers
 ## Invalidating cache
 
 There seems to be lot of issues related to cache being invalid. Sometimes the module routes are not found or services configuration is missing etc. Most of them can be fixed by pruning cache folder located in `/var/www/html/var/cache/dev`. Some versions use `admin-dev` folder.
-
-## Catching sent emails
-
-The development environment is configured with MailHog that is accessible from `localhost:8025`. You need to configure the store to use this SMTP server. Navigate from the side menu to `CONFIGURE` -> `Advanced Parameters` -> `E-mail`. Select `Set my own SMTP parameters (for advanced users ONLY)` and use `mailhog` as SMTP server and `1025` as the port. Sending a test email should result a test message arriving to the inbox of MailHog client on `localhost:8025`.
