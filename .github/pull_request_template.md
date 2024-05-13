@@ -22,5 +22,5 @@ A list of changes regarding the next version release:
 **After PR merge**
 
 - [ ] Released new version in GitHub
-- [ ] Updated plugin on the Prestashop Addons Marketplace
+- [ ] Updated plugin on the PrestaShop Addons Marketplace
 - [ ] Pinged code owners to inform marketing about new version

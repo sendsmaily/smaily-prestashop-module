@@ -17,7 +17,7 @@
 
 - New feature to trigger opt-in if new customer joins with newsletter enabled [[#32](https://github.com/sendsmaily/smaily-prestashop-module/issues/32)]
 - Fix missing template variables [[#33](https://github.com/sendsmaily/smaily-prestashop-module/issues/33)]
-- Use PrestashopLogger for logs created by module [[#36](https://github.com/sendsmaily/smaily-prestashop-module/issues/36)]
+- Use PrestaShopLogger for logs created by module [[#36](https://github.com/sendsmaily/smaily-prestashop-module/issues/36)]
 
 ### 1.4.0
 

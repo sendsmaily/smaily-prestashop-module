@@ -1,4 +1,4 @@
-# Smaily for Prestashop
+# Smaily for PrestaShop
 
 ## Description
 
@@ -10,7 +10,6 @@ Automatically subscribe newsletter subscribers to a Smaily subscribers list, gen
 
 ### PrestaShop Newsletter Subscribers
 
-- Add subscribers to the Smaily subscribers list
 - Use the Subscribe Newsletter modules form to send subscribers directly to the Smaily subscribers list
 - Subscribe Newsletter form with CAPTCHA support
 
@@ -20,9 +19,9 @@ Generate an RSS feed with the 50 latest updated active products for easy import 
 
 ### Two-way synchronization between Smaily and PrestaShop
 
-- Remove Store subscribers based on the Smaily unsubscribed list
+- Remove PrestaShop subscribers based on the Smaily unsubscribed list
 - Update unsubscribed status in PrestaShop users database
-- Collect and send new user data to Smaily for subscribers in the Store
+- Collect and send new user data to Smaily for subscribers in the store
 - Generate data log for each update
 
 ### Abandoned cart
@@ -32,7 +31,7 @@ Generate an RSS feed with the 50 latest updated active products for easy import 
 
 ## Requirements
 
-Smaily for Prestashop requires PHP 7.2+ (PHP 8.1+ recommended). You'll also need to be running Prestashop 8.0+.
+Smaily for PrestaShop requires PHP 7.2+ (PHP 8.1+ recommended). You'll also need to be running PrestaShop 8.0+.
 
 ## Documentation & Support
 
@@ -40,16 +39,16 @@ Online documentation and code samples are available via our [Help Center](https:
 
 ## Contribute
 
-All development for Smaily for Prestashop is [handled via GitHub](https://github.com/sendsmaily/smaily-prestashop-module). Opening new issues and submitting pull requests are welcome.
+All development for Smaily for PrestaShop is [handled via GitHub](https://github.com/sendsmaily/smaily-prestashop-module). Opening new issues and submitting pull requests are welcome.
 
 ## Installation
 
-1. Upload or extract the `smailyforprestashop` folder to your site's `/modules/` directory. You can also find this module in **Modules -> Selection** - section in your admin panel - search for Smaily for Prestashop.
-2. Install the plugin from the **Modules** - menu in Prestashop.
+1. Upload or extract the `smailyforprestashop` folder to your site's `/modules/` directory. You can also find this module in **Modules -> Selection** - section in your admin panel - search for Smaily for PrestaShop.
+2. Install the plugin from the **Modules** - menu in PrestaShop.
 
 ## Usage
 
-1. Go to Modules -> Module Manager -> Smaily for Prestashop and click Configure
+1. Go to Modules -> Module Manager -> Smaily for PrestaShop and click Configure
 2. Insert your Smaily API authentication information and click **Connect** to get started.
 3. Under the **Customer Sync** tab select if you want to enable customer synchronization.
 4. Select additional fields you want to synchronize (email is automatic) and change the cron token if you like your own.
@@ -61,7 +60,7 @@ All development for Smaily for Prestashop is [handled via GitHub](https://github
 10. Select additional fields to send to the abandoned cart template. Firstname, lastname and store-url are always added.
 11. Add delay time when the cart is considered abandoned. Minimum time 15 minutes. Change the cron token if you like your own.
 12. Click **Save** to save abandoned cart settings.
-13. Cron is set up to synchronize contacts when CRON-URL is visited. Use host Cpanel, PrestaShop Cron tasks manager or external cron service to automate the process.
+13. Cron is set up to synchronize contacts when cron-URL is visited. Use host cPanel, PrestaShop cron tasks manager or external cron service to automate the process.
 14. That's it, your PrestaShop store is now integrated with the Smaily Plugin!
 
 ## Using the Newsletter Subscription form

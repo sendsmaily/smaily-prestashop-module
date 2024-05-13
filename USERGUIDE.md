@@ -1,10 +1,10 @@
 # USER GUIDE
 
-This guide will help you set up and configure Smaily for Prestashop module.
+This guide will help you set up and configure Smaily for PrestaShop module.
 
 ## Installation
 
-1. You can get the **Smaily for Prestashop module** from Smaily's [GitHub repository](https://github.com/sendsmaily/smaily-prestashop-module/releases).
+1. You can get the **Smaily for PrestaShop module** from Smaily's [GitHub repository](https://github.com/sendsmaily/smaily-prestashop-module/releases).
 
 2. Download the .zip file for the latest release. Extracted contents of the archive to a `smailyforprestashop` folder.
 
@@ -16,7 +16,7 @@ This guide will help you set up and configure Smaily for Prestashop module.
 
 ## Connecting module to Smaily account
 
-1. To start using Smaily extension navigate to **Modules -> Module Manager** section. On the configuration page, find **Smaily for Prestashop**, then click on **Configure**.
+1. To start using Smaily extension navigate to **Modules -> Module Manager** section. On the configuration page, find **Smaily for PrestaShop**, then click on **Configure**.
 
 2. You will be presented with a configuration page for entering your Smaily API credentials - **subdomain, username, and password**.
    You can follow our [API user creation guide](https://smaily.com/help/api/general/create-api-user/).
@@ -67,7 +67,7 @@ Registered customers, who have opted for the newsletter will be added to Smaily'
 
 ## RSS
 
-Smaily's module can create an RSS link of available Prestashop products.
+Smaily's module can create an RSS link of available PrestaShop products.
 The module provides several options for generating an RSS feed link.
 
 1. **Products category**: selecting a category will display only products under that category in the RSS feed.
