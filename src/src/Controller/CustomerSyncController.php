@@ -121,7 +121,7 @@ class CustomerSyncController
      *
      * @return bool success status
      */
-    private function removeUnsubscribers($limit = 1000)
+    private function removeUnsubscribers(int $limit = 1000)
     {
         $offset = 0;
 
@@ -174,7 +174,7 @@ class CustomerSyncController
      *
      * @return bool success status
      */
-    public function sendSubscribersToSmaily(int $limit): bool
+    public function sendSubscribersToSmaily(int $limit = 1000): bool
     {
         $offset = 0;
         $subscriberCollection = new SubscriberCollection();
