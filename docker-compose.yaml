@@ -13,6 +13,7 @@ services:
     - prestashop-data:/var/www/html
     - .vscode:/var/www/html/.vscode
     - ./src:/var/www/html/modules/smailyforprestashop
+    - ./post-scripts:/tmp/post-scripts
 
   mysql:
     container_name: prestashop_db
