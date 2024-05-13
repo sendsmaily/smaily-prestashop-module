@@ -2,17 +2,15 @@ services:
   prestashop:
     container_name: prestashop
     image: prestashop/prestashop-flashlight:8.1.5
-    # image: prestashop/prestashop-flashlight:nightly # Nightly build currently has XDEBUG support 
     depends_on:
       mysql:
         condition: service_healthy
     environment:
     - PS_DOMAIN=localhost:8080
-    - DEBUG_MODE=true
-    - XDEBUG_ENABLED=true
     ports:
     - 8080:80
     volumes:
+    - prestashop-data:/var/www/html
     - .vscode:/var/www/html/.vscode
     - ./src:/var/www/html/modules/smailyforprestashop
 
@@ -68,4 +66,5 @@ services:
     - 8025:8025
 
 volumes:
+  prestashop-data:
   prestashop-db-data:
