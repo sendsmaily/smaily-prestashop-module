@@ -24,7 +24,7 @@ Next, change your working directory to the local repository:
 
 And run the environment:
 
-    $ docker compose up
+    $ docker compose up -d
 
 You can access PrestaShop store from `http://localhost:8080` and administration interface from `http://localhost:8080/admin-dev` URL.
 
@@ -54,9 +54,9 @@ You can run the environment by executing:
 
 > **Note!** Make sure you do not have any other process(es) listening on ports 8080 and 8888.
 
-### Developing in VsCode Remote Container
+### Developing in VSCode Remote Container
 
-It is advised to develop the application inside VSCode remote container. This allows to get PHP intellisense on PrestaShop classes, includes, etc and provides an debugging option when using latest version of the `prestashop/prestashop-flashlight` image. Open `/var/www/html` directory of `prestashop` container as this provides context for intellisense.
+It is advised to develop the application inside VSCode remote container. This allows to get PHP intellisense on PrestaShop classes, includes, etc and provides an debugging option when using latest version of the `prestashop/prestashop-flashlight` image. Open `/var/www/html` directory of `prestashop` container as this provides context for IntelliSense.
 
 ## Stopping the environment
 
@@ -70,16 +70,16 @@ If you need to reset the installation, just simply delete environment's Docker v
 
     $ docker compose down --remove-orphans -v
 
-## Helpful notices for development
+## Troubleshooting
 
-### php-cs-fixer not working
+### PHP CS Fixer is not working
 
 You may notice that `php-cs-fixer` might not work for some PrestaShop image versions. `php-cs-fixer` output provides a hint that the `/var/www/html/tests` directory does not exist. This is due to the `tests` folder being included in the [PrestaShop repo](https://github.com/PrestaShop/PrestaShop) but not in the docker image. Adding an empty `/var/www/heml/tests` folder enables the `php-cs-fixer`.
 
-## cache invalidation
+## Invalidating cache
 
 There seems to be lot of issues related to cache being invalid. Sometimes the module routes are not found or services configuration is missing etc. Most of them can be fixed by pruning cache folder located in `/var/www/html/var/cache/dev`. Some versions use `admin-dev` folder.
 
-## catching shop sent emails
+## Catching shop sent emails
 
-The development environment is configured with mailhog that is accessible from `localhost:8025`. You need to configure the shop to use this SMTP server. Navigate from the side menu to `CONFIGURE` -> `Advanced Parameters` -> `E-mail`. Select `Set my own SMTP parameters (for advanced users ONLY)` and use `mailhog` as SMTP server and `1025` as the port. Sending a test email should result a test message arriving to the inbox of mailhog client on `localhost:8025`.
+The development environment is configured with MailHog that is accessible from `localhost:8025`. You need to configure the shop to use this SMTP server. Navigate from the side menu to `CONFIGURE` -> `Advanced Parameters` -> `E-mail`. Select `Set my own SMTP parameters (for advanced users ONLY)` and use `mailhog` as SMTP server and `1025` as the port. Sending a test email should result a test message arriving to the inbox of MailHog client on `localhost:8025`.
