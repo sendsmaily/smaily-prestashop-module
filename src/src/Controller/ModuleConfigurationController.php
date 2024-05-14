@@ -57,7 +57,6 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
      */
     private $abandonedCartForm;
 
-
     /**
      * @var FormInterface;
      */
@@ -91,19 +90,19 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
             return $this->handleAccountFormSubmit($accountFormDataHandler);
         }
 
-        if ($this->customerSyncForm->get('submit')->isClicked() && $this->customerSyncForm->isValid()) {
+        if ($this->customerSyncForm->get('submit')->isClicked()) {
             $this->tab = 'sync';
 
             return $this->handleCustomerSyncFormSubmit($customerSyncFormDataHandler);
         }
 
-        if ($this->abandonedCartForm->get('submit')->isClicked() && $this->abandonedCartForm->isValid()) {
+        if ($this->abandonedCartForm->get('submit')->isClicked()) {
             $this->tab = 'cart';
 
             return $this->handleAbandonedCartFormSubmit($abandonedCartFormDataHandler);
         }
 
-        if ($this->rssFeedForm->get('submit')->isClicked() && $this->rssFeedForm->isValid()) {
+        if ($this->rssFeedForm->get('submit')->isClicked()) {
             $this->tab = 'rss';
 
             return $this->handleRssFeedFormSubmit($rssFeedFormDataHandler);
@@ -130,9 +129,13 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
 
     private function handleCustomerSyncFormSubmit(FormHandlerInterface $formHandler): Response
     {
-        $formData = $this->customerSyncForm->getData();
-        $errors = $formHandler->save($formData);
+        if (!$this->customerSyncForm->isValid()) {
+            return $this->renderForms();
+        }
 
+        $formData = $this->customerSyncForm->getData();
+
+        $errors = $formHandler->save($formData);
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('Configuration saved.', 'Modules.Smailyforprestashop.Admin'));
             if ($formData['optin_enabled']) {
@@ -155,8 +158,11 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
 
     private function handleAbandonedCartFormSubmit(FormHandlerInterface $formHandler): Response
     {
-        $errors = $formHandler->save($this->abandonedCartForm->getData());
+        if (!$this->abandonedCartForm->isValid()) {
+            return $this->renderForms();
+        }
 
+        $errors = $formHandler->save($this->abandonedCartForm->getData());
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('Configuration saved.', 'Modules.Smailyforprestashop.Admin'));
 
@@ -170,8 +176,11 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
 
     private function handleRssFeedFormSubmit(FormHandlerInterface $formHandler): Response
     {
-        $errors = $formHandler->save($this->rssFeedForm->getData());
+        if (!$this->rssFeedForm->isValid()) {
+            return $this->renderForms();
+        }
 
+        $errors = $formHandler->save($this->rssFeedForm->getData());
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('RSS-feed URL updated.', 'Modules.Smailyforprestashop.Admin'));
 
@@ -191,10 +200,10 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
         // Allow to access settings only if account is connected.
         if (!$isAccountConnected) {
             return $this->render('@Modules/smailyforprestashop/views/templates/admin/configuration.html.twig', [
-               'accountConfigurationForm' => $this->accountForm->createView(),
-               'accountConnected' => false,
-               'tab' => $this->tab,
-               'jsVariables' => [],
+                'accountConfigurationForm' => $this->accountForm->createView(),
+                'accountConnected' => false,
+                'tab' => $this->tab,
+                'jsVariables' => [],
             ]);
         }
 
