@@ -76,7 +76,7 @@ class AbandonedCartFormType extends TranslatorAwareType
     {
         $builder
             ->add('enabled', SwitchType::class, [
-                'label' => $this->trans('Enable Abandoed Cart', 'Modules.Smailyforprestashop.Admin'),
+                'label' => $this->trans('Enable Abandoned Cart', 'Modules.Smailyforprestashop.Admin'),
                 'required' => false,
             ])
             ->add('autoresponder', ChoiceType::class, [
