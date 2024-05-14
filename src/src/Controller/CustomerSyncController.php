@@ -144,14 +144,7 @@ class CustomerSyncController
 
             // Remove subscribed status for unsubscribers.
             $subscriberCollectionModel = new SubscriberCollection();
-            $result = $subscriberCollectionModel->batchUnsubscribeByEmail(
-                array_map(
-                    function ($item) {
-                        return $item['email'];
-                    },
-                    $body,
-                )
-            );
+            $result = $subscriberCollectionModel->batchUnsubscribeByEmail(array_column($body, 'email'));
 
             // Stop if query fails.
             if (!$result) {
