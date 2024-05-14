@@ -56,14 +56,10 @@ class ProductCategory implements FormChoiceProviderInterface
      */
     public function getChoices(): array
     {
-        $choices = [
+        return [
             $this->translator->trans('All products', [], 'Modules.Smailyforprestashop.Admin') => null,
+            ...$this->recursivelyNormalizeCategories($this->categoryDataProvider->getNestedCategories()),
         ];
-
-        return array_merge(
-            $choices,
-            $this->recursivelyNormalizeCategories($this->categoryDataProvider->getNestedCategories())
-        );
     }
 
     /**
@@ -78,7 +74,7 @@ class ProductCategory implements FormChoiceProviderInterface
         $normalized = [];
 
         foreach ($categories as $category) {
-            $normalized[$category['name']] = $category['id_category'];
+            $normalized[$category['name']] = strval($category['id_category']);
             if (isset($category['children']) && is_array($category['children'])) {
                 $normalized += $this->recursivelyNormalizeCategories($category['children']);
             }
