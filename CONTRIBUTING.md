@@ -22,6 +22,10 @@ Next, change your working directory to the local repository:
 
     $ cd smaily-prestashop-module
 
+Install composer dependencies:
+
+    $ composer install --working-dir src/
+
 And run the environment:
 
     $ docker compose up -d
