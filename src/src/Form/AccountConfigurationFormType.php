@@ -38,6 +38,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class AccountConfigurationFormType extends TranslatorAwareType
 {
@@ -47,6 +48,15 @@ class AccountConfigurationFormType extends TranslatorAwareType
             ->add('subdomain', TextType::class, [
                 'label' => $this->trans('Subdomain', 'Modules.Smailyforprestashop.Admin'),
                 'help' => $this->trans('For example demo from https://demo.sendsmaily.net', 'Modules.Smailyforprestashop.Admin'),
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z0-9]*$/i', // ASCII
+                        'message' => $this->trans(
+                            'Invalid subdomain value',
+                            'Modules.Smailyforprestashop.Admin',
+                        ),
+                    ]),
+                ],
             ])
             ->add('username', TextType::class, [
                 'label' => $this->trans('Username', 'Modules.Smailyforprestashop.Admin'),
