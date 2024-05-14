@@ -42,7 +42,7 @@ class Ps_EmailsubscriptionOverRide extends Ps_Emailsubscription
             $this->trans('Smaily for PrestaShop modules opt-in automation trigger is active. Set up verification, confirmation and voucher sending in Smaily to avoid sending double emails.', [], 'Modules.Smailyforprestashop.Admin') .
             '<a href="https://smaily.com/help/user-manual/automations/automation-workflows/" target="_blank">' .
             ' ' .
-            $this->trans('How to set up automation flow?', [], 'Modules.Smailyforprestashop.Admin') .
+            $this->trans('How to set up an automation flow?', [], 'Modules.Smailyforprestashop.Admin') .
             '</a>' .
             '</h1></div>';
         }
