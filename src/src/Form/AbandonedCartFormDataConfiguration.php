@@ -72,7 +72,7 @@ final class AbandonedCartFormDataConfiguration implements DataConfigurationInter
 
         if ($formData['enabled'] && empty($formData['autoresponder'])) {
             $errors[] = [
-                'key' => 'Please select an automation workflow for customer Opt-In trigger.',
+                'key' => 'Please select an automation workflow for Abandoned Cart trigger.',
                 'domain' => 'Modules.Smailyforprestashop.Admin',
                 'parameters' => [],
             ];
