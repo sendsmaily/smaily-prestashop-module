@@ -36,7 +36,7 @@ class SmailyForPrestaShopSmailyRssFeedModuleFrontController extends ModuleFrontC
     public function initContent()
     {
         parent::initContent();
-        header('Content-Type: application/xml');
+        header('Content-Type: application/xml; charset=UTF-8');
 
         $baseUrl = Tools::getHttpHost(true) . __PS_BASE_URI__;
 

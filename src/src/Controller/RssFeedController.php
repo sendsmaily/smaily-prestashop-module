@@ -29,6 +29,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use PrestaShop\Module\SmailyForPrestaShop\Lib\Rss;
 use PrestaShop\Module\SmailyForPrestaShop\Model\RssFeedProductsCollection;
 
 class RssFeedController
@@ -45,60 +46,107 @@ class RssFeedController
 
     public function generateFeed(string $baseUrl, mixed $categoryId, int $limit, string $sortBy, string $sortOrder): string
     {
-        $rss = '<?xml version="1.0" encoding="utf-8"?>' .
-            '<rss xmlns:smly="https://sendsmaily.net/schema/editor/rss.xsd" version="2.0">' .
-            '<channel><title>Store</title><link>' .
-            htmlspecialchars($baseUrl) . '</link><description>Product Feed</description><lastBuildDate>' .
-            date('D, d M Y H:i:s') . '</lastBuildDate>';
+        $xml = new \DOMDocument('1.0', 'UTF-8');
+        $xml->formatOutput = true;
+
+        $rss = $xml->createElement('rss');
+        $rss->setAttribute('version', '2.0');
+        $rss->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:smly', 'https://sendsmaily.net/schema/editor/rss.xsd');
+        $rss->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:atom', 'http://www.w3.org/2005/Atom');
+        $xml->appendChild($rss);
+
+        $channel = $xml->createElement('channel');
+
+        $atomLink = $xml->createElement('atom:link');
+        $atomLink->setAttribute('href', Rss::buildRssUrl($categoryId ? $categoryId : '', strval($limit), $sortBy, $sortOrder));
+        $atomLink->setAttribute('rel', 'self');
+        $atomLink->setAttribute('type', 'application/rss+xml');
+        $channel->appendChild($atomLink);
+
+        $title = $xml->createElement('title');
+        $title->appendChild($xml->createCDATASection('Store'));
+        $channel->appendChild($title);
+
+        $link = $xml->createElement('link');
+        $link->appendChild($xml->createCDATASection(htmlspecialchars($baseUrl)));
+        $channel->appendChild($link);
+
+        $description = $xml->createElement('description');
+        $description->appendChild($xml->createCDATASection('Product Feed'));
+        $channel->appendChild($description);
+
+        $lastBuildDate = $xml->createElement('lastBuildDate');
+        $lastBuildDate->appendChild($xml->createCDATASection(gmdate(DATE_RFC2822, strtotime(date('D, d M Y H:i:s')))));
+        $channel->appendChild($lastBuildDate);
+
+        $rss->appendChild($channel);
 
         $products = $this->collection->getProducts($categoryId, $limit, $sortBy, $sortOrder);
         foreach ($products as $product) {
-            // Product data by id.
-            $prod = new \Product($product['id_product']);
-            // Product name.
-            $name = $product['name'];
-            // Product url.
-            $product_url = $prod->getLink();
-            // Date added.
-            $date_add = $prod->date_add;
-            // Description (short).
-            $description_short = $product['description_short'];
-            // Product image.
-            $image = $prod->getCover($product['id_product']);
-            $image = new \Image($image['id_image']);
-            $product_photo = _PS_BASE_URL_ . _THEME_PROD_DIR_ . $image->getExistingImgPath() . '.' .
-                $image->image_format;
-            // Product price with tax.
-            $price = $prod->getPrice();
-            // Get product price without discount.
-            $full_price = $prod->getPriceWithoutReduct();
-            // Determine if there is discount.
-            $discount = 0;
-            if ($full_price > $price && $price > 0) {
-                $discount = ceil(($full_price - $price) / $full_price * 100);
-            }
-            // Add currency symbol.
-            $currencySymbol = \Currency::getDefaultCurrency()->sign;
-            $price = number_format($price, 2, '.', ',') . $currencySymbol;
-            $full_price = number_format($full_price, 2, '.', ',') . $currencySymbol;
-            $price_fields = '';
-            if ($discount > 0) {
-                $price_fields = '<smly:old_price>' . $full_price . '</smly:old_price><smly:discount>-' .
-                                $discount . '%</smly:discount>';
-            }
-            $rss .= '<item>
-            <title><![CDATA[' . $name . ']]></title>
-
-            <link><![CDATA[' . $product_url . ']]></link>
-            <guid isPermaLink="True">' . $baseUrl . '</guid>
-            <pubDate>' . date('D, d M Y H:i:s', strtotime($date_add)) . '</pubDate>
-            <description><![CDATA[' . $description_short . ']]></description>
-            <enclosure url="' . $product_photo . '" />
-            <smly:price>' . $price . '</smly:price>' . $price_fields . '
-            </item>';
+            $channel->appendChild($this->generateItemNode($xml, $baseUrl, $product));
         }
-        $rss .= '</channel></rss>';
 
-        return $rss;
+        return $xml->saveXML();
+    }
+
+    private function generateItemNode(\DOMDocument $xml, string $baseUrl, array $product): \DOMNode
+    {
+        $prod = new \Product($product['id_product']);
+
+        $item = $xml->createElement('item');
+
+        $title = $xml->createElement('title');
+        $title->appendChild($xml->createCDATASection($product['name']));
+        $item->appendChild($title);
+
+        $link = $xml->createElement('link');
+        $link->appendChild($xml->createCDATASection($prod->getLink()));
+        $item->appendChild($link);
+
+        $gUID = $xml->createElement('guid');
+        $gUID->setAttribute('isPermaLink', 'true');
+        $gUID->appendChild($xml->createCDATASection($baseUrl));
+        $item->appendChild($gUID);
+
+        $pubDate = $xml->createElement('pubDate');
+        $pubDate->appendChild($xml->createCDATASection(gmdate(DATE_RFC2822, strtotime(date('D, d M Y H:i:s', strtotime($prod->date_add))))));
+        $item->appendChild($pubDate);
+
+        $description = $xml->createElement('description');
+        $description->appendChild($xml->createCDATASection($product['description_short']));
+        $item->appendChild($description);
+
+        $image = $prod->getCover($product['id_product']);
+        $image = new \Image($image['id_image']);
+        $product_photo = _PS_BASE_URL_ . _THEME_PROD_DIR_ . $image->getExistingImgPath() . '.' . $image->image_format;
+
+        $enclosure = $xml->createElement('enclosure');
+        $enclosure->setAttribute('url', $product_photo);
+        $enclosure->setAttribute('length', strval(filesize(sprintf('%s.%s', $image->getPathForCreation(), $image->image_format))));
+        $enclosure->setAttribute('type', 'image/' . $image->image_format);
+        $item->appendChild($enclosure);
+
+        $price = $prod->getPrice();
+        $full_price = $prod->getPriceWithoutReduct();
+        $discountPercentage = 0;
+        if ($full_price > $price && $price > 0) {
+            $discountPercentage = ceil(($full_price - $price) / $full_price * 100);
+        }
+
+        $smlyPrice = $xml->createElement('smly:price');
+        $smlyPrice->appendChild($xml->createCDATASection(number_format($price, 2, '.', ',') . \Currency::getDefaultCurrency()->sign));
+        $item->appendChild($smlyPrice);
+
+        if ($discountPercentage > 0) {
+            $oldPrice = $xml->createElement('smly:old_price');
+            $oldPrice->appendChild($xml->createCDATASection(strval($full_price)));
+            $item->appendChild($oldPrice);
+
+            $discount = $xml->createElement('smly:discount');
+            $discount->appendChild($xml->createCDATASection($discountPercentage . '%'));
+            $item->appendChild($discount);
+        }
+
+        return $item;
     }
 }

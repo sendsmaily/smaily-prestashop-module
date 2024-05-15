@@ -29,6 +29,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use PrestaShop\Module\SmailyForPrestaShop\Lib\Rss;
 use PrestaShop\PrestaShop\Core\Configuration\DataConfigurationInterface;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
 
@@ -54,7 +55,7 @@ final class RssFeedFormDataConfiguration implements DataConfigurationInterface
         $return['product_limit'] = $this->configuration->get('SMAILY_RSS_LIMIT');
         $return['sort_by'] = $this->configuration->get('SMAILY_RSS_SORT_BY');
         $return['sort_order'] = $this->configuration->get('SMAILY_RSS_SORT_ORDER');
-        $return['rss_url'] = $this->buildRssUrl(
+        $return['rss_url'] = Rss::buildRssUrl(
             $return['product_category_id'],
             $return['product_limit'],
             $return['sort_by'],
@@ -94,30 +95,6 @@ final class RssFeedFormDataConfiguration implements DataConfigurationInterface
             $formData['product_limit'],
             $formData['sort_by'],
             $formData['sort_order']
-        );
-    }
-
-    /**
-     * Make RSS URL with query parameters.
-     *
-     * @return string
-     */
-    public function buildRssUrl(string $categoryId, string $limit, string $sortBy, string $sortOrder): string
-    {
-        $query_arguments = [
-            'limit' => $limit,
-            'sort_by' => $sortBy,
-            'sort_order' => $sortOrder,
-        ];
-
-        if (!empty($categoryId)) {
-            $query_arguments['category_id'] = $categoryId;
-        }
-
-        return \Context::getContext()->link->getModuleLink(
-            'smailyforprestashop',
-            'SmailyRssFeed',
-            $query_arguments
         );
     }
 }
