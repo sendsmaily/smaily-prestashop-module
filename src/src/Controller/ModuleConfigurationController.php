@@ -118,7 +118,6 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('Connected with Smaily account.', 'Modules.Smailyforprestashop.Admin'));
 
-            // Need redirect to query fresh automation flows.
             return $this->redirectToRoute('smailyforprestashop_module_configuration');
         }
 
@@ -148,7 +147,7 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
                 );
             }
 
-            return $this->renderForms();
+            return $this->redirectToRoute('smailyforprestashop_module_configuration');
         }
 
         $this->flashErrors($errors);
@@ -166,7 +165,7 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('Configuration saved.', 'Modules.Smailyforprestashop.Admin'));
 
-            return $this->renderForms();
+            return $this->redirectToRoute('smailyforprestashop_module_configuration');
         }
 
         $this->flashErrors($errors);
@@ -184,7 +183,7 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('RSS-feed URL updated.', 'Modules.Smailyforprestashop.Admin'));
 
-            return $this->renderForms();
+            return $this->redirectToRoute('smailyforprestashop_module_configuration');
         }
 
         $this->flashErrors($errors);
