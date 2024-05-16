@@ -22,9 +22,9 @@
         <target>Smaily PrestaShop-i mooduli uudiskirjaga liitumise automaatika on aktiivne. Seadistage kinnituskirjade ning voucherite saatmise loogika Smaily automaatika töövoos, et vältida topelt kirjade saatmist.</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="7ff94ed6c294b41659d8d27748dc30b6">
-        <source>How to set up automation flow?</source>
-        <target>Kuidas luua automaatika töövooge?</target>
+      <trans-unit id="7852d17f466dad3d98dd0642fbb49ca4">
+        <source>How to set up an automation flow?</source>
+        <target>Kuidas seadistada automaatika töövoogu?</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="79929b1b78edef941b1ce2d1f5bafb73">
@@ -217,6 +217,11 @@
         <target>Näiteks demo -  https://demo.sendsmaily.net/</target>
         <note>Line: </note>
       </trans-unit>
+      <trans-unit id="f2655fa296d6cdd381e5c3e07428ec18">
+        <source>Invalid subdomain value</source>
+        <target>Vigane alamdomeeni väärtus</target>
+        <note>Line: </note>
+      </trans-unit>
       <trans-unit id="f6039d44b29456b20f8f373155ae4973">
         <source>Username</source>
         <target>Kasutajatunnus</target>
@@ -262,9 +267,9 @@
         <target>Ilmnes tõrge Smaily teenusega ühildumisel, proovige uuesti.</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="fa927486238640d97a307b607b725dcd">
-        <source>Enable Abandoed Cart</source>
-        <target>Aktiveeri Unustatud Ostukorvi Meeldetuletus</target>
+      <trans-unit id="a27d20b558af715c91592bcee1019dee">
+        <source>Enable Abandoned Cart</source>
+        <target>Luba Unustatud Ostukorv</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="872bc575218e7dd2c749633da28c24ab">
@@ -330,6 +335,11 @@
       <trans-unit id="b9d36c328a7bbdd251c3e4c16d901e08">
         <source>Please provide a cron token for abandoned cart synchronization.</source>
         <target>Palun sisesta cron identifikaator unustatud ostukorvide sünkroniseerimiseks</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="265308020d2202dfcd37728ceeed5a0f">
+        <source>Please select an automation workflow for Abandoned Cart trigger.</source>
+        <target>Palun vali Unustatud Ostukorvile automaatika töövoog.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="7b02e2dc3e9cead891aa9c8f2421cf5a">

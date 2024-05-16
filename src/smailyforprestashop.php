@@ -113,4 +113,12 @@ class SmailyForPrestaShop extends Module
 
         return $controller->optInCustomer($customer);
     }
+
+    /**
+     * Enable using new translation system for translating module.
+     */
+    public function isUsingNewTranslationSystem()
+    {
+        return true;
+    }
 }

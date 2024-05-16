@@ -83,3 +83,13 @@ You may notice that `php-cs-fixer` might not work for some PrestaShop image vers
 ## Invalidating cache
 
 There seems to be lot of issues related to cache being invalid. Sometimes the module routes are not found or services configuration is missing etc. Most of them can be fixed by pruning cache folder located in `/var/www/html/var/cache/dev`. Some versions use `admin-dev` folder.
+
+## Translating the module and Extracting translations
+
+PrestaShop allows to extract and translate the module in the admin panel.
+
+First you need to import the localization pack for the translatable language. Navigate to `International` > `Localization` and import the localization pack you want the module to be translated to.
+
+To translate the module navigate to `International` > `Translations`. Under `Modify translations` section select `Installed modules translations` as the type, `Smaily for PrestaShop`.
+
+Export the module translations and add them to `translations` directory.
