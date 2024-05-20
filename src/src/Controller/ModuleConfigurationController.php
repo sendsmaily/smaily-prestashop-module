@@ -138,7 +138,7 @@ class ModuleConfigurationController extends FrameworkBundleAdminController
         if (empty($errors)) {
             $this->addFlash('success', $this->trans('Configuration saved.', 'Modules.Smailyforprestashop.Admin'));
             if ($formData['optin_enabled']) {
-                $message = $this->trans('You have selected an automation to trigger opt-in email sending. We have disabled ', 'Modules.Smailyforprestashop.Admin');
+                $message = $this->trans('You have enabled triggering opt-in on customer sign-up. We have disabled ', 'Modules.Smailyforprestashop.Admin');
                 $message .= sprintf('<a href="%s">%s</a>',
                     \Context::getContext()->link->getAdminLink('AdminModules', true, [], ['configure' => 'ps_emailsubscription']),
                     $this->trans('PS Newsletter Subscription', 'Modules.Smailyforprestashop.Admin'),

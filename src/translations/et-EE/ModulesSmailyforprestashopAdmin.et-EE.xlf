@@ -37,9 +37,9 @@
         <target>Sätted salvestatud.</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="5b23c52850f878d8f8a20e92c2086e13">
-        <source>You have selected an automation to trigger opt-in email sending. We have disabled </source>
-        <target>Oled valinud Smaily automaatika, et saata kinnituskirju uudiskirjaga liitunud inimestele. Me lülitasime välja </target>
+      <trans-unit id="c281417f2746a1bcf3424f11ab1816d7">
+        <source>You have enabled triggering opt-in on customer sign-up. We have disabled </source>
+        <target>Aktiveerisite uudiskirjaga liitumise automaatika. Me lülitasime välja  </target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="63b75d276d225155e785b219a8ded982">
