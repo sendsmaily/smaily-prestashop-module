@@ -83,13 +83,13 @@ class RssFeedController
 
         $products = $this->collection->getProducts($categoryId, $limit, $sortBy, $sortOrder);
         foreach ($products as $product) {
-            $channel->appendChild($this->generateItemNode($xml, $baseUrl, $product));
+            $channel->appendChild($this->generateItemNode($xml, $product));
         }
 
         return $xml->saveXML();
     }
 
-    private function generateItemNode(\DOMDocument $xml, string $baseUrl, array $product): \DOMNode
+    private function generateItemNode(\DOMDocument $xml, array $product): \DOMNode
     {
         $prod = new \Product($product['id_product']);
 
@@ -105,7 +105,7 @@ class RssFeedController
 
         $gUID = $xml->createElement('guid');
         $gUID->setAttribute('isPermaLink', 'true');
-        $gUID->appendChild($xml->createCDATASection($baseUrl));
+        $gUID->appendChild($xml->createCDATASection($prod->getLink()));
         $item->appendChild($gUID);
 
         $pubDate = $xml->createElement('pubDate');
