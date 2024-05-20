@@ -28,7 +28,18 @@
 						</small>
 					</div>
 				</div>
-				{{ form_row(customerSyncForm.optin_enabled) }}
+				<div class="form-group row">
+					{{ form_label(customerSyncForm.optin_enabled) }}
+					<div class="col-sm">
+						{{form_widget(customerSyncForm.optin_enabled)}}
+						{{form_help(customerSyncForm.optin_enabled)}}
+						<small class="form-text">
+							{{ 'Smaily uses ' | trans }}
+							<a href="{{emailSubscriptionModuleUrl}}">{{ 'PS Newsletter Subscrptions' | trans }}</a>
+							{{ ' module for rendering the Opt-In form.' | trans }}
+						</small>
+					</div>
+				</div>
 				{{ form_row(customerSyncForm.autoresponder) }}
 				<p class="text-right">
 					<a href="https://smaily.com/help/user-manual/automations/welcome-email-automation-workflow/" target="_blank">{{ 'How to create an automation trigger?' | trans }}</a>
