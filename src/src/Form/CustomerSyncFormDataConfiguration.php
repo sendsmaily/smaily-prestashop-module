@@ -76,14 +76,6 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
             ];
         }
 
-        if ($optInEnabled && empty($autoresponder)) {
-            $errors[] = [
-                'key' => 'Please select an automation workflow for customer Opt-In trigger.',
-                'domain' => 'Modules.Smailyforprestashop.Admin',
-                'parameters' => [],
-            ];
-        }
-
         // Clear autoresponder when disabling customer sign-up;
         if (!$optInEnabled) {
             $autoresponder = null;

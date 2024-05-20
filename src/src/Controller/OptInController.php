@@ -68,34 +68,43 @@ class OptInController
             return false;
         }
 
-        $autoresponder = $this->configuration->get('SMAILY_OPTIN_AUTORESPONDER');
-        if (empty($this->api) || empty($autoresponder)) {
+        if (empty($this->api)) {
             return false;
         }
 
-        $response = $this->api->triggerAutomation($autoresponder, [
-            ['email' => $customer->email],
-        ]);
+        $autoresponder = $this->configuration->get('SMAILY_OPTIN_AUTORESPONDER');
+        if (empty($autoresponder)) {
+            $response = $this->api->optInSubscribers([['email' => $customer->email]]);
+        } else {
+            $response = $this->api->triggerAutomation($autoresponder, [
+                ['email' => $customer->email],
+            ]);
+        }
 
         if ($response->getStatusCode() !== 200) {
-            return false;
-        }
-
-        $body = json_decode($response->getBody()->getContents(), true);
-
-        if (isset($body['code']) && $body['code'] === 101) {
-            return true;
-        } else {
-            Logger::logErrorWithFormatting('Failed to opt-in new customer with email: %s using autoresponder ID: %s. ' .
-            'Smaily response code: %s, message: %s.',
+            Logger::logErrorWithFormatting(
+                'Failed to opt-in customer with email: %s, ' .
+                'Smaily response HTTP response code: %s.',
                 $customer->email,
-                $autoresponder,
-                $body['code'],
-                $body['message']
+                $response->getStatusCode()
             );
 
             return false;
         }
+
+        $body = json_decode($response->getBody()->getContents(), true);
+        if (!isset($body['code']) || $body['code'] !== 101) {
+            Logger::logErrorWithFormatting('Failed to opt-in new customer with email: %s . ' .
+            'Smaily response code: %s, message: %s.',
+                $customer->email,
+                isset($body['code']) ? $body['code'] : '<none>',
+                isset($body['message']) ? $body['message'] : '<none>'
+            );
+
+            return false;
+        }
+
+        return true;
     }
 
     public function optInSubscriber(string $email): bool
@@ -105,32 +114,42 @@ class OptInController
         }
 
         $autoresponder = $this->configuration->get('SMAILY_OPTIN_AUTORESPONDER');
-        if (empty($this->api) || empty($autoresponder)) {
+        if (empty($this->api)) {
             return false;
         }
 
-        $response = $this->api->triggerAutomation($autoresponder, [
-            ['email' => $email],
-        ]);
+        if (empty($autoresponder)) {
+            $response = $this->api->optInSubscribers([['email' => $email]]);
+        } else {
+            $response = $this->api->triggerAutomation($autoresponder, [
+                ['email' => $email],
+            ]);
+        }
 
         if ($response->getStatusCode() !== 200) {
+            Logger::logErrorWithFormatting(
+                'Failed to opt-in customer with email: %s, ' .
+                'Smaily response HTTP response code: %s.',
+                $email,
+                $response->getStatusCode()
+            );
+
             return false;
         }
 
         $body = json_decode($response->getBody()->getContents(), true);
 
-        if (isset($body['code']) && $body['code'] === 101) {
-            return true;
-        } else {
-            Logger::logErrorWithFormatting('Failed to opt-in new customer with email: %s using autoresponder ID: %s. ' .
+        if (!isset($body['code']) || $body['code'] !== 101) {
+            Logger::logErrorWithFormatting('Failed to opt-in new customer with email: %s . ' .
             'Smaily response code: %s, message: %s.',
                 $email,
-                $autoresponder,
-                $body['code'],
-                $body['message']
+                isset($body['code']) ? $body['code'] : '<none>',
+                isset($body['message']) ? $body['message'] : '<none>'
             );
 
             return false;
         }
+
+        return true;
     }
 }

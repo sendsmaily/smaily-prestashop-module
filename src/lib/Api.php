@@ -36,10 +36,19 @@ use Psr\Http\Message\ResponseInterface;
 class Api
 {
     /**
+     * Smaily API client.
+     *
      * @var Client
      */
     private $client;
 
+    /**
+     * Create an API client.
+     *
+     * @param string $subdomain
+     * @param string $username
+     * @param string $password
+     */
     public function __construct(string $subdomain, string $username, string $password)
     {
         $this->client = new Client([
@@ -49,6 +58,13 @@ class Api
         ]);
     }
 
+    /**
+     * Returns a list of automation workflows of an organization.
+     *
+     * @param int $limit
+     *
+     * @return ResponseInterface
+     */
     public function listAutoresponders(int $limit = 100): ResponseInterface
     {
         return $this->client->get('api/autoresponder.php', [
@@ -58,6 +74,14 @@ class Api
         ]);
     }
 
+    /**
+     * Returns a list of contacts with unsubscribed status for an organization.
+     *
+     * @param int $limit
+     * @param int $offset
+     *
+     * @return ResponseInterface
+     */
     public function listUnsubscribers(int $limit = 100, $offset = 0): ResponseInterface
     {
         return $this->client->get('api/contact.php', [
@@ -69,6 +93,13 @@ class Api
         ]);
     }
 
+    /**
+     * Creates subscribers with requested fields. This API endpoint does not trigger automation workflows.
+     *
+     * @param array $data
+     *
+     * @return ResponseInterface
+     */
     public function createSubscribers(array $data): ResponseInterface
     {
         return $this->client->post('api/contact.php', [
@@ -76,6 +107,30 @@ class Api
         ]);
     }
 
+    /**
+     * Opt-in subscribers. This endpoint triggers “subscriber opted-in” workflow.
+     *
+     * @param array $addresses
+     *
+     * @return ResponseInterface
+     */
+    public function optInSubscribers(array $addresses): ResponseInterface
+    {
+        return $this->client->post('/api/autoresponder.php', [
+            RequestOptions::JSON => [
+                'addresses' => $addresses,
+            ],
+        ]);
+    }
+
+    /**
+     * Endpoint can be used to opt-in subscribers and target specific automation workflows with “form submitted” trigger.
+     *
+     * @param string $autoresponder
+     * @param array $addresses
+     *
+     * @return ResponseInterface
+     */
     public function triggerAutomation(string $autoresponder, array $addresses): ResponseInterface
     {
         return $this->client->post('/api/autoresponder.php', [
