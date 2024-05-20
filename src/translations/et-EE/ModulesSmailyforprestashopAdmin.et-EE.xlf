@@ -37,9 +37,19 @@
         <target>Sätted salvestatud.</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="af02f4ac81dd95260003deb604806d8b">
-        <source>You have selected an automation to trigger opt-in email sending. We have disabled Newsletter Subscription plugins verification, confirmation and voucher email sending in order to avoid duplicate emails!</source>
-        <target>Olete aktiveerinud uudiskirjaga liitumise töövoo automaatika. Me lülitasime välja Newsletter Subscription mooduli kinnituskirjade ning voucherite saatmise, et vältida topelt kirjade saatmist!</target>
+      <trans-unit id="5b23c52850f878d8f8a20e92c2086e13">
+        <source>You have selected an automation to trigger opt-in email sending. We have disabled </source>
+        <target>Oled valinud Smaily automaatika, et saata kinnituskirju uudiskirjaga liitunud inimestele. Me lülitasime välja </target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="63b75d276d225155e785b219a8ded982">
+        <source>PS Newsletter Subscription</source>
+        <target>PS Newsletter Subscrption</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="40bf4a1b004a9f63d7344b3574e50e4a">
+        <source> plugins verification, confirmation and voucher email sending in order to avoid duplicate emails!</source>
+        <target> mooduli kontroll-, kinnituskirjade ja vautšerite saatmise, et vältida topelt kirjade saatmist!</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="c43aa8bdf96a8a299fdd2b74d1110780">
@@ -327,11 +337,6 @@
         <target>Palun sisesta cron identifikaator kasutajate sünkroniseerimiseks</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="810c2603ccde9604024f59669936288b">
-        <source>Please select an automation workflow for customer Opt-In trigger.</source>
-        <target>Palun sisesta opt-in töövoo automaatika</target>
-        <note>Line: </note>
-      </trans-unit>
       <trans-unit id="b9d36c328a7bbdd251c3e4c16d901e08">
         <source>Please provide a cron token for abandoned cart synchronization.</source>
         <target>Palun sisesta cron identifikaator unustatud ostukorvide sünkroniseerimiseks</target>
@@ -390,6 +395,21 @@
       <trans-unit id="fec6b1393cb5a616a7b19766d1c612c4">
         <source>Customer Synchronization</source>
         <target>Kasutajate Sünkroniseerimine</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="da5860315602f9ee33646aa190685b1e">
+        <source>Smaily uses </source>
+        <target>Smaily kasutab </target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="da8d32873418a3bcaf04d3dfa2ba7ca6">
+        <source>PS Newsletter Subscrptions</source>
+        <target>PS Newsletter Subscrptions</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="a6a8015bbaae43e315a54ae3830bb40d">
+        <source> module for rendering the Opt-In form.</source>
+        <target> moodulit et kuvada uudiskirjaga liitumise vormi.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="0607f4725916125124eaf60f0b37fded">
