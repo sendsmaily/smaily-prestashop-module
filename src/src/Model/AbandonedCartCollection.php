@@ -55,7 +55,7 @@ class AbandonedCartCollection
     private function getCarts()
     {
         // Legacy method that requires output modification as query strings were previously concatenated.
-        $shopRestriction =  preg_replace("/^\s+AND\s+/", "", \Shop::addSqlRestriction(\Shop::SHARE_CUSTOMER, 'c'));
+        $shopRestriction = preg_replace("/^\s+AND\s+/", "", \Shop::addSqlRestriction(\Shop::SHARE_CUSTOMER, 'c'));
 
         $sql = new \DbQuery();
         $sql->select('c.`id_cart`, c.`id_customer`, c.`date_upd`, cu.`firstname`, cu.`lastname`, cu.`email`');
