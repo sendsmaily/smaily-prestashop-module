@@ -25,11 +25,11 @@ A clear and concise description of what actually happened.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Prestashop version**
-Add the Prestashop version you are currently using.
+**PrestaShop version**
+Add the PrestaShop version you are currently using.
 
 **Module version**
-Add the Smaily For Prestashop module version you are currently using.
+Add the Smaily For PrestaShop module version you are currently using.
 
 **Additional context**
 Add any other context about the problem here.

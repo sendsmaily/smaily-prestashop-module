@@ -1,0 +1,38 @@
+{% trans_default_domain 'Modules.Smailyforprestashop.Admin' %}
+
+{% block rss_feed_configuration %}
+	{{ form_start(rssFeedForm) }}
+	<div class="card">
+		<h3 class="card-header">
+			<i class="material-icons">settings</i>
+			{{ 'RSS Feed' | trans }}
+		</h3>
+		<div class="card-body">
+			<div class="form-wrapper">
+				{{ form_row(rssFeedForm.product_category_id) }}
+				{{ form_row(rssFeedForm.product_limit) }}
+				{{ form_row(rssFeedForm.sort_by) }}
+				{{ form_row(rssFeedForm.sort_order) }}
+				<div class="form-group row">
+					<label class="form-control-label" for="form_rss_url">{{ "RSS-feed URL" | trans}}</label>
+					<div class="col-sm text-monospace">
+						<div class="input-group">
+							<textarea class="form-control-plaintext" readonly aria-label="With textarea" id="rss-feed-url">{{rssFeedForm.rss_url.vars.value}}</textarea>
+							<div class="input-group-append">
+								<button onclick='copyURL(event, "#rss #rss-feed-url")' class="btn btn-outline-info btn-sm" title="{{"Copy to clipboard" | trans }}" data-toggle="tooltip">
+									<i class="material-icons">content_copy</i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer">
+			<div class="d-flex justify-content-end">
+				{{ form_row(rssFeedForm.submit) }}
+			</div>
+		</div>
+	</div>
+	{{ form_end(rssFeedForm) }}
+{% endblock %}

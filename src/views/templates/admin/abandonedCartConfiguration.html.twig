@@ -1,0 +1,42 @@
+{% trans_default_domain 'Modules.Smailyforprestashop.Admin' %}
+
+{% block abandoned_cart_configuration %}
+	{{ form_start(abandonedCartForm) }}
+	<div class="card">
+		<h3 class="card-header">
+			<i class="material-icons">settings</i>
+			{{ 'Abandoned Cart' | trans }}
+		</h3>
+		<div class="card-body">
+			<div class="form-wrapper">
+				{{ form_row(abandonedCartForm.enabled) }}
+				{{ form_row(abandonedCartForm.autoresponder) }}
+				{{ form_row(abandonedCartForm.sync_additional) }}
+				{{ form_row(abandonedCartForm.sync_interval) }}
+				{{ form_row(abandonedCartForm.cron_token) }}
+				<div class="form-group row">
+					<label class="form-control-label" for="form_cron_url">{{ "Cron URL" | trans}}</label>
+					<div class="col-sm text-monospace">
+						<div class="input-group">
+							<textarea class="form-control-plaintext" readonly aria-label="With textarea" id="cart-cron-url">{{abandonedCartForm.cron_url.vars.value}}</textarea>
+							<div class="input-group-append">
+								<button onclick='copyURL(event, "#cart #cart-cron-url")' class="btn btn-outline-info btn-sm" title="{{"Copy to clipboard" | trans }}" data-toggle="tooltip">
+									<i class="material-icons">content_copy</i>
+								</button>
+							</div>
+						</div>
+						<small class="form-text">
+							{{ "To schedule automatic sync, set up CRON in your hosting and use this URL." | trans }}
+						</small>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer">
+			<div class="d-flex justify-content-end">
+				{{ form_row(abandonedCartForm.submit) }}
+			</div>
+		</div>
+	</div>
+	{{ form_end(abandonedCartForm) }}
+{% endblock %}

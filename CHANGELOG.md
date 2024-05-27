@@ -1,5 +1,10 @@
 # Changelog
 
+### 2.0.0
+
+- Total rewrite of the module to support PrestaShop 8 new features and standards. [[#57](https://github.com/sendsmaily/smaily-prestashop-module/pull/57)]
+- Module now uses the built-in Newsletter Subscription module to provide functionality for opt-in trigger instead of creating a custom template. This allows to keep internal subscriber addition logic and add required opt-in trigger functionality.
+
 ### 1.6.1
 
 - Update user manual links [[#51](https://github.com/sendsmaily/smaily-prestashop-module/pull/51)]
@@ -12,7 +17,7 @@
 
 - New feature to trigger opt-in if new customer joins with newsletter enabled [[#32](https://github.com/sendsmaily/smaily-prestashop-module/issues/32)]
 - Fix missing template variables [[#33](https://github.com/sendsmaily/smaily-prestashop-module/issues/33)]
-- Use PrestashopLogger for logs created by module [[#36](https://github.com/sendsmaily/smaily-prestashop-module/issues/36)]
+- Use PrestaShopLogger for logs created by module [[#36](https://github.com/sendsmaily/smaily-prestashop-module/issues/36)]
 
 ### 1.4.0
 

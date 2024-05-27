@@ -1,0 +1,51 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+{% trans_default_domain 'Modules.Smailyforprestashop.Admin' %}
+
+{% set layoutTitle = "Smaily for Prestashop" | trans %}
+
+{% if app.request.query.get('tab') %}
+	{% set tab = app.request.query.get('tab') %}
+{% endif %}
+
+{% block content %}
+	<div class="card">
+		<ul class="nav nav-tabs" id="configuration" role="tablist">
+			<li {% if tab == 'account' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+				<a {% if tab == 'account' %} class="nav-link active" {% else %} class="nav-link" {% endif %} id="account-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-expanded="true">{{ 'Account'|trans }}</a>
+			</li>
+			{% if accountConnected %}
+				<li {% if tab == 'sync' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+					<a {% if tab == 'sync' %} class="nav-link active" {% else %} class="nav-link" {% endif %} id="sync-tab" data-toggle="tab" href="#sync" role="tab" aria-controls="sync" aria-expanded="true">{{ 'Customer Sync'|trans }}</a>
+				</li>
+				<li {% if tab == 'cart' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+					<a {% if tab == 'cart' %} class="nav-link active" {% else %} class="nav-link" {% endif %} id="cart-tab" data-toggle="tab" href="#cart" role="tab" aria-controls="cart" aria-expanded="true">{{ 'Abandoned Cart'|trans }}</a>
+				</li>
+				<li {% if tab == 'rss' %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+					<a {% if tab == 'rss' %} class="nav-link active" {% else %} class="nav-link" {% endif %} id="rss-tab" data-toggle="tab" href="#rss" role="tab" aria-controls="cart" aria-expanded="true">{{ 'RSS Feed'|trans }}</a>
+				</li>
+			{% endif %}
+		</ul>
+		<div class="tab-content" id="tabContent">
+			<div {% if tab == 'account' %} class="tab-pane fade show active" {% else %} class="tab-pane fade show" {% endif %} id="account" role="tabpanel" aria-labelledby="account-tab">
+				{% include '@Modules/smailyforprestashop/views/templates/admin/accountConfiguration.html.twig' %}</div>
+			{% if accountConnected %}
+				<div {% if tab == 'sync' %} class="tab-pane fade show active" {% else %} class="tab-pane fade show" {% endif %} id="sync" role="tabpanel" aria-labelledby="sync-tab">
+					{% include '@Modules/smailyforprestashop/views/templates/admin/customerSyncConfiguration.html.twig' %}
+				</div>
+				<div {% if tab == 'cart' %} class="tab-pane fade show active" {% else %} class="tab-pane fade show" {% endif %} id="cart" role="tabpanel" aria-labelledby="cart-tab">
+					{% include '@Modules/smailyforprestashop/views/templates/admin/abandonedCartConfiguration.html.twig' %}
+				</div>
+				<div {% if tab == 'rss' %} class="tab-pane fade show active" {% else %} class="tab-pane fade show" {% endif %} id="rss" role="tabpanel" aria-labelledby="rss-tab">
+					{% include '@Modules/smailyforprestashop/views/templates/admin/rssFeedConfiguration.html.twig' %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		var jsVariables = {{ jsVariables|json_encode|raw }}
+	</script>
+	<script src="{{ asset('../modules/smailyforprestashop/views/js/smaily-admin.js') }}"></script>
+{% endblock %}

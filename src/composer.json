@@ -1,0 +1,35 @@
+{
+    "name": "smaily/smailyforprestashop",
+    "version": "2.0.0",
+    "description": "Smaily integration module for PrestaShop",
+    "license": "GNU General Public License v3.0",
+    "authors": [
+        {
+            "name": "Smaily"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PrestaShop\\Module\\SmailyForPrestaShop\\": "src/",
+            "PrestaShop\\Module\\SmailyForPrestaShop\\Lib\\": "lib/"
+        }
+    },
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "prepend-autoloader": false
+    },
+    "type": "prestashop-module",
+    "require-dev": {
+        "prestashop/php-dev-tools": "^4.3",
+        "prestashop/autoindex": "^2.1"
+    },
+    "scripts": {
+        "lint": "php-cs-fixer fix --dry-run",
+        "fix": "php-cs-fixer fix",
+        "phpstan": "_PS_ROOT_DIR_=/var/www/html phpstan analyse .",
+        "autoindex": "php vendor/bin/autoindex prestashop:add:index ."
+    }
+}

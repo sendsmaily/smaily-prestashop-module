@@ -1,0 +1,130 @@
+services:
+  _defaults:
+    public: true
+
+  # Choice providers
+  prestashop.module.smailyforprestashop.form.choice_provider.autoresponder:
+    class: 'PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider\Autoresponder'
+    arguments:
+    - '@translator'
+    - '@prestashop.adapter.legacy.configuration'
+
+  prestashop.module.smailyforprestashop.form.choice_provider.product_category:
+    class: 'PrestaShop\Module\SmailyForPrestaShop\Form\ChoiceProvider\ProductCategory'
+    arguments:
+    - '@translator'
+    - '@prestashop.adapter.data_provider.category'
+
+  # Account credentials form.
+  prestashop.module.smailyforprestashop.form.account_configuration_form_type:
+    class: 'PrestaShop\Module\SmailyForPrestaShop\Form\AccountConfigurationFormType'
+    parent: 'form.type.translatable.aware'
+    public: true
+    tags:
+      - { name: form.type }
+
+  prestashop.module.smailyforprestashop.form.account_form_data_configuration:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\AccountFormDataConfiguration
+    arguments: ['@prestashop.adapter.legacy.configuration']
+
+  prestashop.module.smailyforprestashop.form.account_form_data_provider:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\FormDataProvider
+    arguments:
+    - '@prestashop.module.smailyforprestashop.form.account_form_data_configuration'
+
+  prestashop.module.smailyforprestashop.form.account_form_handler:
+    class: PrestaShop\PrestaShop\Core\Form\Handler
+    arguments:
+    - '@form.factory'
+    - '@prestashop.core.hook.dispatcher'
+    - '@prestashop.module.smailyforprestashop.form.account_form_data_provider'
+    - PrestaShop\Module\SmailyForPrestaShop\Form\AccountConfigurationFormType
+    - SmailyForPrestaShopAccountConfiguration
+    - account
+
+  # Customer sync form
+  prestashop.module.smailyforprestashop.form.customer_sync_form_type:
+    class: 'PrestaShop\Module\SmailyForPrestaShop\Form\CustomerSyncFormType'
+    parent: 'form.type.translatable.aware'
+    public: true
+    arguments:
+    - $autoresponderChoices: '@=service("prestashop.module.smailyforprestashop.form.choice_provider.autoresponder").getChoices()'
+    tags:
+    - { name: form.type }
+
+  prestashop.module.smailyforprestashop.form.cystomer_sync_form_data_configuration:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\CustomerSyncFormDataConfiguration
+    arguments: ['@prestashop.adapter.legacy.configuration']
+
+  prestashop.module.smailyforprestashop.form.customer_sync_form_data_provider:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\FormDataProvider
+    arguments:
+    - '@prestashop.module.smailyforprestashop.form.cystomer_sync_form_data_configuration'
+
+  prestashop.module.smailyforprestashop.form.customer_sync_form_handler:
+    class: PrestaShop\PrestaShop\Core\Form\Handler
+    arguments:
+    - '@form.factory'
+    - '@prestashop.core.hook.dispatcher'
+    - '@prestashop.module.smailyforprestashop.form.customer_sync_form_data_provider'
+    - PrestaShop\Module\SmailyForPrestaShop\Form\CustomerSyncFormType
+    - SmailyForPrestaShopCustomerSyncConfiguration
+    - customer
+  
+  # Abandoned cart form
+  prestashop.module.smailyforprestashop.form.abandoned_cart_form_type:
+    class: 'PrestaShop\Module\SmailyForPrestaShop\Form\AbandonedCartFormType'
+    parent: 'form.type.translatable.aware'
+    public: true
+    arguments:
+    - $autoresponderChoices: '@=service("prestashop.module.smailyforprestashop.form.choice_provider.autoresponder").getChoices()'
+    tags:
+      - { name: form.type }
+
+  prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_configuration:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\AbandonedCartFormDataConfiguration
+    arguments: ['@prestashop.adapter.legacy.configuration']
+
+  prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_provider:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\FormDataProvider
+    arguments:
+    - '@prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_configuration'
+
+  prestashop.module.smailyforprestashop.form.abandoned_cart_form_handler:
+    class: PrestaShop\PrestaShop\Core\Form\Handler
+    arguments:
+    - '@form.factory'
+    - '@prestashop.core.hook.dispatcher'
+    - '@prestashop.module.smailyforprestashop.form.abandoned_cart_form_data_provider'
+    - PrestaShop\Module\SmailyForPrestaShop\Form\AbandonedCartFormType
+    - SmailyForPrestaShopAbandonedCartConfiguration
+    - cart
+
+  # RSS feed form
+  prestashop.module.smailyforprestashop.form.rss_feed_form_type:
+    class: 'PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormType'
+    parent: 'form.type.translatable.aware'
+    public: true
+    arguments:
+      - $productCategoryChoices: '@=service("prestashop.module.smailyforprestashop.form.choice_provider.product_category").getChoices()'
+    tags:
+      - { name: form.type }
+
+  prestashop.module.smailyforprestashop.form.rss_feed_form_data_configuration:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormDataConfiguration
+    arguments: ['@prestashop.adapter.legacy.configuration']
+
+  prestashop.module.smailyforprestashop.form.rss_feed_form_data_provider:
+    class: PrestaShop\Module\SmailyForPrestaShop\Form\FormDataProvider
+    arguments:
+    - '@prestashop.module.smailyforprestashop.form.rss_feed_form_data_configuration'
+
+  prestashop.module.smailyforprestashop.form.rss_feed_form_handler:
+    class: PrestaShop\PrestaShop\Core\Form\Handler
+    arguments:
+    - '@form.factory'
+    - '@prestashop.core.hook.dispatcher'
+    - '@prestashop.module.smailyforprestashop.form.rss_feed_form_data_provider'
+    - PrestaShop\Module\SmailyForPrestaShop\Form\RssFeedFormType
+    - SmailyForPrestaShopRssFeedConfiguration
+    - rss

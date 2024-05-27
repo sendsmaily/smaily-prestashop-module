@@ -1,6 +1,6 @@
 <?php
 /**
- * 2018 Smaily
+ * 2024 Smaily
  *
  * NOTICE OF LICENSE
  *
@@ -18,14 +18,13 @@
  * along with Smaily for PrestaShop. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author    Smaily <info@smaily.com>
- * @copyright 2018 Smaily
+ * @copyright 2024 Smaily
  * @license   GPL3
  */
-
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-header("Location: ../");
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
+header('Location: ../');
 exit;
