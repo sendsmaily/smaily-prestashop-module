@@ -88,6 +88,7 @@ class SmailyForPrestashop extends Module
             !$this->registerHook('footerBefore') ||
             !$this->registerHook('leftColumn') ||
             !$this->registerHook('rightColumn') ||
+            !$this->registerHook('actionFrontControllerSetMedia') ||
             // User has option to trigger opt-in when customer joins store & newsletter through sign-up.
             !$this->registerHook('actionCustomerAccountAdd')
         ) {
@@ -399,23 +400,40 @@ class SmailyForPrestashop extends Module
         );
     }
 
+    /**
+     * Load CSS and JS files for front controllers.
+     *
+     * @return void
+     */
+    public function hookActionFrontControllerSetMedia()
+    {
+        $this->context->controller->registerStylesheet(
+            'mymodule-style',
+            $this->_path . 'views/css/smaily_newsletter.css',
+            [
+                'media' => 'all',
+                'priority' => 1000,
+            ]
+        );
+    }
+
     // Display Block Newsletter in footer.
     public function hookDisplayFooterBefore($params)
     {
-        // Add subdomain to template.
         $this->context->smarty->assign(array(
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
         ));
+
         return $this->display(__FILE__, 'smaily_blocknewsletter.tpl');
     }
 
     // Display Block Newsletter in left column.
     public function hookDisplayLeftColumn($params)
     {
-        // Add subdomain to template.
         $this->context->smarty->assign(array(
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
         ));
+
         return $this->display(__FILE__, 'smaily_blocknewsletter_column.tpl');
     }
 
