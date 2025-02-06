@@ -1,0 +1,28 @@
+.smaily_block_newsletter {
+    margin-bottom: 0.625rem;
+}
+
+.smaily_block_newsletter p {
+    padding-top: 0.625rem;
+}
+
+.smaily_block_newsletter .input-wrapper {
+    overflow: hidden;
+    font-size: 0.85rem;
+}
+
+.smaily_block_newsletter input[type="email"] {
+    padding: 11px;
+    width: 100%;
+}
+
+.smaily_block_newsletter input[type="email"]:focus {
+    border: 3px solid #2fb5d2;
+    padding: 8px 8px 9px;
+    outline: 0;
+}
+
+.smaily_block_newsletter input {
+    height: 42px;
+    box-shadow: none;
+}

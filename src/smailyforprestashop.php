@@ -35,7 +35,7 @@ class SmailyForPrestashop extends Module
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
         $this->module_key = 'bcea90ce4da2594c0d0179852db9a1e3';
-        $this->version = '1.6.1';
+        $this->version = '1.6.2';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array(
@@ -88,6 +88,7 @@ class SmailyForPrestashop extends Module
             !$this->registerHook('footerBefore') ||
             !$this->registerHook('leftColumn') ||
             !$this->registerHook('rightColumn') ||
+            !$this->registerHook('actionFrontControllerSetMedia') ||
             // User has option to trigger opt-in when customer joins store & newsletter through sign-up.
             !$this->registerHook('actionCustomerAccountAdd')
         ) {
@@ -399,23 +400,40 @@ class SmailyForPrestashop extends Module
         );
     }
 
+    /**
+     * Load CSS and JS files for front controllers.
+     *
+     * @return void
+     */
+    public function hookActionFrontControllerSetMedia()
+    {
+        $this->context->controller->registerStylesheet(
+            'mymodule-style',
+            $this->_path . 'views/css/smaily_newsletter.css',
+            [
+                'media' => 'all',
+                'priority' => 1000,
+            ]
+        );
+    }
+
     // Display Block Newsletter in footer.
     public function hookDisplayFooterBefore($params)
     {
-        // Add subdomain to template.
         $this->context->smarty->assign(array(
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
         ));
+
         return $this->display(__FILE__, 'smaily_blocknewsletter.tpl');
     }
 
     // Display Block Newsletter in left column.
     public function hookDisplayLeftColumn($params)
     {
-        // Add subdomain to template.
         $this->context->smarty->assign(array(
             'smaily_subdomain' => pSQL(Configuration::get('SMAILY_SUBDOMAIN')),
         ));
+
         return $this->display(__FILE__, 'smaily_blocknewsletter_column.tpl');
     }
 
