@@ -107,6 +107,56 @@ class OptInController
     }
 
     /**
+     * Updates customer subscription status in Smaily.
+     *
+     * @param \Customer $customer
+     * @return bool
+     */
+    public function updateCustomerSubscriptionStatus(\Customer $customer)
+    {
+        if (!$this->_configuration->getBoolean('SMAILY_ENABLE_CUSTOMER_SYNC')) {
+            return false;
+        }
+
+        if (empty($this->_api)) {
+            return false;
+        }
+
+        $response = $this->_api->updateSubscriber(
+            [
+                'email' => $customer->email,
+                'is_unsubscribed' => $customer->newsletter !== '1',
+            ]
+        );
+
+        if ($response->getStatusCode() !== 200) {
+            Logger::logErrorWithFormatting(
+                'Failed to update customer subscription status: %s, ' .
+                'Smaily response HTTP response code: %s.',
+                $customer->email,
+                $response->getStatusCode()
+            );
+
+            return false;
+        }
+
+        $body = json_decode($response->getBody()->getContents(), true);
+        if (!isset($body['code']) || $body['code'] !== 101) {
+            Logger::logErrorWithFormatting(
+                'Failed to update customer subscription status: %s, ' .
+                'Smaily response code: %s, message: %s.',
+                $customer->email,
+                isset($body['code']) ? $body['code'] : '<none>',
+                isset($body['message']) ? $body['message'] : '<none>'
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Trigger a a opt-in flow or automation based on module configuration.
      *
      * @param string $email Subscribers email

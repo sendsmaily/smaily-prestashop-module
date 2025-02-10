@@ -115,6 +115,24 @@ class SmailyForPrestaShop extends Module
     }
 
     /**
+     * Update customer subscription status when customer updates their account information.
+     *
+     * @param mixed $params
+     * @return bool
+     */
+    public function hookActionCustomerAccountUpdate($params): bool
+    {
+        if (empty($params['customer'])) {
+            return false;
+        }
+
+        $customer = $params['customer'];
+        $controller = new OptInController($this->get('prestashop.adapter.legacy.configuration'));
+
+        return $controller->updateCustomerSubscriptionStatus($customer);
+    }
+
+    /**
      * Enable using new translation system for translating module.
      */
     public function isUsingNewTranslationSystem()

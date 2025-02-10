@@ -7,6 +7,7 @@ Improving customers synchronization by including subscribers from `ps_emailsubsc
 - Marks newsletter registrations as not active when subscriber has been unsubscribed in Smaily.
 - Imports newsletter registrations with active status to Smaily during customer synchronization.
 - Adds a `store` parameter to subscriber data allowing better filtering in Smaily UI.
+- Updates customer subscription status in Smaily when Customer updates their account.
 
 ### 2.0.0
 
