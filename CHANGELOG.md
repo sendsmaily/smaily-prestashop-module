@@ -2,11 +2,11 @@
 
 ### 2.1.0
 
-Improving customers synchronization by including subscribers from `ps_emailsubscription` table to subscriber synchronization.
+Improving customers synchronization by including subscribers from `ps_emailsubscription` table to subscriber synchronization. [#60](https://github.com/sendsmaily/smaily-prestashop-module/pull/60)
 
 - Marks newsletter registrations as not active when subscriber has been unsubscribed in Smaily.
 - Imports newsletter registrations with active status to Smaily during customer synchronization.
-- Adds a 'shop' parameter to subscriber data allowing better filtering in Smaily UI.
+- Adds a `store` parameter to subscriber data allowing better filtering in Smaily UI.
 
 ### 2.0.0
 
