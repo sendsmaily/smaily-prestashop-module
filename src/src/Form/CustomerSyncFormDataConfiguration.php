@@ -63,7 +63,7 @@ final class CustomerSyncFormDataConfiguration implements DataConfigurationInterf
         $errors = [];
 
         $syncEnabled = $formData['enabled'];
-        $additionalFields = $formData['sync_additional'];
+        $additionalFields = array_merge($formData['sync_additional'], ['store' => true]);
         $optInEnabled = $formData['optin_enabled'];
         $cronToken = $formData['cron_token'];
         $autoresponder = $formData['autoresponder'];
