@@ -25,8 +25,6 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Lib;
 
-use Tools;
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -118,12 +116,12 @@ class Api
      */
     public function optInSubscribers(array $addresses): ResponseInterface
     {
-        return $this->client->post('/api/autoresponder.php', [
-            RequestOptions::JSON => [
-                'addresses' => $addresses,
-                'store' => Tools::getShopDomain()
-            ],
-        ]);
+        return $this->client->post(
+            '/api/autoresponder.php',
+            [
+                RequestOptions::JSON => ['addresses' => $addresses]
+            ]
+        );
     }
 
     /**
@@ -136,12 +134,14 @@ class Api
      */
     public function triggerAutomation(string $autoresponder, array $addresses): ResponseInterface
     {
-        return $this->client->post('/api/autoresponder.php', [
-            RequestOptions::JSON => [
-                'autoresponder' => $autoresponder,
-                'addresses' => $addresses,
-                'store' => Tools::getShopDomain()
-            ],
-        ]);
+        return $this->client->post(
+            '/api/autoresponder.php', 
+            [
+                RequestOptions::JSON => [
+                    'autoresponder' => $autoresponder,
+                    'addresses' => $addresses,
+                ],
+            ]
+        );
     }
 }
