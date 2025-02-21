@@ -222,6 +222,8 @@ class CustomerSyncController
                 case 'website':
                     $userdata['website'] = $subscriber->website;
                     break;
+                case 'store':
+                    $userdata['store'] = $subscriber->store_url;
                 default:
                     break;
             }

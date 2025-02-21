@@ -39,7 +39,7 @@ class SmailyForPrestaShop extends Module
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
         $this->module_key = 'bcea90ce4da2594c0d0179852db9a1e3';
-        $this->version = '2.0.0';
+        $this->version = '2.1.0';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = [
@@ -112,6 +112,24 @@ class SmailyForPrestaShop extends Module
         $controller = new OptInController($this->get('prestashop.adapter.legacy.configuration'));
 
         return $controller->optInCustomer($customer);
+    }
+
+    /**
+     * Update customer subscription status when customer updates their account information.
+     *
+     * @param mixed $params
+     * @return bool
+     */
+    public function hookActionCustomerAccountUpdate($params): bool
+    {
+        if (empty($params['customer'])) {
+            return false;
+        }
+
+        $customer = $params['customer'];
+        $controller = new OptInController($this->get('prestashop.adapter.legacy.configuration'));
+
+        return $controller->updateCustomerSubscriptionStatus($customer);
     }
 
     /**

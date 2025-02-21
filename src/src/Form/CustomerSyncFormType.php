@@ -84,9 +84,22 @@ class CustomerSyncFormType extends TranslatorAwareType
                     [
                         'required' => false,
                         'label' => $this->trans('Synchronize Additional', 'Modules.Smailyforprestashop.Admin'),
-                        'help' => $this->trans('Select additional fields to syncronize', 'Modules.Smailyforprestashop.Admin'),
+                        'help' => $this->trans('Select additional fields to syncronize. Store URL is always added to the fields.', 'Modules.Smailyforprestashop.Admin'),
                     ]
                 )
+                    ->add(
+                        'store',
+                        CheckboxType::class,
+                        [
+                            'label' => $this->trans('Store URL', 'Modules.Smailyforprestashop.Admin'),
+                            'required' => false,
+                            'disabled' => true,
+                            'attr' => [
+                                'material_design' => true,
+                                'checked' => 'checked'
+                            ],
+                        ]
+                    )
                     ->add(
                         'first_name',
                         CheckboxType::class,

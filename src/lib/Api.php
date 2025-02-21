@@ -102,9 +102,29 @@ class Api
      */
     public function createSubscribers(array $data): ResponseInterface
     {
-        return $this->client->post('api/contact.php', [
-            RequestOptions::JSON => $data,
-        ]);
+        return $this->client->post(
+            'api/contact.php',
+            [
+                RequestOptions::JSON => $data,
+            ]
+        );
+    }
+
+    /**
+     * Update subscriber information.
+     *
+     * @param array $data
+     *
+     * @return ResponseInterface
+     */
+    public function updateSubscriber(array $data): ResponseInterface
+    {
+        return $this->client->post(
+            'api/contact.php',
+            [
+                RequestOptions::JSON => $data,
+            ]
+        );
     }
 
     /**
@@ -116,11 +136,12 @@ class Api
      */
     public function optInSubscribers(array $addresses): ResponseInterface
     {
-        return $this->client->post('/api/autoresponder.php', [
-            RequestOptions::JSON => [
-                'addresses' => $addresses,
-            ],
-        ]);
+        return $this->client->post(
+            '/api/autoresponder.php',
+            [
+                RequestOptions::JSON => ['addresses' => $addresses]
+            ]
+        );
     }
 
     /**
@@ -133,11 +154,14 @@ class Api
      */
     public function triggerAutomation(string $autoresponder, array $addresses): ResponseInterface
     {
-        return $this->client->post('/api/autoresponder.php', [
-            RequestOptions::JSON => [
-                'autoresponder' => $autoresponder,
-                'addresses' => $addresses,
-            ],
-        ]);
+        return $this->client->post(
+            '/api/autoresponder.php', 
+            [
+                RequestOptions::JSON => [
+                    'autoresponder' => $autoresponder,
+                    'addresses' => $addresses,
+                ],
+            ]
+        );
     }
 }

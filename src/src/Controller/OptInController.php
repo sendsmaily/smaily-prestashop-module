@@ -29,6 +29,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use Tools;
 use PrestaShop\Module\SmailyForPrestaShop\Lib\Api;
 use PrestaShop\Module\SmailyForPrestaShop\Lib\Logger;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
@@ -36,54 +37,101 @@ use PrestaShop\PrestaShop\Core\ConfigurationInterface;
 class OptInController
 {
     /**
+     * Smaily modules configuration.
+     * 
      * @var ConfigurationInterface;
      */
-    private $configuration;
+    private $_configuration;
 
     /**
+     * Smaily API client.
+     *
      * @var Api
      */
-    private $api;
+    private $_api;
 
     public function __construct(ConfigurationInterface $configuration)
     {
-        $this->configuration = $configuration;
+        $this->_configuration = $configuration;
 
-        $subdomain = $this->configuration->get('SMAILY_SUBDOMAIN');
-        $username = $this->configuration->get('SMAILY_USERNAME');
-        $password = $this->configuration->get('SMAILY_PASSWORD');
+        $subdomain = $this->_configuration->get('SMAILY_SUBDOMAIN');
+        $username = $this->_configuration->get('SMAILY_USERNAME');
+        $password = $this->_configuration->get('SMAILY_PASSWORD');
 
         if (!empty($subdomain) && !empty($username) && !empty($password)) {
-            $this->api = new Api($subdomain, $username, $password);
+            $this->_api = new Api($subdomain, $username, $password);
         }
     }
 
+    /**
+     * Trigger opt-in flow during customer account creation.
+     *
+     * @param \Customer $customer
+     * @return bool
+     */
     public function optInCustomer(\Customer $customer): bool
     {
         if ($customer->newsletter !== '1') {
             return false;
         }
 
-        if (!$this->configuration->getBoolean('SMAILY_OPTIN_ENABLED')) {
+        if (!$this->_configuration->getBoolean('SMAILY_OPTIN_ENABLED')) {
             return false;
         }
 
-        if (empty($this->api)) {
+        if (empty($this->_api)) {
             return false;
         }
 
-        $autoresponder = $this->configuration->get('SMAILY_OPTIN_AUTORESPONDER');
-        if (empty($autoresponder)) {
-            $response = $this->api->optInSubscribers([['email' => $customer->email]]);
-        } else {
-            $response = $this->api->triggerAutomation($autoresponder, [
-                ['email' => $customer->email],
-            ]);
+        return $this->_optin($customer->email);
+    }
+
+    /**
+     * Trigger opt-in flow when subscribing through subscribe form.
+     *
+     * @param string $email Subscribers email.
+     *
+     * @return bool
+     */
+    public function optInSubscriber(string $email): bool
+    {
+        if (!$this->_configuration->getBoolean('SMAILY_OPTIN_ENABLED')) {
+            return false;
         }
+
+        if (empty($this->_api)) {
+            return false;
+        }
+
+        return $this->_optin($email);
+    }
+
+    /**
+     * Updates customer subscription status in Smaily.
+     *
+     * @param \Customer $customer
+     * @return bool
+     */
+    public function updateCustomerSubscriptionStatus(\Customer $customer)
+    {
+        if (!$this->_configuration->getBoolean('SMAILY_ENABLE_CUSTOMER_SYNC')) {
+            return false;
+        }
+
+        if (empty($this->_api)) {
+            return false;
+        }
+
+        $response = $this->_api->updateSubscriber(
+            [
+                'email' => $customer->email,
+                'is_unsubscribed' => $customer->newsletter !== '1',
+            ]
+        );
 
         if ($response->getStatusCode() !== 200) {
             Logger::logErrorWithFormatting(
-                'Failed to opt-in customer with email: %s, ' .
+                'Failed to update customer subscription status: %s, ' .
                 'Smaily response HTTP response code: %s.',
                 $customer->email,
                 $response->getStatusCode()
@@ -94,8 +142,9 @@ class OptInController
 
         $body = json_decode($response->getBody()->getContents(), true);
         if (!isset($body['code']) || $body['code'] !== 101) {
-            Logger::logErrorWithFormatting('Failed to opt-in new customer with email: %s . ' .
-            'Smaily response code: %s, message: %s.',
+            Logger::logErrorWithFormatting(
+                'Failed to update customer subscription status: %s, ' .
+                'Smaily response code: %s, message: %s.',
                 $customer->email,
                 isset($body['code']) ? $body['code'] : '<none>',
                 isset($body['message']) ? $body['message'] : '<none>'
@@ -107,28 +156,38 @@ class OptInController
         return true;
     }
 
-    public function optInSubscriber(string $email): bool
+    /**
+     * Trigger a a opt-in flow or automation based on module configuration.
+     *
+     * @param string $email Subscribers email
+     *
+     * @return bool
+     */
+    private function _optin(string $email)
     {
-        if (!$this->configuration->getBoolean('SMAILY_OPTIN_ENABLED')) {
-            return false;
-        }
-
-        $autoresponder = $this->configuration->get('SMAILY_OPTIN_AUTORESPONDER');
-        if (empty($this->api)) {
-            return false;
-        }
-
-        if (empty($autoresponder)) {
-            $response = $this->api->optInSubscribers([['email' => $email]]);
-        } else {
-            $response = $this->api->triggerAutomation($autoresponder, [
-                ['email' => $email],
-            ]);
-        }
+        $autoresponder = $this->_configuration->get('SMAILY_OPTIN_AUTORESPONDER');
+        $response = empty($autoresponder) ?
+        $this->_api->optInSubscribers(
+            [
+                [
+                    'email' => $email,
+                    'store' => Tools::getShopDomain()
+                ]
+            ]
+        ) : 
+        $this->_api->triggerAutomation(
+            $autoresponder,
+            [
+                [
+                    'email' => $email,
+                    'store' => Tools::getShopDomain()
+                ]
+            ]
+        );
 
         if ($response->getStatusCode() !== 200) {
             Logger::logErrorWithFormatting(
-                'Failed to opt-in customer with email: %s, ' .
+                'Failed to register a subscriber with an email: %s, ' .
                 'Smaily response HTTP response code: %s.',
                 $email,
                 $response->getStatusCode()
@@ -138,10 +197,10 @@ class OptInController
         }
 
         $body = json_decode($response->getBody()->getContents(), true);
-
         if (!isset($body['code']) || $body['code'] !== 101) {
-            Logger::logErrorWithFormatting('Failed to opt-in new customer with email: %s . ' .
-            'Smaily response code: %s, message: %s.',
+            Logger::logErrorWithFormatting(
+                'Failed to register a subscriber with an email: %s, ' .
+                'Smaily response code: %s, message: %s.',
                 $email,
                 isset($body['code']) ? $body['code'] : '<none>',
                 isset($body['message']) ? $body['message'] : '<none>'

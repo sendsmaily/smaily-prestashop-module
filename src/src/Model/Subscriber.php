@@ -51,4 +51,9 @@ class Subscriber
      * @var string
      */
     public $website;
+
+    /**
+     * @var string
+     */
+    public $store_url;
 }

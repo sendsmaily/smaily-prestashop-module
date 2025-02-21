@@ -9,7 +9,18 @@
 		</h3>
 		<div class="card-body">
 			<div class="form-wrapper">
-				{{ form_row(customerSyncForm.enabled) }}
+				<div class="form-group row">
+					{{ form_label(customerSyncForm.enabled) }}
+					<div class="col-sm">
+						{{form_widget(customerSyncForm.enabled)}}
+						{{form_help(customerSyncForm.enabled)}}
+						<small class="form-text">
+							{{ 'Synchronize subscribed customers and newsletter registrations from ' | trans }}
+								<a href="{{emailSubscriptionModuleUrl}}">{{ 'PS Newsletter Subscriptions' | trans }}</a>
+							{{ 'module.' | trans }}
+						</small>
+					</div>
+				</div>
 				{{ form_row(customerSyncForm.sync_additional) }}
 				{{ form_row(customerSyncForm.cron_token) }}
 				<div class="form-group row">
@@ -35,7 +46,7 @@
 						{{form_help(customerSyncForm.optin_enabled)}}
 						<small class="form-text">
 							{{ 'Smaily uses ' | trans }}
-							<a href="{{emailSubscriptionModuleUrl}}">{{ 'PS Newsletter Subscrptions' | trans }}</a>
+							<a href="{{emailSubscriptionModuleUrl}}">{{ 'PS Newsletter Subscriptions' | trans }}</a>
 							{{ ' module for rendering the Opt-In form.' | trans }}
 						</small>
 					</div>
