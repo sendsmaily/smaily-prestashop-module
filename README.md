@@ -79,6 +79,8 @@ Customer first name: `{{ first_name }}`.
 
 Customer last name: `{{ last_name }}`.
 
+Is abandoned cart: `{{ is_abandoned_cart }}`.
+
 Up to 10 products can be received in the Smaily templating engine. You can reference each product with a number 1-10 behind the parameter name.
 
 Product name: `{{ product_name_[1-10] }}`.
