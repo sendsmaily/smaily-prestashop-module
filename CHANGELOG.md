@@ -1,5 +1,10 @@
 # Changelog
 
+### 2.1.1
+
+Adds `is_abandoned_cart` field to abandoned cart request payload
+Does not opt-in unsubscribed customers who have received abandoned cart email
+
 ### 2.1.0
 
 Improving customers synchronization by including subscribers from `ps_emailsubscription` table to subscriber synchronization. [#60](https://github.com/sendsmaily/smaily-prestashop-module/pull/60)

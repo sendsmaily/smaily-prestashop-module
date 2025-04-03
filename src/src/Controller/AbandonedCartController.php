@@ -171,6 +171,8 @@ class AbandonedCartController
     {
         $payload = [
             'email' => $cart->email,
+            'is_abandoned_cart' => 'true',
+            'force_opt_in' => false,
         ];
 
         $syncAdditional = json_decode($this->configuration->get('SMAILY_CART_SYNCRONIZE_ADDITIONAL'), true);
