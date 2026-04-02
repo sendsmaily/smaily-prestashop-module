@@ -1,5 +1,9 @@
 # Changelog
 
+### 2.1.2
+
+Fixes RSS-feed not rendering when using a category filter.
+
 ### 2.1.1
 
 Adds `is_abandoned_cart` field to abandoned cart request payload
