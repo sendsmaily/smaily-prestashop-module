@@ -58,7 +58,7 @@ class RssFeedController
         $channel = $xml->createElement('channel');
 
         $atomLink = $xml->createElement('atom:link');
-        $atomLink->setAttribute('href', Rss::buildRssUrl($categoryId ? $categoryId : '', strval($limit), $sortBy, $sortOrder));
+        $atomLink->setAttribute('href', Rss::buildRssUrl($categoryId ? strval($categoryId) : '', strval($limit), $sortBy, $sortOrder));
         $atomLink->setAttribute('rel', 'self');
         $atomLink->setAttribute('type', 'application/rss+xml');
         $channel->appendChild($atomLink);
