@@ -135,7 +135,7 @@ class CustomerSyncController
                 return false;
             }
 
-            $body = json_decode($response->getBody()->getContents(), true);
+            $body = json_decode($response->getContent(false), true);
 
             // Stop if no more subscribers.
             if (empty($body)) {
@@ -224,6 +224,7 @@ class CustomerSyncController
                     break;
                 case 'store':
                     $userdata['store'] = $subscriber->store_url;
+                    // no break
                 default:
                     break;
             }
@@ -245,7 +246,7 @@ class CustomerSyncController
             return false;
         }
 
-        $body = json_decode($response->getBody()->getContents(), true);
+        $body = json_decode($response->getContent(false), true);
         if (!array_key_exists('code', $body) || $body['code'] !== 101) {
             Logger::logErrorWithFormatting(
                 'Failed sending subscribers to Smaily. Smaily response code: %s, message: %s',

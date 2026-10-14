@@ -1,0 +1,28 @@
+# A throwaway shop that installs dist/smailyforprestashop.zip on start. validate.sh drives it.
+services:
+  prestashop:
+    image: ${PS_IMAGE:-prestashop/prestashop-flashlight:9.2.0-nginx}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - PS_DOMAIN=localhost:8000
+      - INSTALL_MODULES_DIR=/ps-modules
+    volumes:
+      - ../../dist:/ps-modules:ro
+      - ./api-client-smoke.php:/tests/api-client-smoke.php:ro
+    ports:
+      - 8000:80
+
+  mysql:
+    image: mariadb:lts
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    environment:
+      - MYSQL_USER=prestashop
+      - MYSQL_PASSWORD=prestashop
+      - MYSQL_ROOT_PASSWORD=prestashop
+      - MYSQL_DATABASE=prestashop

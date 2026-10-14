@@ -39,12 +39,12 @@ class SmailyForPrestaShop extends Module
         $this->name = 'smailyforprestashop';
         $this->tab = 'advertising_marketing';
         $this->module_key = 'bcea90ce4da2594c0d0179852db9a1e3';
-        $this->version = '2.1.2';
+        $this->version = '2.2.0';
         $this->author = 'Smaily';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = [
             'min' => '8.0.0',
-            'max' => '8.99.99',
+            'max' => '9.99.99',
         ];
         $this->bootstrap = true;
 
@@ -53,10 +53,20 @@ class SmailyForPrestaShop extends Module
         $this->displayName = $this->trans('Smaily for PrestaShop', [], 'Modules.Smailyforprestashop.Admin');
         $this->description = $this->trans('Smaily email marketing and automation module for PrestaShop.', [], 'Modules.Smailyforprestashop.Admin');
         $this->confirmUninstall = $this->trans('Are you sure you want to uninstall?', [], 'Modules.Smailyforprestashop.Admin');
+
+        if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+            $this->warning = $this->trans('Smaily for PrestaShop requires PHP 8.0 or newer.', [], 'Modules.Smailyforprestashop.Admin');
+        }
     }
 
     public function install(): bool
     {
+        if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+            $this->_errors[] = $this->trans('Smaily for PrestaShop requires PHP 8.0 or newer.', [], 'Modules.Smailyforprestashop.Admin');
+
+            return false;
+        }
+
         if (!parent::install()) {
             return false;
         }
@@ -118,6 +128,7 @@ class SmailyForPrestaShop extends Module
      * Update customer subscription status when customer updates their account information.
      *
      * @param mixed $params
+     *
      * @return bool
      */
     public function hookActionCustomerAccountUpdate($params): bool

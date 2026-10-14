@@ -76,7 +76,7 @@ class Autoresponder implements FormChoiceProviderInterface
             return $noAutoresponders;
         }
 
-        $autoresponders = (array) json_decode($response->getBody()->getContents(), true);
+        $autoresponders = (array) json_decode($response->getContent(false), true);
         if (count($autoresponders) == 0) {
             return $noAutoresponders;
         }

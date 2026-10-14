@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
-
 $config = new PrestaShop\CodingStandards\CsFixer\Config();
 
 /** @var \Symfony\Component\Finder\Finder $finder */

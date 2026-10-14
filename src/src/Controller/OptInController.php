@@ -29,7 +29,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use Tools;
 use PrestaShop\Module\SmailyForPrestaShop\Lib\Api;
 use PrestaShop\Module\SmailyForPrestaShop\Lib\Logger;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
@@ -38,7 +37,7 @@ class OptInController
 {
     /**
      * Smaily modules configuration.
-     * 
+     *
      * @var ConfigurationInterface;
      */
     private $_configuration;
@@ -67,6 +66,7 @@ class OptInController
      * Trigger opt-in flow during customer account creation.
      *
      * @param \Customer $customer
+     *
      * @return bool
      */
     public function optInCustomer(\Customer $customer): bool
@@ -89,7 +89,7 @@ class OptInController
     /**
      * Trigger opt-in flow when subscribing through subscribe form.
      *
-     * @param string $email Subscribers email.
+     * @param string $email the subscriber's email address
      *
      * @return bool
      */
@@ -110,6 +110,7 @@ class OptInController
      * Updates customer subscription status in Smaily.
      *
      * @param \Customer $customer
+     *
      * @return bool
      */
     public function updateCustomerSubscriptionStatus(\Customer $customer)
@@ -140,7 +141,7 @@ class OptInController
             return false;
         }
 
-        $body = json_decode($response->getBody()->getContents(), true);
+        $body = json_decode($response->getContent(false), true);
         if (!isset($body['code']) || $body['code'] !== 101) {
             Logger::logErrorWithFormatting(
                 'Failed to update customer subscription status: %s, ' .
@@ -171,17 +172,17 @@ class OptInController
             [
                 [
                     'email' => $email,
-                    'store' => Tools::getShopDomain()
-                ]
+                    'store' => \Tools::getShopDomain(),
+                ],
             ]
-        ) : 
+        ) :
         $this->_api->triggerAutomation(
             $autoresponder,
             [
                 [
                     'email' => $email,
-                    'store' => Tools::getShopDomain()
-                ]
+                    'store' => \Tools::getShopDomain(),
+                ],
             ]
         );
 
@@ -196,7 +197,7 @@ class OptInController
             return false;
         }
 
-        $body = json_decode($response->getBody()->getContents(), true);
+        $body = json_decode($response->getContent(false), true);
         if (!isset($body['code']) || $body['code'] !== 101) {
             Logger::logErrorWithFormatting(
                 'Failed to register a subscriber with an email: %s, ' .

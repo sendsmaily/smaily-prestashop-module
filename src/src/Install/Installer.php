@@ -103,7 +103,7 @@ class Installer
         $hooks = [
             'actionCustomerAccountAdd',
             'actionCustomerAccountUpdate',
-            'actionNewsletterRegistrationAfter'
+            'actionNewsletterRegistrationAfter',
         ];
 
         return (bool) $module->registerHook($hooks);

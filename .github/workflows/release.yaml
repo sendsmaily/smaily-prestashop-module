@@ -31,7 +31,7 @@ jobs:
           exclusions: >
             /.git*
             /.php-cs-fixer.dist.php
-            /.phpstan.neon
+            /phpstan.neon
 
       - name: Get release
         id: get_release_url

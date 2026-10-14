@@ -1,2 +1,5 @@
 .vscode/launch.json
 .env
+/build/
+/dist/
+/.phpunit.cache/
