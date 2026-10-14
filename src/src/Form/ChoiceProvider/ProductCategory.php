@@ -56,10 +56,10 @@ class ProductCategory implements FormChoiceProviderInterface
      */
     public function getChoices(): array
     {
-        return [
-            $this->translator->trans('All products', [], 'Modules.Smailyforprestashop.Admin') => null,
-            ...$this->recursivelyNormalizeCategories($this->categoryDataProvider->getNestedCategories()),
-        ];
+        return array_merge(
+            [$this->translator->trans('All products', [], 'Modules.Smailyforprestashop.Admin') => null],
+            $this->recursivelyNormalizeCategories($this->categoryDataProvider->getNestedCategories())
+        );
     }
 
     /**

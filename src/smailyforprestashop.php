@@ -57,6 +57,12 @@ class SmailyForPrestaShop extends Module
 
     public function install(): bool
     {
+        if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+            $this->_errors[] = $this->trans('Smaily for PrestaShop requires PHP 8.0 or newer.', [], 'Modules.Smailyforprestashop.Admin');
+
+            return false;
+        }
+
         if (!parent::install()) {
             return false;
         }
