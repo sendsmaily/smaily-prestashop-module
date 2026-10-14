@@ -21,8 +21,8 @@ $transport = new MockHttpClient(function (string $method, string $url, array $op
     return new MockResponse('{"code": 101}');
 });
 
-$response = (new Api('acme', 'user', 'secret', $transport))->createSubscribers([['email' => 'a@example.com']]);
-$expected = 'POST https://acme.sendsmaily.net/api/contact.php Authorization: Basic ' . base64_encode('user:secret');
+$response = (new Api('smly', 'user', 'secret', $transport))->createSubscribers([['email' => 'a@smaily.testing']]);
+$expected = 'POST https://smly.sendsmaily.net/api/contact.php Authorization: Basic ' . base64_encode('user:secret');
 
 if ($sent !== $expected || $response->getStatusCode() !== 200 || json_decode($response->getContent(false), true) !== ['code' => 101]) {
     fwrite(STDERR, "API client smoke check failed, sent: $sent\n");

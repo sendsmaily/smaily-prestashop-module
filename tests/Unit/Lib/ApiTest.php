@@ -14,7 +14,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
  */
 final class ApiTest extends TestCase
 {
-    private const HOST = 'https://acme.sendsmaily.net/';
+    private const HOST = 'https://smly.sendsmaily.net/';
 
     /** @var array<int, array{method: string, url: string, headers: array<string, string[]>, body: string}> */
     private array $requests = [];
@@ -34,7 +34,7 @@ final class ApiTest extends TestCase
             return new MockResponse('{"code": 101}');
         });
 
-        $this->api = new Api('acme', 'user', 'secret', $transport);
+        $this->api = new Api('smly', 'user', 'secret', $transport);
     }
 
     public function testListsAutorespondersUpToTheLimit(): void
@@ -53,34 +53,34 @@ final class ApiTest extends TestCase
 
     public function testCreatesSubscribersFromJson(): void
     {
-        $this->api->createSubscribers([['email' => 'a@example.com']]);
+        $this->api->createSubscribers([['email' => 'a@smaily.testing']]);
 
         $this->assertRequest('POST', self::HOST . 'api/contact.php');
-        $this->assertJsonBody([['email' => 'a@example.com']]);
+        $this->assertJsonBody([['email' => 'a@smaily.testing']]);
     }
 
     public function testUpdatesASubscriberFromJson(): void
     {
-        $this->api->updateSubscriber(['email' => 'a@example.com', 'is_unsubscribed' => 1]);
+        $this->api->updateSubscriber(['email' => 'a@smaily.testing', 'is_unsubscribed' => 1]);
 
         $this->assertRequest('POST', self::HOST . 'api/contact.php');
-        $this->assertJsonBody(['email' => 'a@example.com', 'is_unsubscribed' => 1]);
+        $this->assertJsonBody(['email' => 'a@smaily.testing', 'is_unsubscribed' => 1]);
     }
 
     public function testOptsInSubscribers(): void
     {
-        $this->api->optInSubscribers([['email' => 'a@example.com']]);
+        $this->api->optInSubscribers([['email' => 'a@smaily.testing']]);
 
         $this->assertRequest('POST', self::HOST . 'api/autoresponder.php');
-        $this->assertJsonBody(['addresses' => [['email' => 'a@example.com']]]);
+        $this->assertJsonBody(['addresses' => [['email' => 'a@smaily.testing']]]);
     }
 
     public function testTriggersAnAutomationForSubscribers(): void
     {
-        $this->api->triggerAutomation('42', [['email' => 'a@example.com']]);
+        $this->api->triggerAutomation('42', [['email' => 'a@smaily.testing']]);
 
         $this->assertRequest('POST', self::HOST . 'api/autoresponder.php');
-        $this->assertJsonBody(['autoresponder' => '42', 'addresses' => [['email' => 'a@example.com']]]);
+        $this->assertJsonBody(['autoresponder' => '42', 'addresses' => [['email' => 'a@smaily.testing']]]);
     }
 
     public function testAuthenticatesEveryRequestAsTheApiUser(): void
@@ -93,7 +93,7 @@ final class ApiTest extends TestCase
     public function testHandsBackTheStatusAndBodyOfAnErrorResponse(): void
     {
         $transport = new MockHttpClient(new MockResponse('{"code": 401, "message": "Unauthorized"}', ['http_code' => 401]));
-        $api = new Api('acme', 'user', 'wrong', $transport);
+        $api = new Api('smly', 'user', 'wrong', $transport);
 
         $response = $api->listAutoresponders();
 
