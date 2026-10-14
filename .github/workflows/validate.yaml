@@ -30,6 +30,18 @@ jobs:
       - run: vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no
         working-directory: src
 
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+      - run: composer install --no-interaction --no-progress
+        working-directory: src
+      - run: src/vendor/bin/phpunit
+
   install:
     name: Install on PrestaShop ${{ matrix.prestashop }}
     runs-on: ubuntu-latest
