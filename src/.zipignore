@@ -1,0 +1,7 @@
+# Files in this module folder that stay out of the release zip. One pattern per line, matched against
+# the path from this folder, as `find -path` matches it: `*` also matches `/`. Blank lines and lines
+# starting with `#` are ignored. Files git does not track never reach the zip either.
+.zipignore
+.gitignore
+.php-cs-fixer.dist.php
+phpstan.neon

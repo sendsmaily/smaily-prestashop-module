@@ -34,6 +34,7 @@
         "fix": "php-cs-fixer fix",
         "phpstan": "_PS_ROOT_DIR_=/var/www/html phpstan analyse .",
         "autoindex": "php vendor/bin/autoindex prestashop:add:index .",
-        "test": "phpunit --configuration ../phpunit.xml.dist"
+        "test": "phpunit --configuration ../phpunit.xml.dist",
+        "package": "sh ../bin/package.sh"
     }
 }
