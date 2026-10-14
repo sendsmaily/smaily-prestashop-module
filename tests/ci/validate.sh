@@ -65,8 +65,15 @@ echo "* Checking the front controllers"
 code=$(curl -s -o "$tmp/rss.xml" -w '%{http_code}' "$URL/index.php?fc=module&module=smailyforprestashop&controller=SmailyRssFeed")
 [ "$code" = 200 ] && grep -q '<rss' "$tmp/rss.xml"; report $? "RSS feed answers 200 with an rss document (got $code)"
 
-code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/index.php?fc=module&module=smailyforprestashop&controller=SmailyCustomerCron&token=wrong")
-[ "$code" = 200 ]; report $? "customer sync cron with a wrong token answers 200, not a server error (got $code)"
+check_cron() { # $1 controller, $2 configuration key of its token, $3 reply once the token is right and the sync is off
+    body=$(curl -s "$URL/index.php?fc=module&module=smailyforprestashop&controller=$1&token=wrong")
+    [ "$body" = 'Access denied!' ]; report $? "$1 refuses a wrong token (got '$body')"
+    token=$(sql "SELECT value FROM ps_configuration WHERE name = '$2'")
+    body=$(curl -s "$URL/index.php?fc=module&module=smailyforprestashop&controller=$1&token=$token")
+    [ "$body" = "$3" ]; report $? "$1 accepts its token and reports the sync is off (got '$body')"
+}
+check_cron SmailyCustomerCron SMAILY_CUSTOMER_CRON_TOKEN 'User synchronization disabled!'
+check_cron SmailyCartCron SMAILY_CART_CRON_TOKEN 'Abandoned cart disabled!'
 
 if [ $fails -gt 0 ]; then
     echo "* $fails check(s) failed. Last PrestaShop log lines:"
