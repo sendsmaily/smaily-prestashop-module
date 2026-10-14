@@ -53,6 +53,10 @@ class SmailyForPrestaShop extends Module
         $this->displayName = $this->trans('Smaily for PrestaShop', [], 'Modules.Smailyforprestashop.Admin');
         $this->description = $this->trans('Smaily email marketing and automation module for PrestaShop.', [], 'Modules.Smailyforprestashop.Admin');
         $this->confirmUninstall = $this->trans('Are you sure you want to uninstall?', [], 'Modules.Smailyforprestashop.Admin');
+
+        if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+            $this->warning = $this->trans('Smaily for PrestaShop requires PHP 8.0 or newer.', [], 'Modules.Smailyforprestashop.Admin');
+        }
     }
 
     public function install(): bool
