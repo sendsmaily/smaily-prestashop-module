@@ -44,7 +44,7 @@ jobs:
             image: prestashop/prestashop-flashlight:8.2.8-8.1-nginx
             compose: docker-compose.yaml
           - prestashop: 9.2.0 on PHP 8.1
-            image: prestashop/prestashop:9.2.0-8.1-apache
+            image: prestashop/prestashop:9.2.0-8.1
             compose: docker-compose.official.yaml
     env:
       PS_IMAGE: ${{ matrix.image }}
