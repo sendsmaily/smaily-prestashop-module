@@ -58,6 +58,8 @@ You can run the environment by executing:
 
 > **Note!** Make sure you do not have any other process(es) listening on ports 8080 and 8888.
 
+> **Note!** After changing the PrestaShop image tag in `docker-compose.yaml`, reset the environment (see below): the volumes keep the previous version's files and database.
+
 ### Developing in VS Code Remote Container
 
 It is advised to develop the application inside VS Code remote container. This allows to get PHP IntelliSense on PrestaShop classes, includes, etc and provides an debugging option when using latest version of the `prestashop/prestashop-flashlight` image. Open `/var/www/html` directory of `prestashop` container as this provides context for IntelliSense.

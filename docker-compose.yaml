@@ -18,17 +18,9 @@ services:
 
   mysql:
     container_name: prestashop_db
-    image: mysql:5.7
+    image: mariadb:lts
     healthcheck:
-      test:
-        [
-          "CMD",
-          "mysqladmin",
-          "ping",
-          "--host=localhost",
-          "--user=root",
-          "--password=prestashop",
-        ]
+      test: ["CMD", "healthcheck.sh", "--connect"]
       interval: 10s
       timeout: 10s
       retries: 5
