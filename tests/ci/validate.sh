@@ -4,11 +4,14 @@
 #
 #   PS_IMAGE=prestashop/prestashop-flashlight:9.2.0-nginx tests/ci/validate.sh
 #
+# PS_COMPOSE picks the shop image family: docker-compose.yaml (flashlight, the default) or
+# docker-compose.official.yaml (the official image, which installs the shop first and takes longer).
+#
 # Set KEEP=1 to leave the shop running at http://localhost:8000 (admin-dev, admin@prestashop.com /
 # prestashop) for a look around.
 set -u
 cd "$(dirname "$0")"
-COMPOSE="docker compose -f docker-compose.yaml"
+COMPOSE="docker compose -f ${PS_COMPOSE:-docker-compose.yaml}"
 URL="http://localhost:8000"
 fails=0
 tmp=$(mktemp -d)
@@ -32,7 +35,7 @@ i=0
 until curl -sfo /dev/null "$URL/"; do
     status=$(docker inspect -f '{{.State.Status}}' "$($COMPOSE ps -q prestashop)" 2>/dev/null)
     i=$((i + 1))
-    if [ "$status" != "running" ] || [ $i -ge 90 ]; then
+    if [ "$status" != "running" ] || [ $i -ge 150 ]; then
         echo "PrestaShop did not come up (container status: ${status:-gone}). Last log lines:"
         $COMPOSE logs --no-color prestashop | tail -60
         teardown
