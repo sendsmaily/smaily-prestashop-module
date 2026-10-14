@@ -1,6 +1,6 @@
 #!/bin/sh
 # Builds dist/smailyforprestashop.zip from the module in src/: the files git tracks there, with the
-# production Composer dependencies, minus the paths listed in .zipignore. CI installs this zip and
+# production Composer dependencies, minus the paths listed in src/.zipignore. CI installs this zip and
 # the release workflow publishes it, both through `composer package`.
 set -eu
 
@@ -33,7 +33,7 @@ while IFS= read -r pattern || [ -n "$pattern" ]; do
         exit 1
     fi
     (cd "$stage" && find . -path "./$pattern" -prune -exec rm -rf {} +)
-done < "$root/.zipignore"
+done < "$root/src/.zipignore"
 
 (cd "$root/build" && zip -qrX "$zip" "$module")
 rm -rf "$root/build"
