@@ -4,47 +4,24 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   compress:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout the released tag
+        uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
         with:
-          ref: master
+          php-version: '8.1'
 
-      - name: Rename src directory
-        run: mv ./src ./smailyforprestashop
-
-      - name: Install dependencies
-        uses: php-actions/composer@v6
-        with:
-          dev: no
-          progress: yes
-          working_dir: smailyforprestashop
-
-      - name: Compress ZIP
-        uses: TheDoctor0/zip-release@v0.3.0
-        with:
-          filename: release.zip
-          path: smailyforprestashop
-          exclusions: >
-            /.git*
-            /.php-cs-fixer.dist.php
-            /phpstan.neon
-
-      - name: Get release
-        id: get_release_url
-        uses: bruceadams/get-release@v1.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build the release zip
+        run: composer --working-dir src package
 
       - name: Upload release asset
-        uses: actions/upload-release-asset@v1.0.2
+        run: gh release upload "${{ github.event.release.tag_name }}" dist/smailyforprestashop.zip --clobber
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.get_release_url.outputs.upload_url }}
-          asset_path: ./release.zip
-          asset_name: smailyforprestashop.zip
-          asset_content_type: application/zip
+          GH_TOKEN: ${{ github.token }}
