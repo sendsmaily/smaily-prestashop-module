@@ -118,6 +118,7 @@ class SmailyForPrestaShop extends Module
      * Update customer subscription status when customer updates their account information.
      *
      * @param mixed $params
+     *
      * @return bool
      */
     public function hookActionCustomerAccountUpdate($params): bool

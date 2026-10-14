@@ -224,6 +224,7 @@ class CustomerSyncController
                     break;
                 case 'store':
                     $userdata['store'] = $subscriber->store_url;
+                    // no break
                 default:
                     break;
             }
