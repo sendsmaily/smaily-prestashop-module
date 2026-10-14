@@ -12,9 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: PHP 8.1
+      - name: PHP 7.2, the PrestaShop 8 minimum
+        uses: prestashop/github-action-php-lint/7.2@master
+      - name: PHP 8.1, the PrestaShop 9 minimum
         uses: prestashop/github-action-php-lint/8.1@master
-      - name: PHP 8.5
+      - name: PHP 8.5, the newest supported
         uses: prestashop/github-action-php-lint/8.5@master
 
   php-cs-fixer:
