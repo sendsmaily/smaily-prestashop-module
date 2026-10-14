@@ -76,7 +76,7 @@ If you need to reset the installation, just simply delete environment's Docker v
 
 ## Validating the module
 
-Every pull request runs `.github/workflows/validate.yaml`. It checks the PHP syntax, runs PHP CS Fixer, builds the release zip the way the release workflow does, installs that zip on a fresh shop running the latest release of each supported PrestaShop major on PHP 8.1, the lowest PHP the module runs on, runs the API client checks in `tests/api-client` against the Symfony HTTP client that release ships, and calls the RSS feed and cron front controllers.
+Every pull request runs `.github/workflows/validate.yaml`. It checks the PHP syntax, runs PHP CS Fixer, builds the release zip the way the release workflow does, installs that zip on a fresh shop running the latest release of each supported PrestaShop major, on the lowest PHP that major supports together with the module: PHP 8.0 for PrestaShop 8 and PHP 8.1 for PrestaShop 9, runs the API client checks in `tests/api-client` against the Symfony HTTP client that release ships, and calls the RSS feed and cron front controllers.
 
 The same scripts run locally with Docker:
 

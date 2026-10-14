@@ -33,7 +33,7 @@ $COMPOSE up -d --quiet-pull || { echo "docker compose up failed"; teardown; exit
 echo "* Waiting for the storefront (the shop installs the module before it starts serving)"
 i=0
 until curl -sfo /dev/null "$URL/"; do
-    status=$(docker inspect -f '{{.State.Status}}' "$($COMPOSE ps -q prestashop)" 2>/dev/null)
+    status=$(docker inspect -f '{{.State.Status}}' "$($COMPOSE ps -aq prestashop)" 2>/dev/null)
     i=$((i + 1))
     if [ "$status" != "running" ] || [ $i -ge 150 ]; then
         echo "PrestaShop did not come up (container status: ${status:-gone}). Last log lines:"

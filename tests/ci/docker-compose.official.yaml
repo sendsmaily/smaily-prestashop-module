@@ -22,6 +22,13 @@ services:
       - ../../dist:/ps-modules:ro
       - ../api-client:/tests/api-client:ro
       - ./official-post-install:/tmp/post-install-scripts:ro
+    # The image's start script removes the install folder after the installer ran, but the
+    # PrestaShop 9.2 installer already removes it, so the script dies before the post-install
+    # scripts and the web server (PrestaShop/docker#486). Make that removal tolerant.
+    command:
+      - sh
+      - -c
+      - "sed -i 's# rm -r /# rm -rf /#' /tmp/docker_run.sh && exec /tmp/docker_run.sh"
     ports:
       - 8000:80
 

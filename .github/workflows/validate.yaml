@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: PHP 8.1, the lowest the module runs on
-        uses: prestashop/github-action-php-lint/8.1@master
+      - name: PHP 8.0, the lowest the module runs on
+        uses: prestashop/github-action-php-lint/8.0@master
       - name: PHP 8.5, the newest supported
         uses: prestashop/github-action-php-lint/8.5@master
 
@@ -36,12 +36,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # The latest release of each supported major, on PHP 8.1: the lowest PHP the module runs
-        # on, and the only PHP both majors support. Flashlight has no 9.2.0 image on PHP 8.1, so
-        # that lane uses the official image, which installs the shop first.
+        # The latest release of each supported major, on the lowest PHP that major supports together
+        # with the module: 8.0 for PrestaShop 8, 8.1 for PrestaShop 9. Flashlight has no 9.2.0 image
+        # on PHP 8.1, so that lane uses the official image, which installs the shop first.
         include:
-          - prestashop: 8.2.8 on PHP 8.1
-            image: prestashop/prestashop-flashlight:8.2.8-8.1-nginx
+          - prestashop: 8.2.8 on PHP 8.0
+            image: prestashop/prestashop-flashlight:8.2.8-8.0-nginx
             compose: docker-compose.yaml
           - prestashop: 9.2.0 on PHP 8.1
             image: prestashop/prestashop:9.2.0-8.1
