@@ -96,7 +96,7 @@ class CustomerSyncFormType extends TranslatorAwareType
                             'disabled' => true,
                             'attr' => [
                                 'material_design' => true,
-                                'checked' => 'checked'
+                                'checked' => 'checked',
                             ],
                         ]
                     )

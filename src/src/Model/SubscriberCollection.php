@@ -25,9 +25,6 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\SmailyForPrestaShop\Model;
 
-use Db;
-use DbQuery;
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -47,9 +44,9 @@ class SubscriberCollection
             )
         ) . ')';
 
-        if ( Db::getInstance()->execute($query) !== true ) {
+        if (\Db::getInstance()->execute($query) !== true) {
             return false;
-        };
+        }
 
         $query = 'UPDATE ' . _DB_PREFIX_ . 'emailsubscription SET active=0 WHERE email IN (' .
         implode(
@@ -62,7 +59,7 @@ class SubscriberCollection
             )
         ) . ')';
 
-        return Db::getInstance()->execute($query);
+        return \Db::getInstance()->execute($query);
     }
 
     /**
@@ -74,14 +71,14 @@ class SubscriberCollection
     {
         $subscribers = [];
 
-        $sql = new DbQuery();
+        $sql = new \DbQuery();
         $sql->select('s.`domain` AS `shop_domain`, c.`lastname`, c.`firstname`, c.`email`, c.`birthday`, c.`website`');
         $sql->from('customer', 'c');
         $sql->where('c.newsletter = 1');
         $sql->leftJoin('shop_url', 's', 's.id_shop = c.id_shop');
         $sql->limit($limit, $offset);
 
-        $customers = Db::getInstance()->executeS($sql);
+        $customers = \Db::getInstance()->executeS($sql);
 
         foreach ($customers as $subscriber) {
             $s = new Subscriber();
@@ -95,14 +92,14 @@ class SubscriberCollection
             $subscribers[] = $s;
         }
 
-        $sql = new DbQuery();
+        $sql = new \DbQuery();
         $sql->select('e.`email`, s.`domain` AS `shop_domain`');
         $sql->from('emailsubscription', 'e');
         $sql->where('e.active = 1');
         $sql->leftJoin('shop_url', 's', 's.id_shop = e.id_shop');
         $sql->limit($limit, $offset);
 
-        $non_customers = Db::getInstance()->executeS($sql);
+        $non_customers = \Db::getInstance()->executeS($sql);
         foreach ($non_customers as $subscriber) {
             $s = new Subscriber();
             $s->email = $subscriber['email'];

@@ -74,6 +74,28 @@ If you need to reset the installation, just simply delete environment's Docker v
 
     $ docker compose down --remove-orphans -v
 
+## Running the unit tests
+
+The unit tests in `tests/Unit` run with PHPUnit on PHP 8.1 or newer and need no shop:
+
+    $ composer install --working-dir src/
+    $ src/vendor/bin/phpunit
+
+A test that needs the Smaily API sends the request through Symfony's mock HTTP transport and asserts the request the client built.
+
+## Validating the module
+
+Every pull request runs `.github/workflows/validate.yaml`. It checks the PHP syntax, runs PHP CS Fixer and the unit tests, builds the release zip the way the release workflow does, installs that zip on a fresh shop running the latest release of each supported PrestaShop major, on the lowest PHP that major supports together with the module: PHP 8.0 for PrestaShop 8 and PHP 8.1 for PrestaShop 9, sends one API client request through the Symfony HTTP client that release ships, and calls the RSS feed and cron front controllers.
+
+The same scripts run locally with Docker:
+
+    $ tests/ci/build-zip.sh
+    $ PS_IMAGE=prestashop/prestashop-flashlight:9.2.0-nginx tests/ci/validate.sh
+
+`validate.sh` prints one `ok` or `FAIL` line per check and exits non-zero when a check failed. `KEEP=1` leaves the shop running at `http://localhost:8000` afterwards.
+
+An agent validates a change the same way: push the branch, open a pull request, then read the result with `gh pr checks <number> --watch` and `gh run view <run-id> --log-failed`.
+
 ## Troubleshooting
 
 ### PHP CS Fixer is not working

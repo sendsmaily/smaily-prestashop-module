@@ -1,0 +1,79 @@
+name: Validate
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php-syntax:
+    name: PHP syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP 8.0, the lowest the module runs on
+        uses: prestashop/github-action-php-lint/8.0@08f47878fdedbcecb581a8c93f507c7d60b2c956
+      - name: PHP 8.5, the newest supported
+        uses: prestashop/github-action-php-lint/8.5@08f47878fdedbcecb581a8c93f507c7d60b2c956
+
+  php-cs-fixer:
+    name: PHP CS Fixer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+      - run: composer install --no-interaction --no-progress
+        working-directory: src
+      - run: vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no
+        working-directory: src
+
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+      - run: composer install --no-interaction --no-progress
+        working-directory: src
+      - run: src/vendor/bin/phpunit
+
+  install:
+    name: Install on PrestaShop ${{ matrix.prestashop }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The latest release of each supported major, on the lowest PHP that major supports together
+        # with the module: 8.0 for PrestaShop 8, 8.1 for PrestaShop 9. Flashlight has no 9.2.0 image
+        # on PHP 8.1, so that lane uses the official image, which installs the shop first.
+        include:
+          - prestashop: 8.2.8 on PHP 8.0
+            image: prestashop/prestashop-flashlight:8.2.8-8.0-nginx
+            compose: docker-compose.yaml
+          - prestashop: 9.2.0 on PHP 8.1
+            image: prestashop/prestashop:9.2.0-8.1
+            compose: docker-compose.official.yaml
+    env:
+      PS_IMAGE: ${{ matrix.image }}
+      PS_COMPOSE: ${{ matrix.compose }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+      - name: Build the release zip
+        run: tests/ci/build-zip.sh
+      - name: Install the zip on a fresh shop and check it
+        run: tests/ci/validate.sh

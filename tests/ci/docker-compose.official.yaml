@@ -1,0 +1,52 @@
+# The same throwaway shop on the official prestashop/prestashop image, which publishes PHP variants
+# that flashlight does not, such as 9.2.0 on PHP 8.1. The image installs the shop on first start and
+# then runs official-post-install/, which installs dist/smailyforprestashop.zip.
+services:
+  prestashop:
+    image: ${PS_IMAGE:-prestashop/prestashop:9.2.0-8.1}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - PS_INSTALL_AUTO=1
+      - PS_DOMAIN=localhost:8000
+      - PS_FOLDER_ADMIN=admin-dev
+      - DB_SERVER=mysql
+      - DB_NAME=prestashop
+      - DB_USER=prestashop
+      - DB_PASSWD=prestashop
+      - DB_PREFIX=ps_
+      - ADMIN_MAIL=admin@prestashop.com
+      - ADMIN_PASSWD=prestashop
+    volumes:
+      - ../../dist:/ps-modules:ro
+      - ./api-client-smoke.php:/tests/api-client-smoke.php:ro
+      - ./official-post-install:/tmp/post-install-scripts:ro
+    # The image's start script removes the install folder after the installer ran, but the
+    # PrestaShop 9.2 installer already removes it, so the script dies before the post-install
+    # scripts and the web server (PrestaShop/docker#486). Make that removal tolerant.
+    command:
+      - sh
+      - -c
+      - |
+        grep -qF ' rm -r /var/www/html/$$PS_FOLDER_INSTALL/' /tmp/docker_run.sh || {
+          echo 'docker_run.sh no longer removes the install folder the way this workaround expects: drop or update it in docker-compose.official.yaml'
+          exit 1
+        }
+        sed -i 's# rm -r /# rm -rf /#' /tmp/docker_run.sh
+        exec /tmp/docker_run.sh
+    ports:
+      - 8000:80
+
+  mysql:
+    image: mariadb:lts
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    environment:
+      - MYSQL_USER=prestashop
+      - MYSQL_PASSWORD=prestashop
+      - MYSQL_ROOT_PASSWORD=prestashop
+      - MYSQL_DATABASE=prestashop
