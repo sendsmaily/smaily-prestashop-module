@@ -144,7 +144,7 @@ class AbandonedCartController
             return false;
         }
 
-        $body = json_decode($response->getBody()->getContents(), true);
+        $body = json_decode($response->getContent(false), true);
         if (!isset($body['code']) || $body['code'] !== 101) {
             Logger::logErrorWithFormatting(
                 'Failed sending out abandoned cart email for email: %s, cart_id: %s. ' .

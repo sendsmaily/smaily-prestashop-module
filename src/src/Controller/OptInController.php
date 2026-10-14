@@ -140,7 +140,7 @@ class OptInController
             return false;
         }
 
-        $body = json_decode($response->getBody()->getContents(), true);
+        $body = json_decode($response->getContent(false), true);
         if (!isset($body['code']) || $body['code'] !== 101) {
             Logger::logErrorWithFormatting(
                 'Failed to update customer subscription status: %s, ' .
@@ -196,7 +196,7 @@ class OptInController
             return false;
         }
 
-        $body = json_decode($response->getBody()->getContents(), true);
+        $body = json_decode($response->getContent(false), true);
         if (!isset($body['code']) || $body['code'] !== 101) {
             Logger::logErrorWithFormatting(
                 'Failed to register a subscriber with an email: %s, ' .
