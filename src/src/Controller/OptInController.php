@@ -89,7 +89,7 @@ class OptInController
     /**
      * Trigger opt-in flow when subscribing through subscribe form.
      *
-     * @param string $email subscribers email
+     * @param string $email the subscriber's email address
      *
      * @return bool
      */
