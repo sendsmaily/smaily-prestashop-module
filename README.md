@@ -31,7 +31,7 @@ Generate an RSS feed with the 50 latest updated active products for easy import 
 
 ## Requirements
 
-Smaily for PrestaShop requires PHP 8.1+. You'll also need to be running PrestaShop 8.0+ or 9.x.
+Smaily for PrestaShop requires PHP 8.0+ (PrestaShop 9 itself needs PHP 8.1+). You'll also need to be running PrestaShop 8.0+ or 9.x.
 
 ## Documentation & Support
 
