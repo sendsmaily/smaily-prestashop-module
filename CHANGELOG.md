@@ -1,5 +1,10 @@
 # Changelog
 
+### 2.2.0
+
+- Adds PrestaShop 9.x support.
+- Replaces the Guzzle HTTP client, which PrestaShop 9 no longer bundles, with the Symfony HTTP client.
+
 ### 2.1.2
 
 Fixes RSS-feed not rendering when using a category filter.
