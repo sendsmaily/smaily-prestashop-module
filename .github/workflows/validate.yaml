@@ -36,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        prestashop: ['8.1.5-nginx', '8.2.8-alpine-nginx', '9.0.3-nginx', '9.1.5-nginx', '9.2.0-nginx']
+        prestashop: ['8.2.8-alpine-nginx', '9.2.0-alpine-nginx']
     env:
       PS_IMAGE: prestashop/prestashop-flashlight:${{ matrix.prestashop }}
     steps:

@@ -1,7 +1,7 @@
 # A throwaway shop that installs dist/smailyforprestashop.zip on start. validate.sh drives it.
 services:
   prestashop:
-    image: ${PS_IMAGE:-prestashop/prestashop-flashlight:9.2.0-nginx}
+    image: ${PS_IMAGE:-prestashop/prestashop-flashlight:9.2.0-alpine-nginx}
     depends_on:
       mysql:
         condition: service_healthy
