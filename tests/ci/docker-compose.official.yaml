@@ -28,7 +28,13 @@ services:
     command:
       - sh
       - -c
-      - "sed -i 's# rm -r /# rm -rf /#' /tmp/docker_run.sh && exec /tmp/docker_run.sh"
+      - |
+        grep -qF ' rm -r /var/www/html/$$PS_FOLDER_INSTALL/' /tmp/docker_run.sh || {
+          echo 'docker_run.sh no longer removes the install folder the way this workaround expects: drop or update it in docker-compose.official.yaml'
+          exit 1
+        }
+        sed -i 's# rm -r /# rm -rf /#' /tmp/docker_run.sh
+        exec /tmp/docker_run.sh
     ports:
       - 8000:80
 
