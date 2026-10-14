@@ -6,6 +6,13 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   php-syntax:
     name: PHP syntax
@@ -13,9 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: PHP 8.0, the lowest the module runs on
-        uses: prestashop/github-action-php-lint/8.0@master
+        uses: prestashop/github-action-php-lint/8.0@08f47878fdedbcecb581a8c93f507c7d60b2c956
       - name: PHP 8.5, the newest supported
-        uses: prestashop/github-action-php-lint/8.5@master
+        uses: prestashop/github-action-php-lint/8.5@08f47878fdedbcecb581a8c93f507c7d60b2c956
 
   php-cs-fixer:
     name: PHP CS Fixer
