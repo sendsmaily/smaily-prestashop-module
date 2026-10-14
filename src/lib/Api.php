@@ -53,7 +53,7 @@ class Api
      * @param string $subdomain
      * @param string $username
      * @param string $password
-     * @param HttpClientInterface|null $client the HTTP client to send requests through; PrestaShop's own by default
+     * @param HttpClientInterface|null $client the HTTP client to send requests through; a new Symfony HTTP client by default
      */
     public function __construct(string $subdomain, string $username, string $password, ?HttpClientInterface $client = null)
     {
