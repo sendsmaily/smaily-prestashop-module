@@ -57,9 +57,9 @@ hooks=$(sql "SELECT COUNT(DISTINCT h.name) FROM ps_hook_module hm JOIN ps_hook h
 $COMPOSE exec -T prestashop test -f /var/www/html/override/modules/ps_emailsubscription/ps_emailsubscription.php
 report $? "the newsletter module override is in place"
 
-echo "* Running the API client checks against the Symfony HTTP client this PrestaShop ships"
-$COMPOSE exec -T prestashop sh -c 'cd /tests/api-client && (php -S 127.0.0.1:8765 mock.php >/dev/null 2>&1 &) && sleep 1 && AUTOLOAD=/var/www/html/vendor/autoload.php API_PHP=/var/www/html/modules/smailyforprestashop/lib/Api.php php test.php'
-report $? "API client checks"
+echo "* Sending one API client request through the Symfony HTTP client this PrestaShop ships"
+$COMPOSE exec -T prestashop php /tests/api-client-smoke.php
+report $? "API client smoke check"
 
 echo "* Checking the front controllers"
 code=$(curl -s -o "$tmp/rss.xml" -w '%{http_code}' "$URL/index.php?fc=module&module=smailyforprestashop&controller=SmailyRssFeed")

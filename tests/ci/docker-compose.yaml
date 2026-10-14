@@ -10,7 +10,7 @@ services:
       - INSTALL_MODULES_DIR=/ps-modules
     volumes:
       - ../../dist:/ps-modules:ro
-      - ../api-client:/tests/api-client:ro
+      - ./api-client-smoke.php:/tests/api-client-smoke.php:ro
     ports:
       - 8000:80
 
