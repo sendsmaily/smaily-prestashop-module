@@ -1,0 +1,50 @@
+name: Validate
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  php-syntax:
+    name: PHP syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP 8.1
+        uses: prestashop/github-action-php-lint/8.1@master
+      - name: PHP 8.5
+        uses: prestashop/github-action-php-lint/8.5@master
+
+  php-cs-fixer:
+    name: PHP CS Fixer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+      - run: composer install --no-interaction --no-progress
+        working-directory: src
+      - run: vendor/bin/php-cs-fixer fix --dry-run --diff --using-cache=no
+        working-directory: src
+
+  install:
+    name: Install on PrestaShop ${{ matrix.prestashop }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        prestashop: ['8.1.5-nginx', '8.2.8-alpine-nginx', '9.0.3-nginx', '9.1.5-nginx', '9.2.0-nginx']
+    env:
+      PS_IMAGE: prestashop/prestashop-flashlight:${{ matrix.prestashop }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+      - name: Build the release zip
+        run: tests/ci/build-zip.sh
+      - name: Install the zip on a fresh shop and check it
+        run: tests/ci/validate.sh
