@@ -74,6 +74,19 @@ If you need to reset the installation, just simply delete environment's Docker v
 
     $ docker compose down --remove-orphans -v
 
+## Validating the module
+
+Every pull request runs `.github/workflows/validate.yaml`. It checks the PHP syntax, runs PHP CS Fixer, builds the release zip the way the release workflow does, installs that zip on a fresh shop for each supported PrestaShop release, runs the API client checks in `tests/api-client` against the Symfony HTTP client that release ships, and calls the RSS feed and cron front controllers.
+
+The same scripts run locally with Docker:
+
+    $ tests/ci/build-zip.sh
+    $ PS_IMAGE=prestashop/prestashop-flashlight:9.2.0-nginx tests/ci/validate.sh
+
+`validate.sh` prints one `ok` or `FAIL` line per check and exits non-zero when a check failed. `KEEP=1` leaves the shop running at `http://localhost:8000` afterwards.
+
+An agent validates a change the same way: push the branch, open a pull request, then read the result with `gh pr checks <number> --watch` and `gh run view <run-id> --log-failed`.
+
 ## Troubleshooting
 
 ### PHP CS Fixer is not working
