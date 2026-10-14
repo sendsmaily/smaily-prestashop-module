@@ -36,11 +36,16 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class Api
 {
     /**
-     * Smaily API client.
-     *
      * @var HttpClientInterface
      */
     private $client;
+
+    /**
+     * Options every request carries: the organization's API host and the API user's credentials.
+     *
+     * @var array
+     */
+    private $options;
 
     /**
      * Create an API client.
@@ -48,13 +53,15 @@ class Api
      * @param string $subdomain
      * @param string $username
      * @param string $password
+     * @param HttpClientInterface|null $client the HTTP client to send requests through; PrestaShop's own by default
      */
-    public function __construct(string $subdomain, string $username, string $password)
+    public function __construct(string $subdomain, string $username, string $password, ?HttpClientInterface $client = null)
     {
-        $this->client = HttpClient::create([
+        $this->client = $client ?? HttpClient::create();
+        $this->options = [
             'base_uri' => 'https://' . $subdomain . '.sendsmaily.net/',
             'auth_basic' => [$username, $password],
-        ]);
+        ];
     }
 
     /**
@@ -66,7 +73,7 @@ class Api
      */
     public function listAutoresponders(int $limit = 100): ResponseInterface
     {
-        return $this->client->request('GET', 'api/autoresponder.php', [
+        return $this->request('GET', 'api/autoresponder.php', [
             'query' => [
                 'limit' => $limit,
             ],
@@ -83,7 +90,7 @@ class Api
      */
     public function listUnsubscribers(int $limit = 100, $offset = 0): ResponseInterface
     {
-        return $this->client->request('GET', 'api/contact.php', [
+        return $this->request('GET', 'api/contact.php', [
             'query' => [
                 'list' => 2,
                 'limit' => $limit,
@@ -101,7 +108,7 @@ class Api
      */
     public function createSubscribers(array $data): ResponseInterface
     {
-        return $this->client->request('POST', 'api/contact.php', [
+        return $this->request('POST', 'api/contact.php', [
             'json' => $data,
         ]);
     }
@@ -115,7 +122,7 @@ class Api
      */
     public function updateSubscriber(array $data): ResponseInterface
     {
-        return $this->client->request('POST', 'api/contact.php', [
+        return $this->request('POST', 'api/contact.php', [
             'json' => $data,
         ]);
     }
@@ -129,7 +136,7 @@ class Api
      */
     public function optInSubscribers(array $addresses): ResponseInterface
     {
-        return $this->client->request('POST', 'api/autoresponder.php', [
+        return $this->request('POST', 'api/autoresponder.php', [
             'json' => ['addresses' => $addresses],
         ]);
     }
@@ -144,11 +151,16 @@ class Api
      */
     public function triggerAutomation(string $autoresponder, array $addresses): ResponseInterface
     {
-        return $this->client->request('POST', 'api/autoresponder.php', [
+        return $this->request('POST', 'api/autoresponder.php', [
             'json' => [
                 'autoresponder' => $autoresponder,
                 'addresses' => $addresses,
             ],
         ]);
+    }
+
+    private function request(string $method, string $path, array $options): ResponseInterface
+    {
+        return $this->client->request($method, $path, $options + $this->options);
     }
 }
