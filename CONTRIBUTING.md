@@ -81,7 +81,7 @@ Every pull request runs `.github/workflows/validate.yaml`. It checks the PHP syn
 The same scripts run locally with Docker:
 
     $ tests/ci/build-zip.sh
-    $ PS_IMAGE=prestashop/prestashop-flashlight:9.2.0-alpine-nginx tests/ci/validate.sh
+    $ PS_IMAGE=prestashop/prestashop-flashlight:9.2.0-nginx tests/ci/validate.sh
 
 `validate.sh` prints one `ok` or `FAIL` line per check and exits non-zero when a check failed. `KEEP=1` leaves the shop running at `http://localhost:8000` afterwards.
 

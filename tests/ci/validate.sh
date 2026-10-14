@@ -2,7 +2,7 @@
 # Starts the shop from docker-compose.yaml, lets it install dist/smailyforprestashop.zip, and checks
 # the result. Prints one "ok" or "FAIL" line per check and exits non-zero when any check failed.
 #
-#   PS_IMAGE=prestashop/prestashop-flashlight:9.2.0-alpine-nginx tests/ci/validate.sh
+#   PS_IMAGE=prestashop/prestashop-flashlight:9.2.0-nginx tests/ci/validate.sh
 #
 # Set KEEP=1 to leave the shop running at http://localhost:8000 (admin-dev, admin@prestashop.com /
 # prestashop) for a look around.
